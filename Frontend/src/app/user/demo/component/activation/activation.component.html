@@ -1,0 +1,54 @@
+<div class="panel panel-default" *ngIf="products.length > 0">
+    <div class="panel-body" *ngFor="let product of products">
+      <div class="package-new-cls new_cls">
+        <img src="{{BaseUrl}}{{product.image}}" alt="Product Image" height="100" width="100"/>
+        <input type="hidden" class="netpayableamount" [value]="product.price" />
+        <ul>
+          <li>
+            <h2><span>{{ product.name }}</span></h2>
+            <p>{{ product.description }}</p>
+          </li>
+  
+          <li>
+            <h2><span>₹ {{ product.price }}</span></h2>
+            <div class="form-group">
+              <select
+                class="form-control ddlClothSize"
+                id="ddlClothSize"
+                name="ddlClothSize"
+                style="max-width: 250px; margin-left: auto; margin-right: auto"
+                [(ngModel)]="product.selectedSize"
+                [ngClass]="{'is-invalid': !product.selectedSize && formSubmitted}"
+                required
+              >
+                <option value="0">Select Size</option>
+                <option value="1">Extra Small (XS)</option>
+                <option value="2">Small (S)</option>
+                <option value="3">Medium (M)</option>
+                <option value="4">Large (L)</option>
+                <option value="5">Extra Large (XL)</option>
+                <option value="6">Extra Extra Large (XXL)</option>
+              </select>
+              <div *ngIf="!product.selectedSize && formSubmitted" class="invalid-feedback">
+                Please select a size.
+              </div>
+            </div>
+          </li>
+  
+          <li class="add_cart_btn">
+            <input type="hidden" [value]="product.id" id="Tsmid" />
+            <input type="hidden" [value]="product.dp" class="servicetaxamnt" />
+            <a 
+              class="btn Button_prim" 
+              (click)="purchaseProduct(product)" 
+              [class.disabled]="!product.selectedSize"
+              [attr.disabled]="!product.selectedSize ? true : null"
+            >
+              <i class="fa fa-shopping-cart"></i> Purchase
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  

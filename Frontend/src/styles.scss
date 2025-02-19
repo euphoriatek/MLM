@@ -1,0 +1,469 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$mantis-free-version-primary: mat.define-palette(mat.$indigo-palette);
+$mantis-free-version-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$mantis-free-version-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$mantis-free-version-theme: mat.define-light-theme((
+  color: (
+    primary: $mantis-free-version-primary,
+    accent: $mantis-free-version-accent,
+    warn: $mantis-free-version-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($mantis-free-version-theme);
+
+/**======================================================================
+=========================================================================
+Template Name: DashboardKit - Most Complete Bootstrap Admin Template
+Author: Phoenixcoded
+Support: support@phoenixcoded.net
+File: style.css
+=========================================================================
+=================================================================================== */
+
+// main framework
+@import 'scss/settings/preset-variables';
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+$pc-body-bg: map-get($preset-colors, 'preset-1', 'body');
+$pc-blue: map-get($preset-colors, 'preset-1', 'primary');
+$pc-secondary: map-get($preset-colors, 'preset-1', 'secondary');
+@import 'scss/settings/custom-variables';
+@import 'scss/settings/theme-variables';
+
+@import 'scss/themes/bootstrap';
+@import 'node_modules/bootstrap/scss/utilities';
+@import 'node_modules/bootstrap/scss/utilities/api';
+
+// main framework
+@import 'scss/themes/generic';
+@import 'scss/themes/general';
+
+// menu
+@import 'scss/menu/menu-lite';
+
+// Layouts
+@import 'scss/themes/layouts/layouts.scss';
+
+// Componants
+@import 'scss/themes/components/components';
+
+// pages
+@import 'scss/themes/pages/page'; 
+
+// font
+@import 'scss/fonts/tabler-icons.min.css';
+@import "../node_modules/ngx-spinner/animations/square-jelly-box.css";
+// @import "primeng/resources/primeng.css";
+// @import "../node_modules/ngx-spinner/animations/ball-spin-clockwise.css";
+:root{
+  --color-theme:#1E3160;
+
+}
+img{
+  width: 100%;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  color: #4e4e4e;
+}
+html, body { 
+  height: 100%;
+ }
+body { 
+  margin: 0; 
+  font-family: "Poppins", serif;
+ }
+
+//  FORM CSS
+
+.form-group label {
+  text-transform: capitalize;
+  display: block;
+  font-size: 13px;
+  font-weight: 550;
+  color: #454545;
+  margin-bottom: 5px;
+}
+
+ .error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+}
+.btn {
+  font-size: 14px;
+  border-radius: 6px;
+  font-weight: 400;
+  // transition: 1s;
+  padding: 7px 16px;
+}
+.btn-primary{
+  background-color: #ff4c04;
+  border-color: #ff4c04;
+  color: #fff;
+}
+
+select {
+  background-color: #fff;
+  background-image: url('../src/assets/images/admin_images/down-arrow.png');
+  padding: 6px 24px 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  appearance: none;
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+
+// All table CSS
+
+table{
+  font-family: "Poppins", serif !important;
+}
+
+
+// All table CSS
+
+
+
+.form-control:focus{
+  box-shadow: none;
+  outline: none;
+  border-color: #727272;
+}
+.form-control {
+  background: #fff;
+  border-radius: 7px;
+  border: solid 1px #c6c9d3;
+  min-height: 48px;
+  font-size: 15px;
+}
+a{
+  cursor: pointer;
+}
+::ng-deep  {
+  .p-component-overlay{
+    background: #00000099;
+  }
+  .p-dialog-content{
+    overflow-x: hidden;
+  }
+  .p-dialog-header span {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+}
+
+//  FORM CSS
+
+// p-dialog css
+.p-component-overlay{
+  background: #00000099;
+}
+.p-dialog-content{
+  overflow-x: hidden;
+}
+.p-dialog-header span {
+  font-size: 20px;
+}
+.p-dialog-content .form-group label{
+  margin-bottom: 5px;
+}
+.p-dialog {
+  padding: 8px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(16, 24, 40, 0.1);
+}
+.mat-mdc-dialog-actions .mat-mdc-button-ripple{
+  background-color:#faad14;
+  color:#fff;
+}
+.from-button{
+  .btn{
+    padding: 8px 32px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: "Poppins", serif;
+    border-radius: 6px;
+  }
+}
+
+.p-datatable-customers{
+  .p-datatable-header{
+    background-color: transparent;
+    border:none;
+    padding: 1rem 0rem;
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input.form-control{
+      padding-left: 43px;
+      height: 40px;
+      font-size: 13px;
+    }
+    .ti-search{
+      margin-top: -11px;
+      font-size: 20px;
+    }
+    h3{
+      font-size: 22px;
+      font-weight: 600;
+      width: 35%;
+    }
+    .add_user_btn{
+      margin-left: 5px;
+      background-color: #ff4c04;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+    .addclose_btn{
+      margin-left: 5px;
+      background-color: #000000;
+      color: white;
+      padding: 7px 14px;
+      border-radius: 7px;
+      font-size: 16px;
+    }
+}
+}
+.p-sortable-column-icon{
+  width: 13px !important;
+}
+}
+
+
+.p-datatable-wrapper{
+  padding: 18px;
+  background: #fff;
+  // box-shadow: 0px 0px 18px rgb(235 239 245);
+  border-radius: 10px;
+  .p-paginator {
+    padding: 1rem;
+}
+.p-datatable-thead > tr{
+  border-bottom:solid 1px #e2e6ef;
+}
+
+.p-datatable-thead > tr > th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  font-family: "Poppins", serif;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 1rem 1rem;
+  white-space: nowrap;
+}
+.p-datatable-tbody > tr {
+    border-bottom:solid 1px #e2e6ef;
+    &:last-child{
+      border: none;
+    }
+}
+
+.p-datatable-tbody > tr > td {
+    cursor: auto;
+    padding: 1rem 1rem;
+    font-size: 14px;
+    text-transform: capitalize;
+    word-break: break-all;
+}
+
+.p-dropdown-label:not(.p-placeholder) {
+    text-transform: uppercase;
+}
+
+
+}
+
+table tbody tr td button.btn {
+  padding: 5px 9px !important;
+  background: #e3e8f1 !important;
+  margin: 2px;
+  border-radius: 4px !important;
+  min-width: 35px;
+  min-height: 35px;
+}
+table tbody tr td button.btn i {
+  font-size: 14px;
+}
+table tbody tr td .pending_status,
+table tbody tr td .approved_status,
+table tbody tr td  .reject_status{
+    font-size: 12px;
+    padding: 1px 6px;
+    text-transform: capitalize;
+    border-radius: 4px;
+}
+table tbody tr td .pending_status{
+  background: #ffe6e6;
+  color: #ff0000;
+}
+table tbody tr td .approved_status{
+  background: #e9f7ef;
+  color: #21d16d;
+}
+table tbody tr td  .reject_status{
+  background: #e6f6ff;
+  color: #42a6df;
+}
+.p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover{
+  background-color: #f9f9f9;
+}
+
+
+// p-paginator css
+
+p-paginator{
+  .p-paginator{
+    justify-content: flex-end;
+    background: transparent;
+    margin-top: 3rem;
+    padding: 0px;
+    .p-paginator-pages .p-paginator-page.p-highlight {
+      background: #3a434b;
+      border-color: #EFF6FF;
+      color: #ffffff;
+      border-radius: 5px;
+    }
+  }
+  .p-dropdown-items{
+    padding: 0;
+    .p-dropdown-item.p-highlight.p-focus {
+      background: #eff3fb;
+      color: #3a434b;
+    }
+  }
+  .p-paginator-current{
+    font-size: 14px;
+  }
+}
+
+
+
+.mdc-switch:enabled .mdc-switch__track::after{
+  background: #70dda6 !important;
+}
+
+
+.mat-mdc-slide-toggle.mat-accent {
+   --mdc-switch-selected-focus-state-layer-color:#52af80;
+  --mdc-switch-selected-handle-color: #52af80;
+  --mdc-switch-selected-hover-state-layer-color: #303030;
+  --mdc-switch-selected-pressed-state-layer-color: #52af80;
+  --mdc-switch-selected-focus-handle-color: #52af80;
+  --mdc-switch-selected-hover-handle-color: #52af80;
+  --mdc-switch-selected-pressed-handle-color: #52af80;
+  --mdc-switch-selected-focus-track-color: #52af80;
+  --mdc-switch-selected-hover-track-color: #52af80;
+  --mdc-switch-selected-pressed-track-color: #52af80;
+  --mdc-switch-selected-track-color: #52af80;
+}
+.delete-icon {
+  background: #ff00002e;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border-radius: 50px;
+  color: red;
+  margin: 0 auto 17px;
+}
+.delete-modal h2 {
+  font-size: 20px;
+  margin-bottom: 7px;
+}
+.delete-modal p {
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.delete-modal {
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+.modal-btn {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.orange-btn{
+  background-color: #e34f25;
+  color: #fff;
+}
+.orange-btn:hover{
+  background-color: #000;
+  color: #fff;
+}
+.grey-btn {
+  background-color: transparent;
+  border: solid 1px #adadad;
+  color: #979797;
+}
+
+.grey-btn:hover{
+  background-color: #fff;
+  border: solid 1px #ec4b0c;
+  color: #ec4b0c;
+}
+app-breadcrumb{
+.page-header{
+  padding: 0;
+  min-height: auto;
+}
+}
+
+.add-group-form{
+  margin: 30px 0px;
+}
+
+// calendar-css
+.form-calendar{
+  padding: 0px;
+  .mat-mdc-form-field-subscript-wrapper{
+    display: none;
+  }
+  .mat-mdc-form-field-infix{
+    min-height: auto;
+    padding: 13px 0px !important;
+  }
+  .mat-mdc-text-field-wrapper{
+    background-color: transparent !important;
+  }
+  .mdc-line-ripple {
+    display: none;
+  }
+} 

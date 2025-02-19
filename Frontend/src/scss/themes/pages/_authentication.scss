@@ -1,0 +1,140 @@
+/**  =====================
+      Authentication css start
+==========================  **/
+.auth-main {
+  position: relative;
+
+  .auth-wrapper {
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+
+    .saprator {
+      position: relative;
+      display: flex;
+      align-self: center;
+      justify-content: center;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: $border-color;
+        z-index: 1;
+      }
+
+      span {
+        font-size: 0.875rem;
+        padding: 8px 24px;
+        background: $card-bg;
+        z-index: 5;
+        text-transform: capitalize;
+        color: $headings-color;
+        font-weight: 500;
+      }
+    }
+    &.v3 {
+      display: flex;
+      align-items: center;
+      .auth-form {
+        min-height: 100vh;
+        padding: 24px;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        background-image: url('../../../assets/images/icon-bg.png');
+        background-color: #254470;
+        background-size: 50%;
+        background-blend-mode: overlay;
+        > * {
+          position: relative;
+          z-index: 5;
+        }
+      }
+      .btn{
+        font-size: 16px;
+        border-radius: 10px;
+        font-weight: 400;
+        padding: 10px 16px;
+      }
+    }
+    .auth-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+
+      .card {
+        width: 100%;
+        max-width: 440px;
+        box-shadow: none;
+        padding: 3rem 2rem 2rem 2rem;
+        border-radius: 15px;
+
+        .form-input {
+          position: relative;
+          img {
+            position: absolute;
+            left: 14px;
+            top: 13px;
+            opacity: 0.8;
+            width: 20px;
+        }
+        .form-control{
+          padding-left: 3rem;
+        }
+        }
+        h5 a{
+          font-size: 13px;
+          font-weight: 400;
+          color: #000;
+        }
+      }
+
+      img + span {
+        padding-left: 15px;
+      }
+
+      h5 {
+        span {
+          text-decoration: underline;
+        }
+      }
+      .signtitle{
+        p{
+          color: #9d9d9d;
+          font-size: 15px;
+        }
+        a{
+        color: #ff4c04;
+    font-weight: 600;
+      }
+    }
+   }
+    #flagimg img {
+      position: absolute;
+      right: 35px;
+      top: 6px;
+      left: auto;
+      width: 32px;
+      opacity: 1;
+  }
+    .auth-footer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .auth-header img {
+      max-width: 202px;
+  }
+  .auth-form h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+  }
+}
+/**====== Authentication css end ======**/

@@ -1,0 +1,9 @@
+.category-options {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.category-options input[type="radio"] {
+    margin-right: 8px; 
+}

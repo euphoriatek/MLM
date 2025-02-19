@@ -1,0 +1,162 @@
+<p-table #dt [value]="products" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+    currentPageReportTemplate="" [filterDelay]="0"
+    [globalFilterFields]="['name','price','dp','pv','created_at']">
+    <ng-template pTemplate="caption">
+        <div class="table-header mb-4">
+            <h3>Product List</h3>
+            <div>
+                <span class="p-input-icon-left">
+                    <i class="ti ti-search"></i>
+                    <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="Global Search" />
+                </span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Product Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+            <th pSortableColumn="dp">Discount Price<p-sortIcon field="dp"></p-sortIcon></th>
+            <th pSortableColumn="pv">Bonus Value <p-sortIcon field="pv"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Created At <p-sortIcon field="created_at"></p-sortIcon></th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+        <tr class="p-selectable-row">
+            <td>
+                <span class="p-column-title">Product Name</span>
+                <span class="image-text">{{data.name}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Price</span>
+                <span class="image-text">{{data.price}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Discount Price</span>
+                <span class="image-text">{{data.price}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Bonus Value</span>
+                <span class="image-text">{{data.pv}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">created_at</span>
+                <span class="image-text">{{ data.created_at | date }}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Image</span>
+                <span class="image-text"><img src="{{BaseUrl}}{{ data.image}}"></span>
+            </td>
+            <td>
+                <div class="d-flex">
+                    <button class="btn editbtn" (click)="openEditDialog(data)"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn deletebtn" (click)="deleteRow(data)"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+            </td>
+        </tr>
+    </ng-template>
+    
+</p-table>
+
+<p-dialog id="dialog" header="Edit Product" [(visible)]="visible" [style]="{ width: '32vw' }"
+[modal]="true">
+<form action="" [formGroup]="UserEditForm" (ngSubmit)="EditProduct()">
+    <!-- Product Name -->
+    <div class="col-lg-8">
+        <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" formControlName="name" class="form-control" />
+            <div *ngIf="UserEditForm.get('name').hasError('required') && UserEditForm.get('name').touched">
+                <span class="error-message">Product name is required</span>
+            </div>
+        </div>
+    </div>
+  
+    <!-- Price -->
+    <div class="col-lg-8">
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" id="price" formControlName="price" class="form-control" />
+            <div *ngIf="UserEditForm.get('price').hasError('required') && UserEditForm.get('price').touched">
+                <span class="error-message">Price is required</span>
+            </div>
+        </div>
+    </div>
+  
+    <!-- DP (Discount Price) -->
+    <div class="col-lg-8">
+        <div class="form-group">
+            <label for="dp">DP (Discount Price)</label>
+            <input type="text" id="dp" formControlName="dp" class="form-control" />
+            <div *ngIf="UserEditForm.get('dp').hasError('required') && UserEditForm.get('dp').touched">
+                <span class="error-message">Discount Price is required</span>
+            </div>
+        </div>
+    </div>
+  
+    <!-- PV (Bonus Value) -->
+    <div class="col-lg-8">
+        <div class="form-group">
+            <label for="pv">Bv (Bonus Value)</label>
+            <input type="text" id="pv" formControlName="pv" class="form-control" />
+            <div *ngIf="UserEditForm.get('pv').hasError('required') && UserEditForm.get('pv').touched">
+                <span class="error-message">Bonus Value is required</span>
+            </div>
+        </div>
+    </div>
+  
+    <!-- Category -->
+    <!-- <div class="col-lg-8">
+        <div class="form-group">
+            <label>Category</label>
+            <div class="category-options">
+                <input type="radio" formControlName="category" value="1" id="healthcare" />
+                <label for="healthcare">Health Care</label>
+
+                <input type="radio" formControlName="category" value="2" id="personalcare" />
+                <label for="personalcare">Personal Care</label>
+
+                <input type="radio" formControlName="category" value="3" id="homecare" />
+                <label for="homecare">Home Care</label>
+
+                <input type="radio" formControlName="category" value="4" id="agriculture" />
+                <label for="agriculture">Agriculture</label>
+            </div>
+        </div>
+    </div> -->
+  
+    <!-- Product Description -->
+    <div class="col-lg-8">
+        <div class="form-group">
+            <label for="description">Product Description</label>
+            <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
+            <div *ngIf="UserEditForm.get('description').hasError('required') && UserEditForm.get('description').touched">
+                <span class="error-message">Description is required</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="form-group">
+        <label for="image">product image</label>
+        <input type="file" class="form-control" (change)="onFileChange($event)" #fileInput />
+        <div *ngIf="imageUrl" class="mt-3">
+            <img [src]="imageUrl" style="max-width: 150px; max-height: 150px;" alt="Lead Image" class="img-thumbnail" />
+          </div>  
+        <div *ngIf="UserEditForm?.get('image')?.hasError('required') && UserEditForm?.get('image')?.touched">
+            <span class="error-message">image required</span>
+        </div>
+    </div> -->
+
+    <div class="col-lg-12">
+        <div class="form-group">
+            <div class="d-flex gap-2 from-button">
+                <input type="submit" class="btn orange-btn" value="Save">
+                <input (click)="resetForm()" type="button" class="btn grey-btn" value="Reset">
+            </div>
+          </div>
+    </div>
+</form>
+</p-dialog>

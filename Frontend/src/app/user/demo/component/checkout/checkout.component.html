@@ -1,0 +1,238 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card rounded-3">
+                    <div class="card-body">
+                        <h4 class="title">Checkout Form</h4>
+                        <div class="package-new-cls new_cls">
+                            <form action="" [formGroup]="CheckoutForm" (ngSubmit)="Checkout()">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" id="name" formControlName="name" class="form-control" />
+                                            <div *ngIf="CheckoutForm.get('name').hasError('required') && CheckoutForm.get('name').touched">
+                                                <span class="error-message">Name is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" id="email" formControlName="email" class="form-control" />
+                                            <div *ngIf="CheckoutForm.get('email').hasError('required') && CheckoutForm.get('email').touched">
+                                                <span class="error-message">Email is required</span>
+                                            </div>
+                                            <div *ngIf="CheckoutForm.get('email').hasError('email') && CheckoutForm.get('email').touched">
+                                                <span class="error-message">Please enter a valid email</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="phone_no">Phone Number</label>
+                                            <input type="tel" id="phone_no" maxlength="10" formControlName="phone_number" class="form-control" />
+                                            <div *ngIf="CheckoutForm.get('phone_number').hasError('required') && CheckoutForm.get('phone_number').touched">
+                                                <span class="error-message">Phone Number is required</span>
+                                            </div>
+                                            <div *ngIf="CheckoutForm.get('phone_number').hasError('pattern') && CheckoutForm.get('phone_number').touched">
+                                                <span class="error-message">Phone number must be 10 digits</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="alternate_phone_no">Alternate Phone Number</label>
+                                            <input type="tel" id="alternate_phone_no" maxlength="10" formControlName="alternate_phone_no" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <input type="text" id="address" formControlName="address" class="form-control" />
+                                            <div *ngIf="CheckoutForm.get('address').hasError('required') && CheckoutForm.get('address').touched">
+                                                <span class="error-message">Address is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="pin_code">Pin Code</label>
+                                            <input type="text" id="pin_code" formControlName="pin_code" class="form-control" />
+                                            <div *ngIf="CheckoutForm.get('pin_code').hasError('required') && CheckoutForm.get('pin_code').touched">
+                                                <span class="error-message">Pin Code is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group mb-0">
+                                            <div class="from-button">
+                                                <input type="submit" class="btn btn-success" value="Save" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="payment-section"  *ngIf="CheckoutForm.valid">
+                                <h4 class="title">Payment</h4>
+                                <p>All transactions are secure and encrypted.</p>
+
+                                <div class="payment-razorpay">
+                                    <h6>Razorpay Secure</h6>
+                                 <ul>
+                                    <li><i class="fa-solid fa-expand"></i> UPI</li>
+                                    <li><i class="fa-solid fa-credit-card"></i> Cards</li>
+                                    <li><i class="fa-solid fa-wallet"></i> Wallets</li>
+                                    <li><i class="fa-solid fa-landmark"></i> NetBanking</li>
+                                 </ul>
+                            </div>
+
+                            </div>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card rounded-3">
+                    <div class="card-body">
+        
+                <h4 class="title">Checkout Form</h4>
+                <div class="package-new-cls new_cls">
+                    <form action="" [formGroup]="CheckoutForm" (ngSubmit)="Checkout()">
+                        <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" formControlName="name" class="form-control" />
+                                <div *ngIf="CheckoutForm.get('name').hasError('required') && CheckoutForm.get('name').touched">
+                                    <span class="error-message">Name is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" formControlName="email" class="form-control" />
+                                <div *ngIf="CheckoutForm.get('email').hasError('required') && CheckoutForm.get('email').touched">
+                                    <span class="error-message">Email is required</span>
+                                </div>
+                                <div *ngIf="CheckoutForm.get('email').hasError('email') && CheckoutForm.get('email').touched">
+                                    <span class="error-message">Please enter a valid email</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="phone_no">Phone Number</label>
+                                <input type="tel" id="phone_no" maxlength="10" formControlName="phone_number" class="form-control" />
+                                <div *ngIf="CheckoutForm.get('phone_number').hasError('required') && CheckoutForm.get('phone_number').touched">
+                                    <span class="error-message">Phone Number is required</span>
+                                </div>
+                                <div *ngIf="CheckoutForm.get('phone_number').hasError('pattern') && CheckoutForm.get('phone_number').touched">
+                                    <span class="error-message">Phone number must be 10 digits</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="alternate_phone_no">Alternate Phone Number</label>
+                                <input type="tel" id="alternate_phone_no" maxlength="10" formControlName="alternate_phone_no" class="form-control" />
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" formControlName="address" class="form-control" />
+                                <div *ngIf="CheckoutForm.get('address').hasError('required') && CheckoutForm.get('address').touched">
+                                    <span class="error-message">Address is required</span>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="pin_code">Pin Code</label>
+                                <input type="text" id="pin_code" formControlName="pin_code" class="form-control" />
+                                <div *ngIf="CheckoutForm.get('pin_code').hasError('required') && CheckoutForm.get('pin_code').touched">
+                                    <span class="error-message">Pin Code is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group mb-0">
+                                <div class="from-button">
+                                    <input type="submit" class="btn btn-success" value="Save">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-lg-12">
+                            <div class="payment-section" *ngIf="CheckoutForm.valid">
+                                <h4 class="title">Payment</h4>
+                                <p>All transactions are secure and encrypted.</p>
+
+                                <div class="payment-razorpay">
+                                    <h6>Razorpay Secure</h6>
+                                 <ul>
+                                    <li><i class="fa-solid fa-expand"></i> UPI</li>
+                                    <li><i class="fa-solid fa-credit-card"></i> Cards</li>
+                                    <li><i class="fa-solid fa-wallet"></i> Wallets</li>
+                                    <li><i class="fa-solid fa-landmark"></i> NetBanking</li>
+                                 </ul>
+                            </div>
+
+                            </div>
+                        </div>        
+    
+                        <div class="col-lg-12">
+                            <div class="form-group mb-0">
+                                <div class="from-button">
+                                    <input type="submit" class="btn btn-success w-100" value="Pay Now" [disabled]="!CheckoutForm.valid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ -->

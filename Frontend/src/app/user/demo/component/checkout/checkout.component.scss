@@ -1,0 +1,19 @@
+.payment-razorpay ul {
+    list-style: none;
+    margin: 20px 0px;
+    padding: 0px;
+}
+
+.payment-razorpay ul li {
+    padding: 10px 0px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.payment-razorpay ul li i {
+    font-size: 19px;
+    color: #b7d599;
+    width: 36px;
+}
