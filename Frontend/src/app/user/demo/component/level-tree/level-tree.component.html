@@ -1,0 +1,24 @@
+<div class="card flex justify-content-center">
+    <p-organizationChart [value]="data" (onNodeSelect)="onNodeSelect($event)">
+      <ng-template let-node pTemplate="default">
+        <div class="p-2 text-center" (click)="onNodeClick(node)">
+          <img src="https://primefaces.org/cdn/primeng/images/flag/flag_placeholder.png" 
+               [alt]="node.label"
+               [class]="'flag' + ' flag-' + node.data.role" width="32" />
+          <div> {{ node.data.full_name }}</div>
+          <div class="p-2">{{ node.data.sponsor_id }} </div>
+        </div>
+      </ng-template>
+    </p-organizationChart>
+
+    <p-dialog id="dialog" header="" [(visible)]="visible" [style]="{ width: '32vw' }" [modal]="true">
+      <div class="container">
+        <h1>{{ node_data?.full_name || 'No Name Available' }}</h1>
+        <p>Email: {{ node_data?.email || 'No Email Available' }}</p>
+        <p>Role: {{ node_data?.sponsor_id || 'No sponsor_id Available' }}</p>
+        <p>Mobile No: {{ node_data?.mobile_no || 'No Mobile Available' }}</p>
+        <p>Address: {{ node_data?.address || 'No Address Available' }}</p>
+      </div>
+    </p-dialog>
+  </div>
+  

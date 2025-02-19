@@ -1,0 +1,88 @@
+// angular import
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { UserAppComponent } from './user-app.component';
+import { authGuard } from './guard/auth.guard';
+import { GuestComponent } from './theme/layouts/guest/guest.component';
+import { unAuthGuard } from './guard/un-auth.guard';
+import { MyProfileComponent } from './demo/component/my-profile/my-profile.component';
+import { CreateKycComponent } from './demo/component/create-kyc/create-kyc.component';
+import { LevelTreeComponent } from './demo/component/level-tree/level-tree.component';  
+import { ActivationComponent } from './demo/component/activation/activation.component';
+import { CheckoutComponent } from './demo/component/checkout/checkout.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: UserAppComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '/dashboard/default',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard/default',
+        loadComponent: () => import('./demo/default/dashboard/dashboard.component'),
+        canActivate:[authGuard]
+      },
+      {
+        path: 'A9OwXFkAj_slash_uc2FmEZnQtYQ==',
+        component:CreateKycComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'auth/level-tree',
+        component:LevelTreeComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'my-profile',
+        component: MyProfileComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'typography',
+        loadComponent: () => import('./demo/ui-component/typography/typography.component')
+      },
+      {
+        path: 'activation',
+        component: ActivationComponent,
+      },
+      {
+        path: 'checkout',
+        component: CheckoutComponent,
+      },
+    ]
+  },
+  {
+    path: '',
+    component: GuestComponent,
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => import('./demo/authentication/login/login.component'),
+        canActivate:[unAuthGuard]
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('./demo/authentication/register/register.component')
+          .then(m => m.RegisterComponent),
+        canActivate: [unAuthGuard]
+      },
+      {
+        path: 'register/:id',
+        loadComponent: () => import('./demo/authentication/register/register.component')
+          .then(m => m.RegisterComponent),
+        canActivate: [unAuthGuard]
+      }
+    ]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class UserAppRoutingModule {}
