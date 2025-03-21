@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\KycDetails;
 use App\Models\PanDetails;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -12,8 +13,15 @@ class KycController extends Controller
 {
     public function store(Request $request)
     {
-        $userId = Auth::id();
+        $userId = auth()->id();
+        $user = User::find($userId);
 
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
         // Check if the record already exists
         $existingPan = KycDetails::where('user_id', $userId)
             ->where('account_no', $request->account_no)
@@ -58,10 +66,7 @@ class KycController extends Controller
                 ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code']);
 
             $data = $response->json();
-            // echo "<pre>";
-            // print_r($data);
-            // die;
-            
+        
             if (!$response->successful()) {
 
                 return response()->json([
@@ -115,6 +120,7 @@ class KycController extends Controller
                 'branch_name' => $request->branch_name,
                 'image' => $imagePath,
             ]);
+            User::where('id', $userId)->update(['kyc_status' => 'verified']);
             return response()->json([
                 'message' => 'KYC details stored successfully.',
                 'data' => $kycDetails,
@@ -165,53 +171,43 @@ class KycController extends Controller
             ], 404);
         }
     }
-
-    public function getExistingPanKyc(Request $request)
-    {
-        $userId = Auth::id();
-
-        $existingPan = PanDetails::where('user_id', $userId)->first();
-
-        if ($existingPan) {
+    public function getKyc(){
+        try {
+        $user = auth()->user();
+       $userWallet = $user->wallet_balance;
+        if (!$user) {
             return response()->json([
-                'status' => true,
-                'message' => 'This PAN record already exists for this user.',
-                'data' => $existingPan,
-            ], 200);
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
         }
-
+        $userId = $user->id;
+        $bankKyc = KycDetails::where('user_id', $userId)->first();
+        $PanKyc = PanDetails::where('user_id', $userId)->first();
         return response()->json([
-            'status' => false,
-            'message' => 'No existing PAN record found for this user.',
+            'status' => true,
+            'data' => ["bank" => $bankKyc, "pan" => $PanKyc,  'wallet_balance' => $userWallet,],
         ], 200);
-    }
-
-    public function getExistingBnkKyc(Request $request)
-    {
-        $userId = Auth::id();
-
-        // Check if the record already exists
-        $existingPan = KycDetails::where('user_id', $userId)->first();
-
-        if ($existingPan) {
+        } catch (\Exception $e) {
             return response()->json([
-                'status' => true,
-                'message' => 'This Kyc record already exists for this user.',
-                'data' => $existingPan,
-            ], 200);
+                'status' => false,
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => false,
-            'message' => 'No existing Kyc record found for this user.',
-        ], 200);
     }
-
-
-
+    
     public function createPanKyc(Request $request)
     {
-        $userId = Auth::id();
+        // $userId = Auth::id();
+        $userId = auth()->id();
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
         $validator = Validator::make($request->all(), [
             'tax_document' => 'required|string|max:255',
             'id_number' => 'required|string',
@@ -254,12 +250,14 @@ class KycController extends Controller
                     'id_number' => $input['id_number'],
                     'pan_image' => $imagePath,
                 ]);
+                User::where('id', $userId)->update(['pan_verified' => 1]);
                 return response()->json([
                     'status' => true,
                     'message' => 'PAN verification successful and data saved.',
                     'data' => $panDetails,
                 ]);
             } else {
+                User::where('id', $userId)->update(['pan_verified' => 1]);
                 return response()->json([
                     'status' => false,
                     'message' => 'PAN verification failed',
@@ -273,6 +271,26 @@ class KycController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    public function getExistingBnkKyc(Request $request)
+    {
+        $userId = Auth::id();
+
+        // Check if the record already exists
+        $existingPan = KycDetails::where('user_id', $userId)->first();
+
+        if ($existingPan) {
+            return response()->json([
+                'status' => true,
+                'message' => 'This Kyc record already exists for this user.',
+                'data' => $existingPan,
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'No existing Kyc record found for this user.',
+        ], 200);
     }
 
 }

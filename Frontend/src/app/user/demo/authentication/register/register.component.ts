@@ -24,13 +24,15 @@ export class RegisterComponent implements OnInit {
   spnDetails:string;
   otpSent = false;
   otp: number;
+  spnsrId:any;
   is_optVerify:boolean=false;
   otpTimer = 0;
   timerInterval: any; 
   firstSend:boolean=false;
   NumberIsValid:boolean=false;
   Sponserid: string | null = null;
-  constructor(private fb: FormBuilder, private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
+  
+  constructor(private fb: FormBuilder, private route: ActivatedRoute,private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.signupForm = this.fb.group(
@@ -64,6 +66,13 @@ export class RegisterComponent implements OnInit {
           this.signupForm.get('parent_sponsor_id').setValue(this.Sponserid);
         }
       });
+
+      this.spnsrId = this.route.snapshot.queryParams;
+      if (this.spnsrId?.['referral']) { 
+        this.signupForm.patchValue({
+          parent_sponsor_id: this.spnsrId['referral']
+        });
+      }
   }
 
   checkSPSid(event:any){
@@ -78,7 +87,7 @@ export class RegisterComponent implements OnInit {
           if (response.status) {
             this.spnDetails = response.data;
           }else{
-            this.toaster.error( "Sponser Id does't Match!", 'Signup');
+            this.toaster.error(response.message, 'Signup');
             this.spnDetails='';
           }
         },
@@ -112,14 +121,14 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
-  
+
+
   sendOtp(){
     const data = {"mobile_number":this.signupForm.value.mobile_no};
     this.api.GenerateOTP(data).subscribe({
       next: (response: any) => {
         if (response.status) {
           this.otpSent = true;
-            this.otp = 548904; 
             this.otpTimer = 10;
             this.signupForm.controls['mobile_no'].disable();
             this.timerInterval = setInterval(() => {
@@ -150,14 +159,22 @@ export class RegisterComponent implements OnInit {
     if(enteredOtp.length < 6){
       return;
     }
-    if (enteredOtp == this.otp) {
-      this.signupForm.controls['mobile_no'].disable();
-      this.signupForm.controls['otp'].disable();
-      this.toaster.success('Mobile No. OTP Verified Successfully Done');
-      this.is_optVerify = true;
-    } else {
-      this.toaster.error('Invalid OTP. Please try again.');
-    }
+    this.api.verifyOTP(enteredOtp).subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.signupForm.controls['mobile_no'].disable();
+          this.signupForm.controls['otp'].disable();
+          this.toaster.success('Mobile No. OTP Verified Successfully Done');
+          this.is_optVerify = true;
+        }else{
+          this.toaster.error(response.message);
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.toaster.error('Invalid OTP. Please try again.');
+      }
+    });
   }
 
   fetchStates(id:number): void {

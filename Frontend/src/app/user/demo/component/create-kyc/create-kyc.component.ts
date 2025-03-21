@@ -37,9 +37,7 @@ export class CreateKycComponent {
       branch_name: ['', [Validators.required]],
       image:['', [Validators.required]]
     });
-    this.loadExistingBanKyc();
-
-    this.loadExistingPanKyc(); 
+    this.getKycInfo();
     this.PanKycForm = this.fb.group({
       tax_document: ['', Validators.required],
       id_number: ['', Validators.required],
@@ -100,6 +98,7 @@ export class CreateKycComponent {
           this.spinner.hide();
           if (response && response.status) {
             const createkyc = response.data;
+            this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'approved');
             this.toaster.success('Kyc Details created Successfully!');
             window.location.reload();
           }else{
@@ -188,6 +187,7 @@ export class CreateKycComponent {
 
 CreatePanKyc(): void {
     this.spinner.show();
+console.log(this.PanKycForm);
 
     if (this.PanKycForm.invalid) {
         this.PanKycForm.markAllAsTouched();
@@ -207,6 +207,7 @@ CreatePanKyc(): void {
                 this.spinner.hide();
                 if (response.status) {
                    if (response.data) {
+                      this.cookiesService.updateCookie('CurrentUser', 'pan_verified', true);
                         this.PanKycForm.patchValue({
                             tax_document: response.data.tax_document,
                             id_number: response.data.id_number,
@@ -237,47 +238,6 @@ private disableFormFields(): void {
     this.PanKycForm.controls['pan_image'].disable();
 }
 
-loadExistingPanKyc(): void {
-  this.api.getExistingPanKyc().subscribe({
-      next: (response: any) => {
-          if (response.status && response.data) {
-              this.PanKycForm.patchValue({
-                  tax_document: response.data.tax_document,
-                  id_number: response.data.id_number,
-                  pan_image: response.data.pan_image,
-              });
-              this.disableFormFields();
-              this.isFormReadonly = true;
-              // this.toaster.success('This PAN record already exists.');
-          }
-      },
-      error: (err) => {
-          console.log(err);
-      }
-  });
-}
-
-loadExistingBanKyc(): void {
-  this.api.getExistingBnkKyc().subscribe({
-    next: (response: any) => {
-      if (response.status && response.data) {
-        this.KycForm.patchValue({
-          account_holder_name: response.data.account_holder_name,
-          ifsc_code: response.data.ifsc_code,
-          account_no: response.data.account_no,
-          bank_name: response.data.bank_name,
-          branch_name: response.data.branch_name,
-          image: response.data.image
-        });
-        this.disableFormBnkFields();
-        this.isReadonly = true;
-      }
-    },
-    error: (err) => {
-      console.log(err);
-    }
-  });
-}
 
 private disableFormBnkFields(): void {
   this.KycForm.controls['account_holder_name'].disable();
@@ -287,4 +247,86 @@ private disableFormBnkFields(): void {
   this.KycForm.controls['branch_name'].disable();
   this.KycForm.controls['image'].disable();
 }
+
+getKycInfo(): void {
+  this.spinner.show();
+  this.api.getUserKyc().subscribe({
+    next: (response: any) => {
+      if (response.status && response.data) {
+        if (response.data.bank) {
+          // If bank data exists, patch the form with bank details
+          const bankData = response.data.bank;
+          this.KycForm.patchValue({
+            account_holder_name: bankData.account_holder_name,
+            ifsc_code: bankData.ifsc_code,
+            account_no: bankData.account_no,
+            bank_name: bankData.bank_name,
+            branch_name: bankData.branch_name,
+            image: bankData.image
+          });
+
+          // Disable the bank fields and set the readonly flag
+          this.disableFormBnkFields();
+          this.isReadonly = true;
+        }
+
+        if (response.data.pan) {
+          // If PAN data exists, patch the form with PAN details
+          const panData = response.data.pan;
+          this.PanKycForm.patchValue({
+            tax_document: panData.tax_document,
+            id_number: panData.id_number,
+            pan_image: panData.pan_image,
+          });
+
+          // Disable the PAN fields and set the readonly flag
+          this.disableFormFields();
+          this.isFormReadonly = true;
+        }
+      }
+      this.spinner.hide();
+    },
+    error: (err) => {
+      console.log(err);
+      this.spinner.hide();
+    }
+  });
+}
+
+// getKycInfo(): void {
+//   this.spinner.show();
+//   this.api.getUserKyc().subscribe({
+//     next: (response: any) => {
+//       if (response.status && response.data) {
+//         if(response.data.bank){
+//           var data = response.data.bank;
+//           this.KycForm.patchValue({
+//             account_holder_name: data.account_holder_name,
+//             ifsc_code: data.ifsc_code,
+//             account_no: data.account_no,
+//             bank_name: data.bank_name,
+//             branch_name: data.branch_name,
+//             image: data.image
+//           });
+//           this.disableFormBnkFields();
+//           this.isReadonly = true;
+//         }else if(response.data.pan){
+//           var data = response.data.pan;
+//           this.PanKycForm.patchValue({
+//             tax_document: data.tax_document,
+//             id_number: data.id_number,
+//             pan_image: data.pan_image,
+//           });
+//           this.disableFormFields();
+//           this.isFormReadonly = true;
+//         }
+//       }
+//       this.spinner.hide();
+//     },
+//     error: (err) => {
+//       console.log(err);
+//       this.spinner.hide();
+//     }
+//   });
+// }
 }

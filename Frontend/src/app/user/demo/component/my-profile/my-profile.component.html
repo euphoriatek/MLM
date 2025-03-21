@@ -1,1 +1,239 @@
-<p>my-profile works!</p>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+        <div class="card-body">
+            <form [formGroup]="editProfileForm" (ngSubmit)="editSubmit()">
+                <div class="row">
+                    <!-- Sponsor ID Field -->
+                    <div class="col-md-12">
+                            <div class="form-group sponsor-title mb-3">
+                                <label for="parent_sponsor_id" class="form-label">
+                                    Sponsor ID: {{ users?.parent_sponsor_id }}
+                                </label>
+                            </div>
+                    </div>
+    
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label for="mobile_no" class="form-label">Username</label>
+                            <div class="form-input">
+                                <input formControlName="mobile_no" id="mobile_no" class="form-control"
+                                    [value]="users?.mobile_no" readonly placeholder="Username" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <select formControlName="title" id="title" class="form-control">
+                                <option value="">Select Title</option>
+                                <option value="1">Mr.</option>
+                                <option value="2">Miss.</option>
+                                <option value="3">Mrs.</option>
+                                <option value="4">M/S.</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="full_name" class="form-label">Full Name <span
+                                    class="display-none text-danger">*</span></label>
+                            <div class="form-input">
+                                <input formControlName="full_name" id="full_name" class="form-control">
+                            </div>
+                            <div
+                                *ngIf="editProfileForm.get('full_name')?.touched && editProfileForm.get('full_name')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('full_name')?.hasError('required')">
+                                    Full name is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+    
+                         <!-- Father/Mother Name Field -->
+                         <div class="col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="fatherMotherName" class="form-label">Father/Mother Name</label>
+                                <div class="form-input">
+                                    <input formControlName="fatherandmothername" id="fatherMotherName" class="form-control"
+                                        placeholder="">
+                                </div>
+                            </div>
+                        </div>
+    
+                    <!-- Gender Field (Static) -->
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="gender" class="form-label">Gender</label>
+                            <div class="row">
+                                <div class="col-sm-5 col-md-4 col-xs-6 pd-0">
+                                    <input type="radio" formControlName="gender" value="1" title="Male" class="has-content me-2">
+                                    <span>Male</span>
+                                </div>
+                                <div class="col-sm-5 col-md-4 col-xs-6 pd-0">
+                                    <input type="radio" formControlName="gender" checked="checked" value="0" title="Female" class="me-2">
+                                    <span>Female</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- DOB Code Field -->
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="dob" class="form-label">Date Of Birth</label>
+                            <div class="form-input">
+    
+                                <mat-form-field appearance="fill" class="full-width form-control">
+                                    <input matInput [matDatepicker]="picker" formControlName="dob" id="dob"
+                                        (focus)="picker.open()">
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+    
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="country_id" class="form-label">Country <span
+                                    class="display-none text-danger">*</span></label>
+                            <div class="form-input">
+                                <select formControlName="country_id" class="form-select form-control">
+                                    <option value="">Select Country</option>
+                                    <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div
+                                *ngIf="editProfileForm.get('country_id')?.touched && editProfileForm.get('country_id')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('country_id')?.hasError('required')">
+                                    Country is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="state_id" class="form-label">State <span
+                                    class="display-none text-danger">*</span></label>
+                            <div class="form-input">
+                                <select formControlName="state_id" class="form-select form-control">
+                                    <option value="">Select State</option>
+                                    <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+                                </select>
+                            </div>
+                            <div
+                                *ngIf="editProfileForm.get('state_id')?.touched && editProfileForm.get('state_id')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('state_id')?.hasError('required')">
+                                    State is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label for="address" class="form-label">Address <span
+                                    class="display-none text-danger">*</span></label>
+                            <div class="form-input">
+                                <textarea formControlName="address" id="address" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div *ngIf="editProfileForm.get('address')?.touched && editProfileForm.get('address')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('address')?.hasError('required')">
+                                    Address is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Pin Code Field -->
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label for="pin_code" class="form-label">Pin Code</label>
+                            <div class="form-input">
+                                <input formControlName="pin_code" id="pin_code" class="form-control">
+                            </div>
+                        </div>
+                    </div>                    
+                    
+                    <div class="col-md-12 mb-5">
+                    <div class="form-group">
+                        <label for="image">Upload Profile Picture</label>
+
+                        <div class="row align-items-center">
+                            <div class="col-lg-9">
+                                <div class="upload-img">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z"/>
+                                        <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                                      </svg>
+                                    <span>Upload Profile
+                                <input type="file" class="form-control" (change)="onFileChange($event)" #fileInput /></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div *ngIf="imageUrl || storedImageUrl" class="">
+                                    <img [src]="imageUrl || storedImageUrl" style="max-width: 150px; max-height: 150px;"
+                                        alt="Profile Image" class="img-thumbnail" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        <div
+                            *ngIf="editProfileForm?.get('image')?.hasError('required') && editProfileForm?.get('image')?.touched">
+                            <span class="error-message">Image required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3"><button type="submit" class="btn orange-btn w-100">Update</button></div>
+                
+            </div>
+                
+            </form>
+        </div>
+    </div>  
+</div>  
+<div class="col-lg-4">
+    <div class="card">
+    <div class="card-body">
+        <div class="panel-heading d-flex align-items-center  justify-content-between">
+            Contact Information
+            <button type="button" class="btn pnl-btn-coll" (click)="toggleCollapse()">
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+        <div [ngClass]="{'collapse': !isCollapsed, 'show': isCollapsed}" class="panel-body mt-3">
+            <form *ngIf="users" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="contactNumber">Contact Number</label>
+                                    <input type="text" id="contactNumber" class="form-control"
+                                        [(ngModel)]="users.mobile_no" name="mobile_no">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-control" [(ngModel)]="users.email"
+                                        name="email">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn orange-btn w-100">Change</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>

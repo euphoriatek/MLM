@@ -30,8 +30,11 @@
               <label class="form-label" for="password">Password</label>
               <div class="form-input">
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
-              <input formControlName="password" type="password" class="form-control" id="password"
-                placeholder="password" value="" />
+              <!-- <input formControlName="password" type="password" class="form-control" id="password"
+                placeholder="password" value="" /> -->
+                <input formControlName="password" [type]="passwordFieldType" class="form-control" id="password"
+                  placeholder="password" />
+                   <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
               </div>
               <div *ngIf="
               LoginForm?.get('password')?.hasError('required') &&

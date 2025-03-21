@@ -1,0 +1,81 @@
+<div class="card col-lg-6">
+    <div class="card-body">
+        <div class="panel-heading">
+            Withdrawal Type
+            <button *ngIf="selectedWallet !== '3'" type="button" class="btn pnl-btn-coll" (click)="toggleCollapse()"></button>
+        </div>
+           <div class="form-group">
+            <select class="form-control effect-17" id="slt_withdrawal" name="slt_withdrawal" [(ngModel)]="selectedWallet">
+                <option value="0">Select Wallet</option>
+                <option value="3">Earning Wallet</option>
+            </select>
+        </div>
+        <div [ngClass]="{'collapse': !isCollapsed, 'show': isCollapsed}" class="panel-body" *ngIf="selectedWallet === '3'">
+            <form method="post" (ngSubmit)="onSubmit()" [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-12 mb-4" style="display: block;">
+                        <h6 class="blue-header">Withdraw Income Balance:  ₹ {{ walletBalance }}</h6>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="form-group">
+                            <label class="form-label" for="account_holder_name">Account Holder Name *</label>
+                            <div class="form-input">
+                                <input formControlName="account_holder_name" type="text" class="form-control" id="account_holder_name"  readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="form-group">
+                            <label class="form-label" for="ifsc_code">IFSC Code *</label>
+                            <div class="form-input">
+                                <input formControlName="ifsc_code" type="text" class="form-control" id="ifsc_code"  (blur)="checkIfSc($event)" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="form-group">
+                            <label class="form-label" for="account_no">Account No. *</label>
+                            <div class="form-input">
+                                <input formControlName="account_no" type="text" class="form-control" id="account_no"  readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="bank_name">Bank Name *</label>
+                            <div class="form-input">
+                                <input formControlName="bank_name" type="text" class="form-control" id="bank_name"  readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="branch_name">Branch Name *</label>
+                            <div class="form-input">
+                                <input formControlName="branch_name" type="text" class="form-control" id="branch_name"  readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <div class="form-input">
+                                <input formControlName="price" type="number" class="form-control" id="price" />
+                            </div>
+                            <div *ngIf="isInsufficientBalance" class="text-danger">
+                                Insufficient balance in wallet
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div class="d-flex gap-2 from-button">
+                                <input type="submit" class="btn orange-btn" value="Request Payout">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

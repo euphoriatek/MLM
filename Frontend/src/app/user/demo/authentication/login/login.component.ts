@@ -18,6 +18,7 @@ import { ToasterService } from 'src/app/services/toster.service';
 })
 export default class LoginComponent {
   LoginForm!: FormGroup;
+  passwordFieldType: string = 'password';
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService,
     public api: ApiService, public toaster: ToasterService
   ) {
@@ -58,5 +59,8 @@ export default class LoginComponent {
         }
       });
     }
+  }
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 }

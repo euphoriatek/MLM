@@ -1,0 +1,61 @@
+<tr class="trcontainer">
+  <td class="node-container" colspan="2" *ngFor="let data of data?.children">
+    <table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center"></table>
+    <table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
+      <tbody>
+        <tr class="node-cells">
+          <td class="node-cell" [attr.colspan]="data.children.length * 2">
+            <div class="node" style="cursor: default;">
+              <a href="javascript:void(0)" class="openmainh" id="6">
+                <img class="tree_icon" style="border: 2px solid green !important;"
+                  src="https://login.progressfashion.com/images/greenimage.png" alt="{{data.data.full_name}}"
+                  id="userlink_{{data.data.full_name}}" title="">
+
+                <span class="imgdowns" title="View Downline" *ngIf="data.children.length > 0">
+                  <img src="https://login.progressfashion.com/images/down_arrowtree.svg">
+                </span>
+              </a>
+
+              <div colspan="2" class="line down"></div>
+
+              <div class="username" title="{{data.data.mobile_no}}"
+                style="background: #454552 !important; cursor:pointer">
+                <img src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree">
+                <span>{{data.data.mobile_no}}</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="data.children.length > 0">
+          <td [attr.colspan]="data.children.length * 2">
+            <div class="line down"></div>
+          </td>
+        </tr>
+
+        <!-- <tr class="trspace" *ngIf="data.children.length > 0">
+          <td class="line left">&nbsp;</td>
+          <td class="line right">&nbsp;</td>
+        </tr> -->
+        <tr class="trspace"  *ngIf="data.children.length > 0">
+          <td class="line left">&nbsp;</td>
+          <td class="line right top">&nbsp;</td>
+          <td class="line left top">&nbsp;</td>
+          <td class="line right">&nbsp;</td>
+        </tr>
+
+        <tr *ngIf="data.children?.length > 0">
+          <td class="node-container" [attr.colspan]="data.children.length * 2">
+            <table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
+              <tbody>
+                <!-- <ng-container *ngFor="let child of data.children"> -->
+                  <app-tree-table [data]="data"></app-tree-table>
+                <!-- </ng-container> -->
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+</tr>

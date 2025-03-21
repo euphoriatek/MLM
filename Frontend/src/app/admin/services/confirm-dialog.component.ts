@@ -8,13 +8,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     <h2>{{data.title}}</h2>
     <p>{{data.message}}</p>
     <div class="modal-btn">
-      <button class="orange-btn btn" [mat-dialog-close]="true">Delete</button>
+      <button class="orange-btn btn" [mat-dialog-close]="true">{{data.btn}}</button>
       <button class="grey-btn btn" [mat-dialog-close]="false" id="no_btn">Cancel</button>
     </div>
     </div>
   `,
 })
 export class ConfirmDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { title: string, message: string }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { title: string, message: string, btn:string }) {}
 }
-// <div class="delete-icon"><i class="fa-solid fa-trash"></i></div>

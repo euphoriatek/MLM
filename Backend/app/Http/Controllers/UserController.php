@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\State;
 use App\Models\Country;
+use App\Models\Otp;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Storage;
+use Laravel\Sanctum\PersonalAccessToken;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 class UserController extends Controller
 {
 
@@ -41,6 +46,13 @@ class UserController extends Controller
                     'status' => false,
                     'message' => 'Invalid sponsor ID'
                 ], 201);
+            }
+
+            if (!$Parent_sponsor->is_active) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not activated. Please use another sponsor ID.'
+                ], 200);
             }
             $sponsor_id = mt_rand(1000000000, 9999999999);
             $user = User::create([
@@ -127,7 +139,14 @@ class UserController extends Controller
         if (!$User) {
             return response()->json([
                 'status' => false,
-                'message' => 'No user found for the provided SponsorID'
+                'message' => "Sponser Id does't Match!"
+            ], 200);
+        }
+
+        if (!$User->is_active) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not activated. Please use another sponsor ID.'
             ], 200);
         }
 
@@ -149,11 +168,75 @@ class UserController extends Controller
             ], 400);
         }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Success'
-        ], 200);
+        $apiKey = 'owpFdOkPuUm1pOX1npCVqg';
+        $senderId = 'SKLIFE';
+        $number = $mobile_number;
+        $otp = mt_rand(100000, 999999);
+        $message = "Dear customer, the one-time password (OTP) to reset your password at SKLIFE is {$otp}. This OTP will expire in 1 minute.";
+
+        $url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey={$apiKey}&senderid={$senderId}&channel=OTP&DCS=0&flashsms=0&number={$number}&text=" . urlencode($message) . "&route=1&EntityId=1701174140886417267&dlttemplateid=1707174221782943778";
+
+        // Send GET request
+        $response = Http::get($url);
+        $data = $response->json();
+        $otp_expiry = Carbon::now()->addMinutes(1);
+        if($data['ErrorCode'] == 000){
+            Otp::create([
+                'mobile_number' => $mobile_number,
+                'otp' => $otp,
+                'otp_expiry' => $otp_expiry,
+                'is_verified' => false,
+            ]);
+            return response()->json([
+                'message' => 'OTP sent successfully',
+                'status' => true
+            ], 200);
+        }else{
+            return response()->json([
+                'message' => 'Try Again',
+                'status' => false
+            ], 401);
+        }
     }
+
+    public function verifyOtp(Request $request)
+    {
+        $otp = $request->input('otp');
+
+        if (!$otp) {
+            return response()->json([
+                'status' => false,
+                'message' => 'OTP is required'
+            ], 400);
+        }
+
+        $otpRecord = Otp::where('otp', $otp)->first();
+
+        if (!$otpRecord) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid OTP'
+            ], 400);
+        }
+    
+        if (Carbon::now()->lt($otpRecord->otp_expiry)) {
+            $otpRecord->is_verified = true;
+            $otpRecord->otp = null;
+            $otpRecord->otp_expiry = null;
+            $otpRecord->save();
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'OTP verified successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'OTP has expired. Please resend.'
+        ], status: 200);
+    }
+    
     public function validateMobile(Request $request)
     {
         $mobile_number = $request->input('mobile_number');
@@ -239,34 +322,42 @@ class UserController extends Controller
         ]);
         return response()->json(['message' => 'Commission distributed successfully.']);
     }
-    public function getProduct()
-    {
-        try {
-            $product = Product::get();
-            return response()->json([
-                'status' => true,
-                'data' => $product,
-                'message' => 'Success'
-            ], 200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'An error occurred while fetching product.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
 
     public function getUsersTree(Request $request)
     {
-        $userId = auth()->id();
+       
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $input = $request->all();
+        $userId =  $input['user_id'];
         $loggedInUser = User::find($userId);
-        $rootSponsorId = $loggedInUser->parent_sponsor_id;
-        $users = User::all();
-        $tree = $this->buildTree($users, $rootSponsorId);
+        $rootSponsorId = $loggedInUser->sponsor_id;
+        $users = User::where('parent_sponsor_id', $rootSponsorId)->get();
+        $usersWithCount = $users->map(function ($user) {
+            $user->Downlinecount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
+            return $user;
+        });
+        return response()->json([
+            'status' => true,
+            'data' => $usersWithCount,
+        ], 200);
+    }
 
-        return response()->json($tree);
+    public function getUsers(Request $request)
+    {
+        $userId = auth()->id();
+        $User = User::find($userId);
+        return response()->json([
+            'status' => true,
+            'data' => $User,
+            'message' => 'Success'
+        ], 200);
+
     }
     private function buildTree($users, $parentSponsorId)
     {
@@ -285,13 +376,166 @@ class UserController extends Controller
 
         return $children;
     }
-    // public function getUsersTree()
-    // {
-    //     // Get all users
-    //     $users = User::all();
-    //     // Build the tree starting with the root user (parent_sponsor_id is null)
-    //     $tree = $this->buildTree($users, null);
-    //     return response()->json($tree);
-    // }
+    public function updateUser(Request $request)
+    {
+        $userId = auth()->id();
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+        $request->validate([
+            'mobile_no' => 'nullable|digits:10',
+            'email' => 'nullable|email',
+        ]);
 
+        if ($request->has('mobile_no')) {
+            $user->mobile_no = $request->input('mobile_no');
+        }
+
+        if ($request->has('email')) {
+            $user->email = $request->input('email');
+        }
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'data' => $user,
+            'message' => 'User Contact and Email updated successfully'
+        ], 200);
+    }
+    public function updateProfile(Request $request)
+    {
+        $userId = auth()->id();
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $request->validate([
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $imagePath = $image->store('profile_pictures', 'public');
+
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+
+            $user->image = $imagePath;
+        }
+
+        $user->update($request->except('image'));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'User profile updated successfully',
+            'data' => $user
+        ]);
+    }
+    public function verifyOldPassword(Request $request)
+    {
+        $userId = auth()->id();
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Validate request
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string',
+            'new_password' => 'required|string|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        // Verify old password
+        if (!Hash::check($request->input('password'), $user->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Old password is incorrect.',
+            ], 400);
+        }
+
+        // Update password
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Password updated successfully.'
+        ], 200);
+    }
+    public function loginHistory(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $query = PersonalAccessToken::where('tokenable_id', $user->id);
+
+        if ($request->has(['from_date', 'to_date'])) {
+            $fromDate = Carbon::parse($request->from_date)->startOfDay();
+            $toDate = Carbon::parse($request->to_date)->endOfDay();
+            $query->whereBetween('created_at', [$fromDate, $toDate]);
+        }
+
+        $loginRecords = $query->get()
+
+            ->map(function ($record, $index) use ($user) {
+                return [
+                    's_no' => $index + 1,
+                    'email' => $user->email,
+                    'date' => $record->created_at->format('Y-m-d H:i:s'),
+                    'mobile_no' => $user->mobile_no ?? 'N/A',
+                    'login_status' => $record->last_used_at ? 'Success' : 'Failed',
+                ];
+            });
+
+        return response()->json([
+            'status' => true,
+            'data' => $loginRecords,
+        ], 200);
+    }
+
+    public function getUserDetails(Request $request){
+
+        $user = User::select('full_name','email','sponsor_id', 'created_at', 'mobile_no', 'address')->where('mobile_no', $request->input('user'))->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $user
+        ], status: 200);
+    }
 }

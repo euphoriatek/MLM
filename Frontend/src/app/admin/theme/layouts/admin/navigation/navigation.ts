@@ -83,7 +83,7 @@ const NavigationItems = [
         id: 'new-request',
         title: 'New Request',
         type: 'item',
-        url: '/admin/new_product',
+        url: '',
         breadcrumbs: false,
       },
       {
@@ -253,7 +253,55 @@ const NavigationItems = [
         breadcrumbs: false,
       }
     ],
-  }
+  },
+  {
+    id: 'my-community',
+    title: 'My Community',
+    type: 'collapse',
+    icon: 'fa-brands fa-stumbleupon-circle',
+    children: [
+      {
+        id: 'transaction',
+        title: 'Transactions',
+        type: 'item',
+        url: '/admin/transaction',
+        target: false,
+        breadcrumbs: true,
+      },
+      {
+        id: 'commissions',
+        title: 'Commissions',
+        type: 'item',
+        url: '/admin/commissions',
+        target: false,
+        breadcrumbs: true,
+      },
+      {
+        id: 'payments',
+        title: 'Payments',
+        type: 'item',
+        url: '/admin/payments',
+        target: false,
+        breadcrumbs: true,
+      }
+    ],
+  },
+  {
+    id: 'Withdrawals',
+    title: 'Withdrawals',
+    type: 'collapse',
+    icon: 'fa-solid fa-right-to-bracket',
+    children: [
+      {
+        id: 'withdrawal-listing',
+        title: 'Withdrawal Listing',
+        type: 'item',
+        url: '/admin/withdrawal-listing',
+        target: false,
+        breadcrumbs: true,
+      },
+    ],
+  },
 ];
 
 @Injectable()

@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card rounded-3">
+      <div class="card-body">
+        <mat-tab-group animationDuration="0ms">
+
+          <mat-tab label="changePassword">
+            <form [formGroup]="changePasswordform" (ngSubmit)="changePassword()">
+
+              <div class="row chnagePassword">
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label>Old Login Password</label>
+                        <input type="password" id="password" class="form-control" formControlName="password">
+                      </div>
+                      <div
+                        *ngIf=" changePasswordform.get('password')?.touched && changePasswordform.get('password')?.invalid  ">
+                        <small class="text-danger" *ngIf=" changePasswordform.get('password')?.hasError('required') ">
+                          password is required. </small>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label>New Login Password</label>
+                        <input type="password" id="new_password" class="form-control" formControlName="new_password">
+                      </div>
+                      <div
+                        *ngIf=" changePasswordform.get('new_password')?.touched && changePasswordform.get('new_password')?.invalid  ">
+                        <small class="text-danger"
+                          *ngIf=" changePasswordform.get('new_password')?.hasError('required') ">new password is
+                          required. </small>
+                        <small class="text-danger"
+                          *ngIf="changePasswordform.get('new_password')?.hasError('minlength')">Password must be at
+                          least 6 characters.</small>
+                        <small class="text-danger"
+                          *ngIf="changePasswordform.get('new_password')?.hasError('pattern')">Password must include
+                          uppercase, lowercase, number.</small>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label>Confirm Login Password</label>
+                        <input type="password" id="confirm_password" class="form-control"
+                          formControlName="confirm_password">
+                      </div>
+                      <div *ngIf="changePasswordform.get('confirm_password')?.touched">
+                        <small class="text-danger"
+                          *ngIf="changePasswordform.get('confirm_password')?.hasError('required')">
+                          Confirm password is required.
+                        </small>
+                        <small class="text-danger"
+                          *ngIf="changePasswordform.get('confirm_password')?.hasError('passwordMismatch')">
+                          Confirm Password does not match.
+                        </small>
+                      </div>
+
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Change</button>
+                </div>
+              </div>
+            </form>
+          </mat-tab>
+          <mat-tab label="loginHistory">
+        
+            <p-table #dt [value]="filteredHistory" dataKey="s.no" styleClass="p-datatable-customers" [rowHover]="true"
+              [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+              [globalFilterFields]="['s_no','email', 'date', 'mobile_no', 'login_status']">
+
+              <ng-template pTemplate="caption">
+                <div class="table-header mb-4">
+                  <h3>Login History</h3>
+                  <form [formGroup]="form">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group mb-3">
+                          <label class="form-label">From Date</label>
+                          <mat-form-field appearance="fill" class="full-width">
+                            <!-- <mat-label>From Date</mat-label> -->
+                            <input matInput [matDatepicker]="fromPicker" formControlName="fromDate"
+                              (dateChange)="filterByDate()" (focus)="fromPicker.open()">
+                            <mat-datepicker #fromPicker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group mb-3">
+                          <label class="form-label">To Date</label>
+                          <mat-form-field appearance="fill" class="full-width">
+                            <!-- <mat-label>To Date</mat-label> -->
+                            <input matInput [matDatepicker]="toPicker" formControlName="toDate"
+                              (dateChange)="filterByDate()" (focus)="toPicker.open()">
+                            <mat-datepicker #toPicker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-4 d-flex flex-column justify-content-center">
+                       
+                        <!-- <button mat-raised-button color="primary" (click)="filterByDate()">Filter</button> -->
+                        <button mat-raised-button color="warn" (click)="resetForm()" >Reset</button>
+                   
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- Search Input -->
+                  <div class="mt-3">
+                    <span class="p-input-icon-left">
+                      <i class="ti ti-search"></i>
+                      <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="Global Search" />
+                    </span>
+                  </div>
+                </div>
+              </ng-template>
+      
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="s_no">S.No <p-sortIcon field="s_no"></p-sortIcon></th>
+                  <th>Email</th>
+                  <th>Date</th>
+                  <th>Mobile No</th>
+                  <th>Login Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-data>
+                <tr class="p-selectable-row">
+                  <td>
+                    <span class="p-column-title">S.No</span>
+                    {{ data['s_no'] }}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Email</span>
+                    {{ data.email }}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Date</span>
+                    {{ data.date }}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Mobile No</span>
+                    {{ data.mobile_no }}
+                  </td>
+                  <td>
+                    <span class="p-column-title">Login Status</span>
+                    {{ data.login_status }}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent {
+  // BaseUrl = 'https://sklife.in/sk-portal/backend/public/storage/';
   BaseUrl = environment.FilebasePath;
   products: any[] = [];
   UserEditForm!: FormGroup;
@@ -41,8 +42,9 @@ export class ProductListComponent {
   getProduct() {
     this.api.getProduct().subscribe({
       next: (response: any) => {
+        // console.log(response);
         if (response && response.status) {
-          this.products = response.data;
+          this.products = [response.data];
         }
       },
       error: (err) => {

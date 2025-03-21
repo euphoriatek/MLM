@@ -139,4 +139,26 @@ export class ApiService {
   // getCountry() {
   //   return this.http.get(this.BaseUrl + 'get-countries');
   // }
+
+  // commission
+  getCommissions(){
+    return this.http.get(this.AdminBaseUrl + 'get-commissions');
+  }
+  // transaction
+  getTransactions(){
+    return this.http.get(this.AdminBaseUrl + 'get-transactions');
+  }
+  // payment
+  getPayments(){
+    return this.http.get(this.AdminBaseUrl + 'get-payments');
+  }
+  getWithdrawals(){
+    return this.http.get(this.AdminBaseUrl + 'get-withdrawals');
+  }
+  updateWithdrawalsStatus(data){
+    return this.http.post(this.AdminBaseUrl + 'update-approved-staus',data);
+  }
+  updateWithdrawals(data){
+    return this.http.post(this.AdminBaseUrl + 'update-rejected-staus',data);
+  }
 }

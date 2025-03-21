@@ -11,6 +11,10 @@ import { CreateKycComponent } from './demo/component/create-kyc/create-kyc.compo
 import { LevelTreeComponent } from './demo/component/level-tree/level-tree.component';  
 import { ActivationComponent } from './demo/component/activation/activation.component';
 import { CheckoutComponent } from './demo/component/checkout/checkout.component';
+import { ChangePasswordHistoryComponent } from './demo/component/change-password-history/change-password-history.component';
+import { SecurityComponent } from './demo/component/security/security.component';
+import { PackageHistoryComponent } from './demo/component/package-history/package-history.component';
+import { BankWithdrawalComponent } from './demo/component/bank-withdrawal/bank-withdrawal.component';
 
 const routes: Routes = [
   {
@@ -28,7 +32,7 @@ const routes: Routes = [
         canActivate:[authGuard]
       },
       {
-        path: 'A9OwXFkAj_slash_uc2FmEZnQtYQ==',
+        path: 'referral/kyc',
         component:CreateKycComponent,
         canActivate:[authGuard]
       },
@@ -43,12 +47,38 @@ const routes: Routes = [
         canActivate:[authGuard]
       },
       {
+        path: 'create-kyc',
+        component: CreateKycComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'security',
+        component: SecurityComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'change-password-history',
+        component: ChangePasswordHistoryComponent,
+        canActivate:[authGuard]
+      },
+      {
         path: 'typography',
         loadComponent: () => import('./demo/ui-component/typography/typography.component')
       },
       {
         path: 'activation',
         component: ActivationComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'package-history',
+        component: PackageHistoryComponent,
+        // canActivate:[authGuard]
+      },
+      {
+        path: 'bank-withdrawal',
+        component: BankWithdrawalComponent,
+        // canActivate:[authGuard]
       },
       {
         path: 'checkout',
@@ -69,7 +99,7 @@ const routes: Routes = [
         path: 'register',
         loadComponent: () => import('./demo/authentication/register/register.component')
           .then(m => m.RegisterComponent),
-        canActivate: [unAuthGuard]
+        // canActivate: [unAuthGuard]
       },
       {
         path: 'register/:id',

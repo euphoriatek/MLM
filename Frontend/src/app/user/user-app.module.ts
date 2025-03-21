@@ -44,7 +44,16 @@ import { PanelModule } from 'primeng/panel';
 import { TreeModule } from 'primeng/tree';
 import { ActivationComponent } from './demo/component/activation/activation.component';
 import { CheckoutComponent } from './demo/component/checkout/checkout.component';
-
+import { ChangePasswordHistoryComponent } from './demo/component/change-password-history/change-password-history.component';
+import { SecurityComponent } from './demo/component/security/security.component';
+import { PackageHistoryComponent } from './demo/component/package-history/package-history.component';
+import { BankWithdrawalComponent } from './demo/component/bank-withdrawal/bank-withdrawal.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { TreeTableComponent } from './demo/component/tree-table/tree-table.component';
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -63,9 +72,14 @@ import { CheckoutComponent } from './demo/component/checkout/checkout.component'
     CreateKycComponent,
     LevelTreeComponent,
     ActivationComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    ChangePasswordHistoryComponent,
+    SecurityComponent,
+    PackageHistoryComponent,
+    BankWithdrawalComponent,
+    TreeTableComponent
   ],
-  imports: [UserAppRoutingModule,PanelModule,TreeModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule],
+  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule],
   providers: [NavigationItem],
   bootstrap: [UserAppComponent]
 })

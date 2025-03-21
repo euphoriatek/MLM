@@ -45,7 +45,10 @@ import {DropdownModule} from 'primeng/dropdown';
 import { AddProductComponent } from './demo/component/add-product/add-product.component';
 import { ProductListComponent } from './demo/component/product-list/product-list.component';
 import { OrdersComponent } from './demo/component/orders/orders.component';
-
+import { CommissionsComponent } from './demo/component/commissions/commissions.component';
+import { TransactionComponent } from './demo/component/transaction/transaction.component';
+import { PaymentsComponent } from './demo/component/payments/payments.component';
+import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/withdrawal-listing.component';
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -62,7 +65,11 @@ import { OrdersComponent } from './demo/component/orders/orders.component';
     ConfirmDialogComponent,
     AddProductComponent,
     ProductListComponent,
-    OrdersComponent
+    OrdersComponent,
+    CommissionsComponent,
+    TransactionComponent,
+    PaymentsComponent,
+    WithdrawalListingComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule

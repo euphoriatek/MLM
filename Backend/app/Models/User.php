@@ -33,7 +33,8 @@ class User extends Authenticatable
         'gender',
         'dob',
         'image',
-        'fatherandmothername'
+        'fatherandmothername',
+        'is_active'
     ];
     /**
      * The attributes that should be hidden for serialization.

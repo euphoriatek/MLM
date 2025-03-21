@@ -1,24 +1,54 @@
-<div class="card flex justify-content-center">
-    <p-organizationChart [value]="data" (onNodeSelect)="onNodeSelect($event)">
-      <ng-template let-node pTemplate="default">
-        <div class="p-2 text-center" (click)="onNodeClick(node)">
-          <img src="https://primefaces.org/cdn/primeng/images/flag/flag_placeholder.png" 
-               [alt]="node.label"
-               [class]="'flag' + ' flag-' + node.data.role" width="32" />
-          <div> {{ node.data.full_name }}</div>
-          <div class="p-2">{{ node.data.sponsor_id }} </div>
-        </div>
-      </ng-template>
-    </p-organizationChart>
-
-    <p-dialog id="dialog" header="" [(visible)]="visible" [style]="{ width: '32vw' }" [modal]="true">
-      <div class="container">
-        <h1>{{ node_data?.full_name || 'No Name Available' }}</h1>
-        <p>Email: {{ node_data?.email || 'No Email Available' }}</p>
-        <p>Role: {{ node_data?.sponsor_id || 'No sponsor_id Available' }}</p>
-        <p>Mobile No: {{ node_data?.mobile_no || 'No Mobile Available' }}</p>
-        <p>Address: {{ node_data?.address || 'No Address Available' }}</p>
-      </div>
-    </p-dialog>
+<p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible" [style]="{ width: '32vw' }" [modal]="true">
+  <div class="container">
+    <table class="table table-open-cls dataTable">
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td><span>{{ node_data?.full_name || 'No Name Available' }}</span></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td><span>{{ node_data?.email || 'No Email Available' }}</span></td>
+        </tr>
+        <tr>
+          <td>Username</td>
+          <td><span>{{ node_data?.sponsor_id || 'No sponsor_id Available' }}</span></td>
+        </tr>
+        <tr>
+          <td>Registration Date</td>
+          <td><span>{{ node_data?.created_at | date: 'dd-MM-yyyy' || 'No Registration Date Available' }}</span></td>
+        </tr>                        
+        <tr>
+          <td>Mobile No</td>
+          <td><span>{{ node_data?.mobile_no || 'No Mobile Available' }}</span></td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td><span>{{ node_data?.address || 'No Address Available' }}</span></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  
+
+  <p-footer>
+    <button type="button" pButton icon="pi pi-times" label="Close" (click)="visible = false"></button>
+  </p-footer>
+</p-dialog>
+<table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
+    <tbody>
+      <tr class="node-cells">
+        <td class="node-cell" colspan="2">
+          <div class="node" style="cursor: default;">
+            <a href="javascript:void(0)" class="showchield" id="{{user?.id}}">
+              <img class="tree_icon" src="https://login.progressfashion.com/images/redimage.png" alt="{{user?.mobile_no}}" id="userlink_{{user?.mobile_no}}" title="">
+            </a>
+            <div colspan="2" class="line down addcolspan"></div>
+            <div class="username" title="{{user?.mobile_no}}" style="background: #454552 !important;cursor:pointer">
+              <img src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree">
+              <span>{{user?.mobile_no}}</span>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>

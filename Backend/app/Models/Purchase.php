@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes; 
 class Purchase extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     public $timestamps = false;
     protected $table = 'purchase';
-    protected $fillable = ['name', 'user_id', 'product_id', 'price','size'];
+    protected $fillable = ['name', 'user_id', 'product_id', 'price', 'size','email', 'phone_number', 'address', 'pin_code', 'alternate_phone_no'];
 }

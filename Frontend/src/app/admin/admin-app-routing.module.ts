@@ -7,6 +7,10 @@ import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { authGuard } from './guard/auth.guard';
 import { AddProductComponent } from './demo/component/add-product/add-product.component';
 import { ProductListComponent } from './demo/component/product-list/product-list.component';
+import { CommissionsComponent } from './demo/component/commissions/commissions.component';
+import { TransactionComponent } from './demo/component/transaction/transaction.component';
+import { PaymentsComponent } from './demo/component/payments/payments.component';
+import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/withdrawal-listing.component';
 const routes: Routes = [
   {
     path: '',
@@ -32,6 +36,26 @@ const routes: Routes = [
         component: ProductListComponent,
         canActivate:[authGuard]
       },
+      {
+        path: 'commissions',
+        component: CommissionsComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'transaction',
+        component: TransactionComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'payments',
+        component: PaymentsComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'withdrawal-listing',
+        component:WithdrawalListingComponent,
+        canActivate:[authGuard]
+      }
     ]
   },
   {

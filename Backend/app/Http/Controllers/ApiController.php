@@ -84,12 +84,12 @@ class ApiController extends Controller
             }
             if (Auth::attempt(['mobile_no' => $request->mobile_no, 'password' => $request->password, 'role' => 'user'])) {
                 $user = Auth::user();
-                if ($user->is_active == 0) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Your account is inactive. Please contact support.',
-                    ], 200);
-                }
+                // if ($user->is_active == 0) {
+                //     return response()->json([
+                //         'status' => false,
+                //         'message' => 'Your account is inactive. Please contact support.',
+                //     ], 200);
+                // }
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
                 $user->save();

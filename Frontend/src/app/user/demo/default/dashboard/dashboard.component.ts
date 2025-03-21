@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { ToasterService } from 'src/app/services/toster.service';
+import { Router } from '@angular/router';
 @Component({   
   selector: 'app-dashboard',
   standalone: true,
@@ -20,7 +21,7 @@ export default class DashboardComponent implements OnInit {
   sponserId:any;
   ReferralUrl:string;
   UserInfo:any;
-  constructor(public spinner: NgxSpinnerService, public api: ApiService, public cookie:UserCookiesService,private toaster: ToasterService) {
+  constructor(public spinner: NgxSpinnerService, public api: ApiService, public cookie:UserCookiesService,private toaster: ToasterService,private router: Router) {
   }
   ngOnInit(): void {
     this.sponserId = this.cookie.getCookie('CurrentUser')?.sponsor_id;
@@ -32,7 +33,7 @@ export default class DashboardComponent implements OnInit {
     this.api.getAuth().subscribe({
       next: (response: any) => {
         if (response.status) {
-          this.UserInfo = response.data;
+          this.UserInfo = response.data; 
         }
         this.spinner.hide();
       },
@@ -46,4 +47,11 @@ export default class DashboardComponent implements OnInit {
     navigator.clipboard.writeText(this.ReferralUrl);
     this.toaster.success(this.ReferralUrl, 'Copied');
   }
+ 
+  redirectUrl() {
+    const fullUrl = this.ReferralUrl;
+    const referralCode = fullUrl.split('/').pop();
+    this.router.navigate(['/register'], { queryParams: { referral: referralCode } });
+  }
+  
 }

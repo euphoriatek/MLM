@@ -8,6 +8,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KycController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CommissionController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\BankWithdrawalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +40,11 @@ Route::get('/get-countries', [UserController::class, 'getCountries']);
 
 Route::post('/validate-sponsor', [UserController::class, 'validateSponsor']);
 Route::post('/generate-otp', [UserController::class, 'generateOtp']);
+Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
 Route::post('/validate-mobile', [UserController::class, 'validateMobile']);
 // Route::post('/create-kyc', [KycController::class, 'store']);
 // Route::post('/create-kyc-pan', [KycController::class, 'createPanKyc']);
-Route::get('/get-product-usr', [UserController::class, 'getProduct']);
+
 // Route::get('/get-tree-usr', [UserController::class, 'getUsersTree']);
 // Route::post('/purchase-product', [PurchaseController::class, 'store']);
 // Register User end
@@ -51,19 +56,43 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     // Product
     Route::post('/admin/add-product', [ProductController::class, 'store'])->middleware('role:admin');
-    Route::get('/admin/get-product', [ProductController::class, 'GetProduct'])->middleware('role:admin');
+    Route::get('/admin/get-product', [ProductController::class, 'getProduct'])->middleware('role:admin');
     Route::post('/admin/update-product', [ProductController::class, 'updateProduct'])->middleware('role:admin');
     Route::delete('/admin/delete-product/{id}',  [ProductController::class, 'deleteProduct'])->middleware('role:admin');
+
+    // Commissions
+    Route::get('/admin/get-commissions', [CommissionController::class, 'GetCommission'])->middleware('role:admin');
+    // Transactions
+    Route::get('/admin/get-transactions', [TransactionController::class, 'GetTransaction'])->middleware('role:admin');
+    // payments
+    Route::get('/admin/get-payments', [PaymentController::class, 'GetPayment'])->middleware('role:admin');
+    Route::get('/admin/get-withdrawals', [BankWithdrawalController::class, 'getWithdrawals'])->middleware('role:admin');
+    Route::post('/admin/update-approved-staus', [BankWithdrawalController::class, 'approvedStatus'])->middleware('role:admin');
+    Route::post('/admin/update-rejected-staus', [BankWithdrawalController::class, 'rejectStatus'])->middleware('role:admin');
 
     // User API
     Route::get('/auth', [UserController::class, 'getAuthDetails'])->middleware('role:user');
     Route::post('/validate-Ifsc', [KycController::class, 'bankifscCodeValidate'])->middleware('role:user');
-    Route::post('/purchase-product', [PurchaseController::class, 'store'])->middleware('role:user');
+   
+    
     Route::post('/create-delievery-address', [PurchaseController::class, 'CreateDeliveryAddress'])->middleware('role:user');
-    Route::get('/get-tree-usr', [UserController::class, 'getUsersTree']);
+    
+    Route::get('/get-usr', [UserController::class, 'getUsers']);
+    Route::post('/update-usr', [UserController::class, 'updateUser']);
+    Route::post('/update-profile', [UserController::class, 'updateProfile']);
     Route::post('/create-kyc-pan', [KycController::class, 'createPanKyc']);
-    Route::get('/pan-kyc', [KycController::class, 'getExistingPanKyc']);
     Route::post('/create-kyc', [KycController::class, 'store']);
-    Route::get('/bank-kyc', [KycController::class, 'getExistingBnkKyc']);
+    Route::post('/verify-old-password', [UserController::class, 'verifyOldPassword'])->middleware('role:user');
+    Route::get('/get-login-history', [UserController::class, 'loginHistory'])->middleware('role:user');
+    // Kyc
+    Route::get('/user-kyc-info', [KycController::class, 'getKyc'])->middleware('role:user');;
+    // Activation
+    Route::get('/get-product', [ProductController::class, 'getProduct'])->middleware('role:user');
+    Route::get('/check-activation', [PurchaseController::class, 'checkActivation'])->middleware('role:user');
+    Route::post('/checkout-activation', [PurchaseController::class, 'store'])->middleware('role:user');
+    // Tree view
+    Route::post('/get-tree-usr', [UserController::class, 'getUsersTree'])->middleware('role:user');
+    Route::post('/user-details', [UserController::class, 'getUserDetails'])->middleware('role:user');
+    // / Bank Withdrawal
+    Route::post('/save-withdrawal', [BankWithdrawalController::class, 'SaveWithdrawal'])->middleware('role:user');
 });
-

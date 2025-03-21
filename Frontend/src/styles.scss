@@ -421,8 +421,8 @@ p-paginator{
 }
 
 .orange-btn{
-  background-color: #e34f25;
-  color: #fff;
+  background-color: #e34f25!important;
+  color: #fff!important;
 }
 .orange-btn:hover{
   background-color: #000;
@@ -467,3 +467,168 @@ app-breadcrumb{
     display: none;
   }
 } 
+
+
+ul#testtable {
+  overflow: auto;
+  height: 400px;
+}
+
+#tree_div td {
+  text-align: center;
+  vertical-align: top;
+  padding: 0;
+}
+
+#tree_div .node {
+  margin-bottom: -5px;
+  color: #428bca;
+}
+
+#tree_div .left {
+  border-right: 2px solid #6F6F6F;
+  border-top: none;
+}
+
+#tree_div .right {
+  border-left: 2px solid white;
+}
+
+#tree_div .line {
+  height: 13px;
+  width: 2px;
+}
+
+#tree_div .top {
+  border-top: 2px solid #6F6F6F;
+}
+
+#tree_div .username {
+  overflow: hidden;
+  width: auto;
+  color: #FFFFFF;
+  background: #807979;
+  padding: 2px 6px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+#tree_div .down {
+  background-color: #6F6F6F;
+  margin: 0px auto;
+}
+
+#tree_div .node {
+  font-size: 12px !important;
+  color: #428bca;
+}
+
+.imgdowns {
+  position: absolute;
+  top: 15px;
+  right: 0;
+  height: 90px;
+  width: 28px;
+}
+
+#tree_div .node {
+  display: inline-block;
+  width: 105px !important;
+  margin: 0px 6px -10px;
+  z-index: 10;
+  overflow: hidden !important;
+  word-break: break-all !important;
+  position: relative;
+}
+
+
+.tree_icon {
+  height: 50px !important;
+  width: 50px !important;
+  border-radius: 50% !important;
+  background-color: white;
+}
+
+#tree_div .right.top {
+  border-left: 2px solid white;
+  border-top: 2px solid #6F6F6F;
+}
+
+#tree_div .right {
+  border: none;
+}
+
+.info-icon-tree {
+  width: 12px;
+  margin-right: 3px;
+}
+
+ul.list-inline.indicate-color-cls li.black figure {
+  background: black;
+}
+
+
+
+ul.list-inline.indicate-color-cls li.green figure {
+  background: #49c55a;
+}
+
+ul.list-inline.indicate-color-cls li.Red figure {
+  background: red;
+}
+
+ul.list-inline.indicate-color-cls li.grey-cls figure {
+  background: #eaeaea;
+}
+#myDiv.fullscreen {
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.toast-container .ngx-toastr {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 35px 25px 57px;
+  width: 315px;
+  border-radius: 6px;
+  background-position: top 14px left 15px;
+  background-repeat: no-repeat;
+  background-size: 30px;
+  box-shadow: none;
+  color: #FFFFFF;
+  font-size: 14px;
+}
+.toast-success{
+  background-image: url('../src/assets/images/tost-checked.png');
+  border: solid 2px #8bd78b;
+}
+.toast-error{
+background-image: url('../src/assets/images/tost-error.png');
+border: solid 2px #e84b43;
+}
+
+.toast-close-button {
+  position: absolute;
+  right: 17px;
+  font-size: 20px;  
+  color: #FFFFFF; 
+  text-shadow: 0 1px 0 #ffffff;
+  top: 6px;
+  font-weight: 200;
+  opacity: 0.5;
+}
+.toast-close-button:hover{
+  opacity: 1;
+  text-shadow: none;
+  color: #fff;
+}
+.toast-container .ngx-toastr:hover{
+  box-shadow: none;
+}
+.toast-top-right {
+  position: fixed !important;
+}

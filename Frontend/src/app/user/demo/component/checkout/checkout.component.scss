@@ -17,3 +17,36 @@
     color: #b7d599;
     width: 36px;
 }
+
+::ng-deep{
+
+    .p-dialog-header{
+        display: none;
+    }
+    .p-dialog{
+    background-color: #ededf7;
+    .p-dialog-content {
+        overflow: hidden;
+        padding: 0;
+        max-width: 190px;
+        margin: auto;
+    }
+    .p-dialog-footer{
+    text-align: center;
+    margin-top: 25px;
+    font-weight: 400;
+    background-color: #ededf7;
+    span{
+        font-size: 20px;
+        color: #e45026;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+}
+
+}
+.p-component-overlay{
+    background: rgba(0,0,0, 0.8) !important;
+
+}
+}
