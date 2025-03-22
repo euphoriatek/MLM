@@ -1,7 +1,7 @@
 <p-table #dt [value]="products" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="" [filterDelay]="0"
-    [globalFilterFields]="['name','price','dp','pv','created_at']">
+    [globalFilterFields]="['name','price','dp','created_at']">
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
             <h3>Product List</h3>
@@ -19,7 +19,7 @@
             <th pSortableColumn="name">Product Name <p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
             <th pSortableColumn="dp">Discount Price<p-sortIcon field="dp"></p-sortIcon></th>
-            <th pSortableColumn="pv">Bonus Value <p-sortIcon field="pv"></p-sortIcon></th>
+            <!-- <th pSortableColumn="pv">Bonus Value <p-sortIcon field="pv"></p-sortIcon></th> -->
             <th pSortableColumn="created_at">Created At <p-sortIcon field="created_at"></p-sortIcon></th>
             <th>Image</th>
             <th>Action</th>
@@ -39,10 +39,10 @@
                 <span class="p-column-title">Discount Price</span>
                 <span class="image-text">{{data.dp}}</span>
             </td>
-            <td>
+            <!-- <td>
                 <span class="p-column-title">Bonus Value</span>
                 <span class="image-text">{{data.pv}}</span>
-            </td>
+            </td> -->
             <td>
                 <span class="p-column-title">created_at</span>
                 <span class="image-text">{{ data.created_at | date }}</span>
@@ -100,7 +100,7 @@
     </div>
   
     <!-- PV (Bonus Value) -->
-    <div class="col-lg-8">
+    <!-- <div class="col-lg-8">
         <div class="form-group">
             <label for="pv">Bv (Bonus Value)</label>
             <input type="text" id="pv" formControlName="pv" class="form-control" />
@@ -108,7 +108,7 @@
                 <span class="error-message">Bonus Value is required</span>
             </div>
         </div>
-    </div>
+    </div> -->
   
     <!-- Category -->
     <!-- <div class="col-lg-8">
@@ -135,9 +135,7 @@
         <div class="form-group">
             <label for="description">Product Description</label>
             <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
-            <div *ngIf="UserEditForm.get('description').hasError('required') && UserEditForm.get('description').touched">
-                <span class="error-message">Description is required</span>
-            </div>
+           
         </div>
     </div>
     <!-- <div class="form-group">

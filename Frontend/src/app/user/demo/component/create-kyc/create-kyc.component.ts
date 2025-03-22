@@ -8,6 +8,7 @@ import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-kyc',
@@ -22,26 +23,34 @@ export class CreateKycComponent {
   imageErrorPan: string | null = null;
   imageUrlPan: any | null = null;
   isFormReadonly = false; 
-  isReadonly = false; 
+  isReadonly = false;
+  user:any;
+  is_bank_verif:string='pending';
+  is_pan_verify:boolean=false;
+  BaseUrl = environment.FilebasePath;
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService,
     public api: ApiService, public toaster: ToasterService
   ) {
 
   }
   ngOnInit(): void {
+    this.user = this.cookiesService.getCookie('CurrentUser');
+    this.is_bank_verif = this.user.kyc_status;
+    console.log(this.is_bank_verif);
+    this.is_pan_verify = this.user.pan_verified;
     this.KycForm = this.fb.group({
       account_holder_name: ['', [Validators.required, Validators.pattern('^[A-Za-z ]*$')]],
       ifsc_code: ['', [Validators.required]],
       account_no: ['', [Validators.required]],
       bank_name: ['', Validators.required],
       branch_name: ['', [Validators.required]],
-      image:['', [Validators.required]]
+      // image:['', [Validators.required]]
     });
     this.getKycInfo();
     this.PanKycForm = this.fb.group({
       tax_document: ['', Validators.required],
       id_number: ['', Validators.required],
-      pan_image: [Validators.required], 
+      pan_image: ['', Validators.required], 
     });
      
 
@@ -56,11 +65,10 @@ export class CreateKycComponent {
       this.api.ValidateIFSC(IFSC_Code).subscribe({
         next: (response: any) => {
           if (response.status) {
-            console.log(response.data);
             this.KycForm.get('bank_name').setValue(response.data.BANK);
             this.KycForm.get('branch_name').setValue(response.data.BRANCH);
           }else{
-            this.toaster.error( "Not Found!", 'KYC');
+            this.toaster.error("Invalid IFSC Code", 'KYC');
             this.KycForm.get('ifsc_code').reset();
             this.KycForm.get('bank_name').reset();
             this.KycForm.get('branch_name').reset();
@@ -68,7 +76,7 @@ export class CreateKycComponent {
         },
         error: (err) => {
           console.error(err);
-          this.toaster.error( "Not Found!", 'KYC');
+          this.toaster.error("Invalid IFSC Code", 'KYC');
           this.KycForm.get('ifsc_code').reset();
           this.KycForm.get('bank_name').reset();
           this.KycForm.get('branch_name').reset();
@@ -84,23 +92,23 @@ export class CreateKycComponent {
       this.spinner.hide();
       return;
     } else if (this.KycForm.valid) {
-      const formData = new FormData();
-      formData.append('account_holder_name', this.KycForm.get('account_holder_name').value);
-      formData.append('ifsc_code', this.KycForm.get('ifsc_code').value);
-      formData.append('account_no', this.KycForm.get('account_no').value);
-      formData.append('bank_name', this.KycForm.get('bank_name').value);
-      formData.append('branch_name', this.KycForm.get('branch_name').value);
-      if (this.KycForm.get('image').value) {
-        formData.append('image', this.KycForm.get('image').value);
-      }
-      this.api.CreateKyc(formData).subscribe({
+      // const formData = new FormData();
+      // formData.append('account_holder_name', this.KycForm.get('account_holder_name').value);
+      // formData.append('ifsc_code', this.KycForm.get('ifsc_code').value);
+      // formData.append('account_no', this.KycForm.get('account_no').value);
+      // formData.append('bank_name', this.KycForm.get('bank_name').value);
+      // formData.append('branch_name', this.KycForm.get('branch_name').value);
+      // if (this.KycForm.get('image').value) {
+      //   formData.append('image', this.KycForm.get('image').value);
+      // }
+      this.api.CreateKyc(this.KycForm.value).subscribe({
         next: (response: any) => {
           this.spinner.hide();
           if (response && response.status) {
-            const createkyc = response.data;
-            this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'approved');
+            this.is_bank_verif = "verified";
+            this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'verified');
             this.toaster.success('Kyc Details created Successfully!');
-            window.location.reload();
+            this.getKycInfo();
           }else{
             this.toaster.error(response.message);
             this.KycForm.get('account_no').reset();
@@ -117,39 +125,39 @@ export class CreateKycComponent {
     }
   }
   
-  onFileChange(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    const file = fileInput.files ? fileInput.files[0] : null;
+  // onFileChange(event: Event): void {
+  //   const fileInput = event.target as HTMLInputElement;
+  //   const file = fileInput.files ? fileInput.files[0] : null;
 
-    if (file) {
-      const maxSizeInBytes = 2 * 1024 * 1024;
-      if (file.size > maxSizeInBytes) {
-        this.imageError = 'File size must be less than 2MB';
-        this.imageUrl = null;
-        return;
-      }
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
-      if (!allowedTypes.includes(file.type)) {
-        this.imageError = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
-        this.imageUrl = null;
-        return;
-      }
-      if (file) {
-        this.KycForm.patchValue({
-          image: file
-        });
-        this.previewFile(file);
-      }
-    }
-  }
+  //   if (file) {
+  //     const maxSizeInBytes = 2 * 1024 * 1024;
+  //     if (file.size > maxSizeInBytes) {
+  //       this.imageError = 'File size must be less than 2MB';
+  //       this.imageUrl = null;
+  //       return;
+  //     }
+  //     const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
+  //     if (!allowedTypes.includes(file.type)) {
+  //       this.imageError = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
+  //       this.imageUrl = null;
+  //       return;
+  //     }
+  //     if (file) {
+  //       this.KycForm.patchValue({
+  //         image: file
+  //       });
+  //       this.previewFile(file);
+  //     }
+  //   }
+  // }
   
-  previewFile(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageUrl = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
+  // previewFile(file: File): void {
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.imageUrl = reader.result as string;
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
 
   onFileChangePanForm(event: Event): void {
     const fileInput = event.target as HTMLInputElement;
@@ -173,6 +181,7 @@ export class CreateKycComponent {
           pan_image: file
         });
         this.previewFilePan(file);
+        this.imageErrorPan = '';
       }
     }
   }
@@ -187,8 +196,6 @@ export class CreateKycComponent {
 
 CreatePanKyc(): void {
     this.spinner.show();
-console.log(this.PanKycForm);
-
     if (this.PanKycForm.invalid) {
         this.PanKycForm.markAllAsTouched();
         this.spinner.hide();
@@ -207,17 +214,13 @@ console.log(this.PanKycForm);
                 this.spinner.hide();
                 if (response.status) {
                    if (response.data) {
-                      this.cookiesService.updateCookie('CurrentUser', 'pan_verified', true);
-                        this.PanKycForm.patchValue({
-                            tax_document: response.data.tax_document,
-                            id_number: response.data.id_number,
-                            pan_image: response.data.pan_image,
-                        });
-                        this.disableFormFields();
+                        this.is_pan_verify = true;
+                        this.cookiesService.updateCookie('CurrentUser', 'pan_verified', true);
                         this.isFormReadonly = true;
-                        this.toaster.success('This PAN record already exists.');
+                        this.getKycInfo();
+                        this.toaster.success('PAN KYC created successfully!');
                     } else {
-                        this.toaster.success('KYC Details created successfully!');
+                        this.toaster.error(response.message);
                     }
                 } else {
                     this.toaster.error(response.message);
@@ -245,7 +248,7 @@ private disableFormBnkFields(): void {
   this.KycForm.controls['account_no'].disable();
   this.KycForm.controls['bank_name'].disable();
   this.KycForm.controls['branch_name'].disable();
-  this.KycForm.controls['image'].disable();
+  // this.KycForm.controls['image'].disable();
 }
 
 getKycInfo(): void {
@@ -278,7 +281,10 @@ getKycInfo(): void {
             id_number: panData.id_number,
             pan_image: panData.pan_image,
           });
-
+          if(panData.pan_image){
+            this.imageUrlPan = this.BaseUrl+panData.pan_image;
+          }
+          
           // Disable the PAN fields and set the readonly flag
           this.disableFormFields();
           this.isFormReadonly = true;

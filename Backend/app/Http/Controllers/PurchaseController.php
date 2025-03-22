@@ -226,4 +226,19 @@ class PurchaseController extends Controller
         }
     }
 
+     public function getOrders(Request $request){
+        try {
+            $withdrawals = Purchase::get();
+            return response()->json([
+                'status' => true,
+                'data' => $withdrawals,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching orders.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+     }
 }

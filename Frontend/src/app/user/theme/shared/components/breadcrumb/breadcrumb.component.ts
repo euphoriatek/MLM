@@ -124,6 +124,28 @@ export class BreadcrumbComponent {
               }
             }
           });
+        }else{
+          if (a.type === 'collapse' && 'children' in a) {
+            a.children.forEach(function (b) {
+              if (b.type === 'item' && 'url' in b && b.url === activeLink) {
+                result = [
+                  {
+                    url: 'url' in a ? a.url : false,
+                    title: a.title,
+                    breadcrumbs: 'breadcrumbs' in a ? a.breadcrumbs : true,
+                    type: a.type
+                  },
+                  {
+                    url: 'url' in b ? b.url : false,
+                    title: b.title,
+                    breadcrumbs: 'breadcrumbs' in b ? b.breadcrumbs : true,
+                    type: b.type
+                  }
+                ];
+                title = b.title;
+              }
+            })
+          }
         }
       }
     });

@@ -161,4 +161,23 @@ export class ApiService {
   updateWithdrawals(data){
     return this.http.post(this.AdminBaseUrl + 'update-rejected-staus',data);
   }
+
+  getmembersList(){
+    return this.http.get(this.AdminBaseUrl + 'get-members-list');
+  }
+  updateBlock(user_id:number){
+    return this.http.post(this.AdminBaseUrl + 'update-user-status', {user_id:user_id});
+  }
+  getAuth() {
+    return this.http.get(this.AdminBaseUrl + 'auth');
+  }
+  getOrders(){
+    return this.http.get(this.AdminBaseUrl + 'get-orders-list');
+  }
+  getTreeUser(User_ID) {
+    return this.http.post(this.AdminBaseUrl + 'get-tree-usr', {user_id: User_ID});
+  }
+  UserDetails(data: any){
+    return this.http.post(this.AdminBaseUrl + 'user-details', {user:data});
+  }
 }

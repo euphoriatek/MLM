@@ -15,7 +15,8 @@ import { ChangePasswordHistoryComponent } from './demo/component/change-password
 import { SecurityComponent } from './demo/component/security/security.component';
 import { PackageHistoryComponent } from './demo/component/package-history/package-history.component';
 import { BankWithdrawalComponent } from './demo/component/bank-withdrawal/bank-withdrawal.component';
-
+import { DirectReferralListComponent } from './demo/component/direct-referral-list/direct-referral-list.component';
+import { MyDownlineListComponent } from './demo/component/my-downline-list/my-downline-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -39,6 +40,16 @@ const routes: Routes = [
       {
         path: 'auth/level-tree',
         component:LevelTreeComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'auth/direct-referral-list',
+        component:DirectReferralListComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'auth/my-downline-list',
+        component:MyDownlineListComponent,
         canActivate:[authGuard]
       },
       {

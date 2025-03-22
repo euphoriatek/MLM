@@ -49,6 +49,8 @@ import { CommissionsComponent } from './demo/component/commissions/commissions.c
 import { TransactionComponent } from './demo/component/transaction/transaction.component';
 import { PaymentsComponent } from './demo/component/payments/payments.component';
 import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/withdrawal-listing.component';
+import { TreeViewComponent } from './demo/component/tree-view/tree-view.component';
+import { MembersListComponent } from './demo/component/members-list/members-list.component';
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -69,7 +71,9 @@ import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/
     CommissionsComponent,
     TransactionComponent,
     PaymentsComponent,
-    WithdrawalListingComponent
+    WithdrawalListingComponent,
+    TreeViewComponent,
+    MembersListComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule

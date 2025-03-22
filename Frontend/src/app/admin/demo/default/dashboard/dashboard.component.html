@@ -1,31 +1,50 @@
-<!-- <div class="dashboard-counter" *ngIf="role">
-  <div class="row" *ngIf="role === 'superadmin'">
-    <div class="col col-lg-4">
-        <div class="card-body countgreen">
-          <div>
-          <span>{{ serverCount }}</span> 
-          <h6> Servers</h6>
-        </div>
-        <div class="count-icon"><i class="fa-solid fa-server"></i></div>
-      </div>
-      </div>
-    <div class="col col-lg-4">
-        <div class="card-body countred">
-            <div>
-            <span>{{ adminUserCount }}</span>
-            <h6>Admin Users</h6>
+<div class="row">
+  <div class="col-lg-8">
+    <div class="my_referral">
+      <div class="card rounded-3">
+        <div class="card-body">
+          <h4 class="title">My Referral Link</h4>
+          <div class="referral">
+            <a class="referral-link" (click)="redirectUrl()">{{ ReferralUrl }}</a>
+            <a class="copy-link" (click)="copyUrl()">
+              <i class="fa-regular fa-copy"></i>
+            </a>
           </div>
-          <div class="count-icon "><i class="fa-solid fa-user-gear"></i></div>
-      </div>
-    </div>
-    <div class="col col-lg-4">
-        <div class="card-body countblue">
-          <div>
-            <span>{{ userCount }}</span>
-            <h6>Users</h6>
-          </div>
-          <div class="count-icon"><i class="fa-solid fa-user"></i></div>
         </div>
+      </div>
     </div>
   </div>
-</div> -->
+  <div class="col-lg-4">
+    <div class="sticky_right">
+      <div class="row">
+        <div class="col-lg-12 mb-1">
+          <div class="earning_price">
+            <div class="card rounded-3">
+              <div class="card-body">
+                <div class="pricebody">
+                  <h4 class="title">My Recent Earning </h4>
+                  <div class="row">
+                    <div class="col-lg-12 mb-3">
+                      <div class="price pt-0 py-3"><img src="../assets/images/coin.png"> ₹
+                        {{UserInfo?.wallet_balance}}
+                      </div>
+                    </div>
+
+                    <div class="levelincome">
+                      <div class="col-lg-12">
+                        <div class="row">
+                          <div class="col-lg-5">Level Income :</div>
+                          <div class="col-lg-7 text-end">₹ {{UserInfo?.wallet_balance}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

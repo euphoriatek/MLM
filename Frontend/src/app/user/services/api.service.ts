@@ -107,12 +107,22 @@ export class ApiService {
   checkOutActivation(data: any) {
     return this.http.post(this.BaseUrl + 'checkout-activation', data);
   }
-
+  // My Community
   // Tree View
   getTreeUser(User_ID) {
     return this.http.post(this.BaseUrl + 'get-tree-usr', {user_id: User_ID});
   }
-
+  searchTreeUser(data:any){
+    return this.http.post(this.BaseUrl + 'search-tree-usr', {data: data});
+  }
+  // Direct-referral-list
+  getReferralUsers(){
+    return this.http.get(this.BaseUrl + 'get-referral');
+  }
+  // Downline-users-list
+  getDownlineUsers(){
+    return this.http.get(this.BaseUrl + 'get-downline');
+  }
   UserDetails(data: any){
     return this.http.post(this.BaseUrl + 'user-details', {user:data});
   }

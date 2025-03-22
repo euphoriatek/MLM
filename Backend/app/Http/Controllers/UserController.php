@@ -348,6 +348,39 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function getUsersTreeSearch(Request $request)
+    {
+       
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $input = $request->all();
+        $User = User::where('mobile_no', $input['data'])->first();
+        if(!$User){
+            return response()->json([
+                'status' => false,
+                'message' => 'No Matched',
+            ], 400);
+        }
+        $rootSponsorId = $User->sponsor_id;
+        $users = User::where('parent_sponsor_id', $rootSponsorId)->get();
+        $usersWithCount = $users->map(function ($user) {
+            $user->Downlinecount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
+            return $user;
+        });
+
+        return response()->json([
+            'status' => true,
+            'data' => $usersWithCount,
+            'user' => $User
+        ], 200);
+    }
+    
+
     public function getUsers(Request $request)
     {
         $userId = auth()->id();
@@ -538,4 +571,83 @@ class UserController extends Controller
             'data' => $user
         ], status: 200);
     }
+
+    public function getReferralUsers(Request $request){
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $Referral = User::with(['purchases:user_id,price,created_at', 'country:id,name'])->where('parent_sponsor_id', $user->sponsor_id)->get();
+        return response()->json([
+            'status' => true,
+            'data' => $Referral
+        ], status: 200);
+    }
+    public function getDownlineUsers(Request $request){
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+        $sponsor_id = $user->sponsor_id;
+        $chain = [];
+        $this->getDownlineChain($sponsor_id, $chain);
+        return response()->json([
+            'status' => true,
+            'data' => $chain
+        ], status: 200);
+    }
+
+    private function getDownlineChain($sponsor_id, &$chain)
+    {
+        $users = User::with(['purchases', 'country:id,name'])
+            ->where('parent_sponsor_id', $sponsor_id)
+            ->get();
+
+        foreach ($users as $user) {
+            $chain[] = $user;
+            $this->getDownlineChain($user->id, $chain);
+        }
+    }
+
+    public function updateVBlock(Request $request)
+    {
+        try {
+            $input = $request->input('user_id');
+            if($input) {
+                $user = User::find($input);
+                
+                if (!$user) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'User not found.',
+                    ], 404);
+                }
+                $user->update(['is_block' => $user->is_block == 1 ? 0 : 1]);
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => 'User status updated successfully.',
+                    'is_block' => $user->is_block 
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User id is required.',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while updating data.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
 }

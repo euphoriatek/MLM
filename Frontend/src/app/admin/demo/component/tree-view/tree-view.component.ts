@@ -1,41 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { TreeNode, MessageService } from 'primeng/api';
-import { ApiService } from 'src/app/user/services/api.service';
+import { Component} from '@angular/core';
+import { TreeNode } from 'primeng/api';
+// import { ApiService } from 'src/app/user/services/api.service';
+import { ApiService } from 'src/app/admin/services/api.service';
 import $ from "jquery";
 import { ChangeDetectorRef } from '@angular/core';
-import { UserCookiesService } from 'src/app/user/services/usercookies.service';
+// import { UserCookiesService } from 'src/app/user/services/usercookies.service';
+import { AdminCookiesService } from 'src/app/admin/services/admincookies.service';
 import { Renderer2 } from '@angular/core';
 import { NgxSpinnerService } from "ngx-spinner";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 @Component({
-  selector: 'app-level-tree',
-  templateUrl: './level-tree.component.html',
-  styleUrls: ['./level-tree.component.scss'],
-  providers: [MessageService]
+  selector: 'app-tree-view',
+  templateUrl: './tree-view.component.html',
+  styleUrls: ['./tree-view.component.scss']
 })
-export class LevelTreeComponent implements OnInit {
-  selectedNode: TreeNode | null = null;
+export class TreeViewComponent {
+ selectedNode: TreeNode | null = null;
   visible: boolean = false;
   node_data: any = {}; 
   data:any;
   users:any;
   user:any;
-  SearchForm!: FormGroup;
   constructor(
-    private messageService: MessageService,
     public api: ApiService,
     private cdRef: ChangeDetectorRef,
-    public UserCookies:UserCookiesService,
+    public AdminCookies:AdminCookiesService,
     private renderer: Renderer2,
-    public spinner:NgxSpinnerService,
-    public fb:FormBuilder
+    public spinner:NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.user = this.UserCookies.getCookie('CurrentUser');
-    this.SearchForm = this.fb.group({
-      search: ['', [Validators.required]]
-    });
+    this.user = this.AdminCookies.getCookie('AdminUser');
   }
   ngAfterViewInit(): void {
     $(document).ready(() => {
@@ -164,22 +159,5 @@ export class LevelTreeComponent implements OnInit {
         this.spinner.hide();
       }
     });
-  }
-
-  Search(){
-    if(this.SearchForm.valid){
-      this.api.searchTreeUser(this.SearchForm.value.search).subscribe({
-        next: (response: any) => {
-          this.spinner.hide();
-          if (response && response.status) {
-            this.user = response.user;
-          }
-        },
-        error: (err) => {
-          this.spinner.hide();
-          console.error(err);
-        }
-      });
-    }
   }
 }

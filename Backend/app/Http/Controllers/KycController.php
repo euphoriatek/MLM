@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\KycDetails;
 use App\Models\PanDetails;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -13,15 +14,14 @@ class KycController extends Controller
 {
     public function store(Request $request)
     {
-        $userId = auth()->id();
-        $user = User::find($userId);
-
+        $user = auth()->user();
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'User not found'
-            ], 404);
+                'message' => 'User is not authenticated.',
+            ], 401);
         }
+        $userId = $user->id;
         // Check if the record already exists
         $existingPan = KycDetails::where('user_id', $userId)
             ->where('account_no', $request->account_no)
@@ -40,7 +40,7 @@ class KycController extends Controller
             'account_no' => 'required|string|min:10|max:20',
             'bank_name' => 'required|string|max:255',
             'branch_name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -49,19 +49,19 @@ class KycController extends Controller
             ], 400);
         }
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('public/kyc_images', $imageName);
-        }
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image');
+        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
+        //     $imagePath = $image->storeAs('public/kyc_images', $imageName);
+        // }
 
         $input = $request->all();
         try {
-
+            $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
             $response = Http::withHeaders([
                 'x-api-version' => '2.0',
-                'Authorization' => 'eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJBUEkiLCJyZWZyZXNoX3Rva2VuIjoiZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKaGRXUWlPaUpCVUVraUxDSnpkV0lpT2lKbGRYQm9iM0pwWVhSbGF6SXdNVEJBWjIxaGFXd3VZMjl0SWl3aVlYQnBYMnRsZVNJNkltdGxlVjlzYVhabFh6TlFTMWxTVlRsUFRsZHBiM0l4ZVVwUU9FRTBSWE4wUXpWSk9IUnNWSGR3SWl3aWFYTnpJam9pWVhCcExuTmhibVJpYjNndVkyOHVhVzRpTENKbGVIQWlPakUzTnpBMk9UazROemdzSW1sdWRHVnVkQ0k2SWxKRlJsSkZVMGhmVkU5TFJVNGlMQ0pwWVhRaU9qRTNNemt4TmpNNE56aDkuTVpyTzE4Zk5JdTM2ZVFjeUpkTzB0OGJfZzNkZzZ4MUI1dXktWXd1TUVHbUJlaHR0Y203NmNpV1lFeUZDcXl0Yjl6eDIyenVIN3dCSXQwZHY3dVd0cmciLCJzdWIiOiJldXBob3JpYXRlazIwMTBAZ21haWwuY29tIiwiYXBpX2tleSI6ImtleV9saXZlXzNQS1lSVTlPTldpb3IxeUpQOEE0RXN0QzVJOHRsVHdwIiwiaXNzIjoiYXBpLnNhbmRib3guY28uaW4iLCJleHAiOjE3MzkyNTAyNzgsImludGVudCI6IkFDQ0VTU19UT0tFTiIsImlhdCI6MTczOTE2Mzg3OH0.gdaG_m0242pe2wWZxaQhEjJ3q2M9G7h4A6kGMBVvui7taRv9ZmIEj9s4zNop7LsbUSjJ25UMDQf_65UucMztnA',
-                'x-api-key' => env('Sandbox_API_Key'),
+                'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
+                'x-api-key' => $settings['SANDBOX_API_KEY'],
             ])
                 ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code']);
 
@@ -78,9 +78,9 @@ class KycController extends Controller
 
             $response = Http::withHeaders([
                 'accept' => 'application/json',
-                'Authorization' => 'eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJBUEkiLCJyZWZyZXNoX3Rva2VuIjoiZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKaGRXUWlPaUpCVUVraUxDSnpkV0lpT2lKbGRYQm9iM0pwWVhSbGF6SXdNVEJBWjIxaGFXd3VZMjl0SWl3aVlYQnBYMnRsZVNJNkltdGxlVjlzYVhabFh6TlFTMWxTVlRsUFRsZHBiM0l4ZVVwUU9FRTBSWE4wUXpWSk9IUnNWSGR3SWl3aWFYTnpJam9pWVhCcExuTmhibVJpYjNndVkyOHVhVzRpTENKbGVIQWlPakUzTnpBMk9UazROemdzSW1sdWRHVnVkQ0k2SWxKRlJsSkZVMGhmVkU5TFJVNGlMQ0pwWVhRaU9qRTNNemt4TmpNNE56aDkuTVpyTzE4Zk5JdTM2ZVFjeUpkTzB0OGJfZzNkZzZ4MUI1dXktWXd1TUVHbUJlaHR0Y203NmNpV1lFeUZDcXl0Yjl6eDIyenVIN3dCSXQwZHY3dVd0cmciLCJzdWIiOiJldXBob3JpYXRlazIwMTBAZ21haWwuY29tIiwiYXBpX2tleSI6ImtleV9saXZlXzNQS1lSVTlPTldpb3IxeUpQOEE0RXN0QzVJOHRsVHdwIiwiaXNzIjoiYXBpLnNhbmRib3guY28uaW4iLCJleHAiOjE3MzkyNTAyNzgsImludGVudCI6IkFDQ0VTU19UT0tFTiIsImlhdCI6MTczOTE2Mzg3OH0.gdaG_m0242pe2wWZxaQhEjJ3q2M9G7h4A6kGMBVvui7taRv9ZmIEj9s4zNop7LsbUSjJ25UMDQf_65UucMztnA',
+                'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
                 'x-api-version' => '1.0',
-                'x-api-key' => env('Sandbox_API_Key'),
+                'x-api-key' => $settings['SANDBOX_API_KEY'],
             ])
                 ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code'] . '/accounts/' . $input['account_no'] . '/penniless-verify');
 
@@ -118,7 +118,7 @@ class KycController extends Controller
                 'account_no' => $request->account_no,
                 'bank_name' => $request->bank_name,
                 'branch_name' => $request->branch_name,
-                'image' => $imagePath,
+                // 'image' => $imagePath,
             ]);
             User::where('id', $userId)->update(['kyc_status' => 'verified']);
             return response()->json([
@@ -146,11 +146,11 @@ class KycController extends Controller
                 'message' => 'IFSC Code is required'
             ], 400);
         }
-
+        $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
         $response = Http::withHeaders([
             'x-api-version' => '2.0',
-            'Authorization' => 'eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJBUEkiLCJyZWZyZXNoX3Rva2VuIjoiZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKaGRXUWlPaUpCVUVraUxDSnpkV0lpT2lKbGRYQm9iM0pwWVhSbGF6SXdNVEJBWjIxaGFXd3VZMjl0SWl3aVlYQnBYMnRsZVNJNkltdGxlVjlzYVhabFh6TlFTMWxTVlRsUFRsZHBiM0l4ZVVwUU9FRTBSWE4wUXpWSk9IUnNWSGR3SWl3aWFYTnpJam9pWVhCcExuTmhibVJpYjNndVkyOHVhVzRpTENKbGVIQWlPakUzTnpBMk9UazROemdzSW1sdWRHVnVkQ0k2SWxKRlJsSkZVMGhmVkU5TFJVNGlMQ0pwWVhRaU9qRTNNemt4TmpNNE56aDkuTVpyTzE4Zk5JdTM2ZVFjeUpkTzB0OGJfZzNkZzZ4MUI1dXktWXd1TUVHbUJlaHR0Y203NmNpV1lFeUZDcXl0Yjl6eDIyenVIN3dCSXQwZHY3dVd0cmciLCJzdWIiOiJldXBob3JpYXRlazIwMTBAZ21haWwuY29tIiwiYXBpX2tleSI6ImtleV9saXZlXzNQS1lSVTlPTldpb3IxeUpQOEE0RXN0QzVJOHRsVHdwIiwiaXNzIjoiYXBpLnNhbmRib3guY28uaW4iLCJleHAiOjE3MzkyNTAyNzgsImludGVudCI6IkFDQ0VTU19UT0tFTiIsImlhdCI6MTczOTE2Mzg3OH0.gdaG_m0242pe2wWZxaQhEjJ3q2M9G7h4A6kGMBVvui7taRv9ZmIEj9s4zNop7LsbUSjJ25UMDQf_65UucMztnA',
-            'x-api-key' => env('Sandbox_API_Key'),
+            'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
+            'x-api-key' => $settings['SANDBOX_API_KEY'],
         ])
             ->get('https://api.sandbox.co.in/bank/' . $ifsc_code);
 
@@ -166,7 +166,7 @@ class KycController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => 'Not Found',
+                'message' => 'Invalid IFSC Code',
                 'data' => $data
             ], 404);
         }
@@ -230,9 +230,10 @@ class KycController extends Controller
         }
         $input = $request->all();
         try {
+            $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
             $response = Http::withHeaders([
-                'Authorization' => 'eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJBUEkiLCJyZWZyZXNoX3Rva2VuIjoiZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKaGRXUWlPaUpCVUVraUxDSnpkV0lpT2lKbGRYQm9iM0pwWVhSbGF6SXdNVEJBWjIxaGFXd3VZMjl0SWl3aVlYQnBYMnRsZVNJNkltdGxlVjlzYVhabFh6TlFTMWxTVlRsUFRsZHBiM0l4ZVVwUU9FRTBSWE4wUXpWSk9IUnNWSGR3SWl3aWFYTnpJam9pWVhCcExuTmhibVJpYjNndVkyOHVhVzRpTENKbGVIQWlPakUzTnpBMk9UazROemdzSW1sdWRHVnVkQ0k2SWxKRlJsSkZVMGhmVkU5TFJVNGlMQ0pwWVhRaU9qRTNNemt4TmpNNE56aDkuTVpyTzE4Zk5JdTM2ZVFjeUpkTzB0OGJfZzNkZzZ4MUI1dXktWXd1TUVHbUJlaHR0Y203NmNpV1lFeUZDcXl0Yjl6eDIyenVIN3dCSXQwZHY3dVd0cmciLCJzdWIiOiJldXBob3JpYXRlazIwMTBAZ21haWwuY29tIiwiYXBpX2tleSI6ImtleV9saXZlXzNQS1lSVTlPTldpb3IxeUpQOEE0RXN0QzVJOHRsVHdwIiwiaXNzIjoiYXBpLnNhbmRib3guY28uaW4iLCJleHAiOjE3MzkyNTAyNzgsImludGVudCI6IkFDQ0VTU19UT0tFTiIsImlhdCI6MTczOTE2Mzg3OH0.gdaG_m0242pe2wWZxaQhEjJ3q2M9G7h4A6kGMBVvui7taRv9ZmIEj9s4zNop7LsbUSjJ25UMDQf_65UucMztnA',
-                'x-api-key' => 'key_live_3PKYRU9ONWior1yJP8A4EstC5I8tlTwp',
+                'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
+                'x-api-key' =>  $settings['SANDBOX_API_KEY'],
                 'Content-Type' => 'application/json',
             ])->post('https://api.sandbox.co.in/kyc/pan/verify', [
                 '@entity' => 'in.co.sandbox.kyc.pan_verification.request',
@@ -257,7 +258,7 @@ class KycController extends Controller
                     'data' => $panDetails,
                 ]);
             } else {
-                User::where('id', $userId)->update(['pan_verified' => 1]);
+                // User::where('id', $userId)->update(['pan_verified' => 1]);
                 return response()->json([
                     'status' => false,
                     'message' => 'PAN verification failed',

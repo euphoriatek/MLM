@@ -1,0 +1,56 @@
+<p-table #dt [value]="users" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+    currentPageReportTemplate="" [filterDelay]="0"
+    [globalFilterFields]="['mobile_no','full_name','purchases.price','created_at','purchases.created_at','purchases.price']">
+    <ng-template pTemplate="caption">
+        <div class="table-header mb-4">
+            <h3>Downline Users List</h3>
+            <div>
+                <span class="p-input-icon-left">
+                    <i class="ti ti-search"></i>
+                    <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="Global Search" />
+                </span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="mobile_no">Username<p-sortIcon field="mobile_no"></p-sortIcon></th>
+            <th pSortableColumn="full_name">Name<p-sortIcon field="full_name"></p-sortIcon></th>
+            <th pSortableColumn="purchases.price">Price<p-sortIcon field="purchases.price"></p-sortIcon></th>
+            <th pSortableColumn="created_at">Join Date<p-sortIcon field="created_at"></p-sortIcon></th>
+            <th pSortableColumn="purchases.created_at">Activation Date<p-sortIcon field="purchases.created_at"></p-sortIcon></th>
+            <th pSortableColumn="purchases.price">BV<p-sortIcon field="purchases.price"></p-sortIcon></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data>
+        <tr class="p-selectable-row">
+            <td>
+                <span class="p-column-title">Username</span>
+                <span class="image-text">{{data.mobile_no}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Name</span>
+                <span class="image-text">{{data.full_name}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Price</span>
+                <span class="image-text">{{ data?.purchases ? (data.purchases.price | currency: 'INR') : '0.00' }}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Join Date</span>
+                <span class="image-text">{{data.created_at | date}}</span>
+            </td>
+            <td>
+                <span class="p-column-title">Activation Date</span>
+                <span class="image-text">{{ data.purchases ? (data.purchases.created_at | date:'MMM dd, yyyy h:mm a') : 'N-A' }}</span>
+
+            </td>
+            <td>
+                <span class="p-column-title">BV</span>
+                <span class="image-text">{{ data.purchases ? data.purchases.price : 'NA' }}</span>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

@@ -11,6 +11,9 @@ import { CommissionsComponent } from './demo/component/commissions/commissions.c
 import { TransactionComponent } from './demo/component/transaction/transaction.component';
 import { PaymentsComponent } from './demo/component/payments/payments.component';
 import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/withdrawal-listing.component';
+import { TreeViewComponent } from './demo/component/tree-view/tree-view.component';
+import { MembersListComponent } from './demo/component/members-list/members-list.component';
+import { OrdersComponent } from './demo/component/orders/orders.component';
 const routes: Routes = [
   {
     path: '',
@@ -54,6 +57,21 @@ const routes: Routes = [
       {
         path: 'withdrawal-listing',
         component:WithdrawalListingComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'tree-view',
+        component: TreeViewComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'members-list',
+        component: MembersListComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
         canActivate:[authGuard]
       }
     ]

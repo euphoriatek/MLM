@@ -21,6 +21,7 @@ export default class DashboardComponent implements OnInit {
   sponserId:any;
   ReferralUrl:string;
   UserInfo:any;
+  btn_text="Your KYC is PENDING";
   constructor(public spinner: NgxSpinnerService, public api: ApiService, public cookie:UserCookiesService,private toaster: ToasterService,private router: Router) {
   }
   ngOnInit(): void {
@@ -33,7 +34,10 @@ export default class DashboardComponent implements OnInit {
     this.api.getAuth().subscribe({
       next: (response: any) => {
         if (response.status) {
-          this.UserInfo = response.data; 
+          this.UserInfo = response.data;
+          if(this.UserInfo.kyc_status === "verified" && this.UserInfo.pan_verified){
+            this.btn_text="Your KYC is VERIFIED";
+          }
         }
         this.spinner.hide();
       },

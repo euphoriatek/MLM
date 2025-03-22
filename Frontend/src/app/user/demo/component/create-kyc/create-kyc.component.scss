@@ -95,3 +95,24 @@
     border-radius: 50px;
     border-bottom: dashed 3px #d0d0d0;
 }
+
+.bank-kyc-pending {
+    background: #e34f250f;
+    padding: 18px;
+    border-radius: 0;
+    border-bottom: solid 1px #e34f252b;
+}
+.bank-kyc-pending .title {
+    color: #e34f25;
+}
+
+.bank-kyc-approved {
+    background: rgb(67 186 93 / 19%);
+    padding: 18px;
+    border-radius: 0;
+    border-bottom: solid 1px rgb(28 176 60 / 23%);
+}
+
+.bank-kyc-approved .title{
+    color: #0ea12f;
+}

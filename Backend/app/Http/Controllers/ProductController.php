@@ -15,9 +15,8 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'dp' => 'required|numeric',
-            'pv' => 'required|numeric',
             'category' => 'required|integer',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         if ($validator->fails()) {
@@ -50,10 +49,10 @@ class ProductController extends Controller
         }
     }
 
-    public function GetProduct()
+    public function getProduct()
     {
         try {
-            $product = Product::first();
+            $product = Product::get();
             return response()->json([
                 'status' => true,
                 'data' => $product,
@@ -75,8 +74,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'dp' => 'required|numeric',
-            'pv' => 'required|numeric',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -95,7 +93,6 @@ class ProductController extends Controller
             $object->name = $input['name'];
             $object->price = $input['price'];
             $object->dp = $input['dp'];
-            $object->pv = $input['pv'];
             $object->description = $input['description'];
             $object->save();
             return response()->json([
@@ -125,7 +122,7 @@ class ProductController extends Controller
             $product->delete();
             return response()->json([
                 'status' => true,
-                'message' => 'Object deleted successfully.',
+                'message' => 'product deleted successfully.',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

@@ -34,7 +34,8 @@ class User extends Authenticatable
         'dob',
         'image',
         'fatherandmothername',
-        'is_active'
+        'is_active',
+        'is_block'
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -64,4 +65,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(User::class, 'parent_sponsor_id');
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function purchases()
+    {
+        return $this->belongsTo(Purchase::class, 'id','user_id');
+    }
+
+    
 }

@@ -28,9 +28,9 @@ export class ProductListComponent {
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
       dp: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
-      pv: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
+      // pv: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
       // category: ['1', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       // image:['', Validators.required],
     });
     this.getProduct();
@@ -42,9 +42,8 @@ export class ProductListComponent {
   getProduct() {
     this.api.getProduct().subscribe({
       next: (response: any) => {
-        // console.log(response);
         if (response && response.status) {
-          this.products = [response.data];
+          this.products = response.data;
         }
       },
       error: (err) => {
@@ -80,7 +79,7 @@ export class ProductListComponent {
       name: data.name,
       price: parseInt(data.price),
       dp: parseInt(data.dp),
-      pv: parseInt(data.pv),
+      // pv: parseInt(data.pv),
       description: data.description,
     });
     this.visible = true;

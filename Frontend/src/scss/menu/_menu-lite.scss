@@ -241,7 +241,7 @@
             li {
               > a {
                 text-align: left;
-                padding: 5px 16px 5px 52px;
+                padding: 13px 16px 13px 52px;
                 margin: 0;
                 display: block;
                 font-size: 13px;
@@ -488,6 +488,7 @@
         &.active {
           > a {
             background: transparentize($primary, 0.9);
+            color: #fff;
             &:before {
               background: $primary;
             }
@@ -784,7 +785,7 @@
             opacity: 1;
             visibility: visible;
             transform: rotateX(0deg);
-            margin: 7px 0px;
+            margin: 0px 0px;
           }
         }
       }

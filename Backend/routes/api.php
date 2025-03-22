@@ -60,6 +60,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/admin/update-product', [ProductController::class, 'updateProduct'])->middleware('role:admin');
     Route::delete('/admin/delete-product/{id}',  [ProductController::class, 'deleteProduct'])->middleware('role:admin');
 
+    //Members List
+    Route::get('/admin/get-members-list', [TransactionController::class, 'getMembersList'])->middleware('role:admin');
+    Route::post('/admin/update-user-status', [UserController::class, 'updateVBlock'])->middleware('auth:admin');
+    Route::get('/admin/auth', [UserController::class, 'getAuthDetails'])->middleware('role:admin');
+    //Orders List
+    Route::get('/admin/get-orders-list', [PurchaseController::class, 'getOrders'])->middleware('role:admin');
+    Route::post('/admin/get-tree-usr', [UserController::class, 'getUsersTree'])->middleware('role:admin');
+    Route::post('/admin/user-details', [UserController::class, 'getUserDetails'])->middleware('role:admin');
+
     // Commissions
     Route::get('/admin/get-commissions', [CommissionController::class, 'GetCommission'])->middleware('role:admin');
     // Transactions
@@ -80,8 +89,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/get-usr', [UserController::class, 'getUsers']);
     Route::post('/update-usr', [UserController::class, 'updateUser']);
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
-    Route::post('/create-kyc-pan', [KycController::class, 'createPanKyc']);
-    Route::post('/create-kyc', [KycController::class, 'store']);
+    Route::post('/create-kyc-pan', [KycController::class, 'createPanKyc'])->middleware('role:user');
+    Route::post('/create-kyc', [KycController::class, 'store'])->middleware('role:user');
     Route::post('/verify-old-password', [UserController::class, 'verifyOldPassword'])->middleware('role:user');
     Route::get('/get-login-history', [UserController::class, 'loginHistory'])->middleware('role:user');
     // Kyc
@@ -92,7 +101,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/checkout-activation', [PurchaseController::class, 'store'])->middleware('role:user');
     // Tree view
     Route::post('/get-tree-usr', [UserController::class, 'getUsersTree'])->middleware('role:user');
+    Route::post('/search-tree-usr', [UserController::class, 'getUsersTreeSearch'])->middleware('role:user');
     Route::post('/user-details', [UserController::class, 'getUserDetails'])->middleware('role:user');
+    // Direct-referral-list
+    Route::get('/get-referral', [UserController::class, 'getReferralUsers'])->middleware('role:user');
+    Route::get('/get-downline', [UserController::class, 'getDownlineUsers'])->middleware('role:user');
+    
     // / Bank Withdrawal
     Route::post('/save-withdrawal', [BankWithdrawalController::class, 'SaveWithdrawal'])->middleware('role:user');
 });

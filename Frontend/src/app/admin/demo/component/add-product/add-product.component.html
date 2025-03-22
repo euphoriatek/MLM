@@ -33,7 +33,7 @@
     </div>
   
     <!-- PV (Bonus Value) -->
-    <div class="col-lg-8">
+    <!-- <div class="col-lg-8">
         <div class="form-group">
             <label for="pv">BV (Bonus Value)</label>
             <input type="text" id="pv" formControlName="pv" class="form-control" />
@@ -41,7 +41,7 @@
                 <span class="error-message">Bonus Value is required</span>
             </div>
         </div>
-    </div>
+    </div> -->
   
     <!-- Category -->
     <div class="col-lg-8">
@@ -68,9 +68,7 @@
         <div class="form-group">
             <label for="description">Product Description</label>
             <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
-            <div *ngIf="productForm.get('description').hasError('required') && productForm.get('description').touched">
-                <span class="error-message">Description is required</span>
-            </div>
+           
         </div>
     </div>
     <div class="form-group">

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
 {
-    public function GetTransaction()
+    public function getTransaction()
     {
         try {
             $transactions = Transactions::with('user:id,full_name', 'product:id,name,price') 
@@ -35,7 +35,22 @@ class TransactionController extends Controller
         }
     }
 
-
+    public function getMembersList()
+    {
+        try {
+            $members =User::where('role','user')->get();
+            return response()->json([
+                'status' => true,
+                'data' => $members,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching members.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     
 
 }
