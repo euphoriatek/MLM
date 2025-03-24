@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Purchase;
 use App\Models\Payments;
 use App\Models\User;
+use App\Models\WalletStatement;
 use App\Models\DeliveryAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -117,8 +118,19 @@ class PurchaseController extends Controller
             \DB::table('commissions')->insert([
                 'user_id' => $sponsor->id,
                 'amount' => $commission,
+                'package_price'=> $productPrice,
                 'description' => "Level {$level->level_no} commission",
-                'created_at' => now(),
+                'level' => $level->level_no,
+                'credit_by' => $user->id
+            ]);
+            WalletStatement::create([
+                'user_id' => $sponsor->id,
+                'amount' => $commission,
+                'balance' => $sponsor->wallet_balance,
+                'credit_by'=> $user->id,
+                'remark' => "Level Income",
+                'type' => 'credit',
+                'particulars' => "Level Income Credited"
             ]);
             $remainingAmount -= $commission;
             $currentSponsorId = $sponsor->parent_sponsor_id;
@@ -131,7 +143,8 @@ class PurchaseController extends Controller
                 'user_id' => $admin->id,
                 'amount' => $remainingAmount,
                 'description' => "Remaining commission credited to admin",
-                'created_at' => now(),
+                'credit_by' => $user->id,
+                'package_price'=> $productPrice
             ]);
         }
 
@@ -140,8 +153,7 @@ class PurchaseController extends Controller
             'product_id' => $productId,
             'quantity' => 1,
             'total_price' => $productPrice,
-            'commission_amount' => $productPrice - $remainingAmount,
-            'created_at' => now(),
+            'commission_amount' => $productPrice - $remainingAmount
         ]);
 
         // return response()->json(['message' => 'Commission distributed successfully.']);

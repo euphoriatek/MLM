@@ -92,38 +92,38 @@ const NavigationItems = [
     // ],
   },
 
-  // {
-  //   id: 'earning-wallet',
-  //   title: 'Earning Wallet',
-  //   type: 'collapse',
-  //   icon: 'fa-solid fa-gem',
-  //   children: [
-  //     {
-  //       id: 'wallet-statement',
-  //       title: 'Wallet Statement',
-  //       type: 'item',
-  //       url: '/auth/wallet-statement',
-  //       target: true,
-  //       breadcrumbs: false,
-  //     },
-  //     {
-  //       id: 'bank-withdrawal-history',
-  //       title: 'Bank Withdrawal History',
-  //       type: 'item',
-  //       url: '/auth/package-history',
-  //       target: true,
-  //       breadcrumbs: false,
-  //     },
-  //     {
-  //       id: 'level-income',
-  //       title: 'Level Income',
-  //       type: 'item',
-  //       url: '/auth/package-history',
-  //       target: true,
-  //       breadcrumbs: false,
-  //     },
-  //   ],
-  // },
+  {
+    id: 'earning-wallet',
+    title: 'Earning Wallet',
+    type: 'collapse',
+    icon: 'fa-solid fa-gem',
+    children: [
+      {
+        id: 'wallet-statement',
+        title: 'Wallet Statement',
+        type: 'item',
+        url: '/wallet-statement',
+        target: false,
+        breadcrumbs: true,
+      },
+      {
+        id: 'bank-withdrawal-history',
+        title: 'Bank Withdrawal History',
+        type: 'item',
+        url: '/bank-withdrawal-history',
+        target: false,
+        breadcrumbs: true,
+      },
+      {
+        id: 'level-income',
+        title: 'Level Income',
+        type: 'item',
+        url: '/level-income',
+        target: false,
+        breadcrumbs: true,
+      },
+    ],
+  },
 
   {
     id: 'my-community',

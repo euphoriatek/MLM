@@ -52,7 +52,7 @@ class ProductController extends Controller
     public function getProduct()
     {
         try {
-            $product = Product::get();
+            $product = Product::first();
             return response()->json([
                 'status' => true,
                 'data' => $product,

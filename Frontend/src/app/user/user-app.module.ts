@@ -56,6 +56,9 @@ import { TreeTableComponent } from './demo/component/tree-table/tree-table.compo
 import { MatTabsModule } from '@angular/material/tabs';
 import { DirectReferralListComponent } from './demo/component/direct-referral-list/direct-referral-list.component';
 import { MyDownlineListComponent } from './demo/component/my-downline-list/my-downline-list.component';
+import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
+import { BankWithdrawalHistoryComponent } from './demo/component/bank-withdrawal-history/bank-withdrawal-history.component';
+import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -81,7 +84,10 @@ import { MyDownlineListComponent } from './demo/component/my-downline-list/my-do
     BankWithdrawalComponent,
     TreeTableComponent,
     DirectReferralListComponent,
-    MyDownlineListComponent
+    MyDownlineListComponent,
+    WalletStatementComponent,
+    BankWithdrawalHistoryComponent,
+    LevelIncomeComponent
   ],
   imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule],
   providers: [NavigationItem],

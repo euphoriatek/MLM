@@ -126,7 +126,16 @@ export class ApiService {
   UserDetails(data: any){
     return this.http.post(this.BaseUrl + 'user-details', {user:data});
   }
-
+  // Earning Wallet
+  getLevelIncome(){
+    return this.http.get(this.BaseUrl + 'level-income');
+  }
+  walletStatement(){
+    return this.http.get(this.BaseUrl + 'wallet-statement');
+  }
+  getWithdrawalsHistory(){
+    return this.http.get(this.BaseUrl + 'withdrawals-history');
+  }
   // Bank withdrawal
   SaveWithdrawal(data: any) {
     return this.http.post(this.BaseUrl + 'save-withdrawal', data);

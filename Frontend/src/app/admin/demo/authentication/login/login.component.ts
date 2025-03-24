@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 })
 export default class LoginComponent {
   LoginForm!: FormGroup;
+  passwordFieldType: string = 'password';
   constructor(public route:Router,public fb:FormBuilder,public spinner :NgxSpinnerService,public api:ApiService,public cookiesService:AdminCookiesService, public toaster:ToasterService){
 
   }
@@ -56,5 +57,8 @@ export default class LoginComponent {
         }
       });
    }
+  }
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 }

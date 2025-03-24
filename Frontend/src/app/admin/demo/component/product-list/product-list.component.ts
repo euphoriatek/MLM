@@ -40,14 +40,19 @@ export class ProductListComponent {
   }
 
   getProduct() {
+    this.spinner.show();
     this.api.getProduct().subscribe({
       next: (response: any) => {
         if (response && response.status) {
-          this.products = response.data;
+          this.products = [response.data];
+          this.spinner.hide();
+        }else{
+          this.spinner.hide();
         }
       },
       error: (err) => {
         console.error(err);
+        this.spinner.hide();
       }
     });
   }

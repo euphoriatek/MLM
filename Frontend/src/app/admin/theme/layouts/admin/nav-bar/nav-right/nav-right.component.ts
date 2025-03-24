@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class NavRightComponent {
   Username:any;
     constructor(public toaster:ToasterService,public cookie:AdminCookiesService,public route:Router){
-      this.Username = this.cookie.getCookie('AdminUser')?.username;
+      this.Username = this.cookie.getCookie('AdminUser')?.full_name;
     }
   // public method
   profile = [

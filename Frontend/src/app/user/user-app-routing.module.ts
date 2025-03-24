@@ -17,6 +17,9 @@ import { PackageHistoryComponent } from './demo/component/package-history/packag
 import { BankWithdrawalComponent } from './demo/component/bank-withdrawal/bank-withdrawal.component';
 import { DirectReferralListComponent } from './demo/component/direct-referral-list/direct-referral-list.component';
 import { MyDownlineListComponent } from './demo/component/my-downline-list/my-downline-list.component';
+import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
+import { BankWithdrawalHistoryComponent } from './demo/component/bank-withdrawal-history/bank-withdrawal-history.component';
+import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 const routes: Routes = [
   {
     path: '',
@@ -79,6 +82,21 @@ const routes: Routes = [
       {
         path: 'activation',
         component: ActivationComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'wallet-statement',
+        component: WalletStatementComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'bank-withdrawal-history',
+        component: BankWithdrawalHistoryComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'level-income',
+        component: LevelIncomeComponent,
         canActivate:[authGuard]
       },
       {

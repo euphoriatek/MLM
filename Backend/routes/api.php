@@ -107,6 +107,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/get-referral', [UserController::class, 'getReferralUsers'])->middleware('role:user');
     Route::get('/get-downline', [UserController::class, 'getDownlineUsers'])->middleware('role:user');
     
+    // Earning Wallet
+    // Level Income
+    Route::get('/level-income', [CommissionController::class, 'getLevelIncome'])->middleware('role:user');
+    Route::get('/wallet-statement', [CommissionController::class, 'walletStatement'])->middleware('role:user');
+    Route::get('/withdrawals-history', [BankWithdrawalController::class, 'withdrawalsHistory'])->middleware('role:user');
     // / Bank Withdrawal
     Route::post('/save-withdrawal', [BankWithdrawalController::class, 'SaveWithdrawal'])->middleware('role:user');
 });

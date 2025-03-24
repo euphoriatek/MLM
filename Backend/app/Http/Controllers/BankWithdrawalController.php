@@ -130,4 +130,29 @@ class BankWithdrawalController extends Controller
         }
     }
 
+    public function withdrawalsHistory(Request $request)
+    {
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+
+            $withdrawals = Withdrawal::where('user_id', $user->id)->get();
+
+            return response()->json([
+                'status' => true,
+                'data' => $withdrawals,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching withdrawals.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
