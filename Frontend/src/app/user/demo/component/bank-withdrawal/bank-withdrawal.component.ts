@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
+import { environment } from 'src/environments/environment';
+import { error } from 'console';
 @Component({
   selector: 'app-bank-withdrawal',
   templateUrl: './bank-withdrawal.component.html',
@@ -11,12 +13,15 @@ import { ToasterService } from 'src/app/services/toster.service';
 export class BankWithdrawalComponent implements OnInit {
   form: FormGroup;
   isCollapsed: boolean = true;
-  selectedWallet: string = '0';  
+  selectedWallet: string = 'earning_wallet';  
   users: any;
   isReadonly: boolean;
   isFormReadonly: boolean;
   walletBalance :any;
   isInsufficientBalance: boolean = false;
+  net_payable_amount:number;
+  TDS_Percentage:number;
+  tdsAmount:number;
   constructor(private fb: FormBuilder, public spinner: NgxSpinnerService, public api: ApiService, public toaster: ToasterService) {}
   ngOnInit(): void {  
     this.form = this.fb.group({
@@ -28,6 +33,7 @@ export class BankWithdrawalComponent implements OnInit {
       price :[''],
     });
     this.getKycInfo();
+    this.TDS_Percentage = environment.TdsPercentage;
   }
   toggleCollapse() {
     this.isCollapsed = !this.isCollapsed;
@@ -78,8 +84,7 @@ export class BankWithdrawalComponent implements OnInit {
               ifsc_code: data.ifsc_code,
               account_no: data.account_no,
               bank_name: data.bank_name,
-              branch_name: data.branch_name,
-              image: data.image
+              branch_name: data.branch_name
             });
             this.disableFormBnkFields();
             this.isReadonly = true;
@@ -97,13 +102,19 @@ export class BankWithdrawalComponent implements OnInit {
   
   onSubmit() {
     if (this.checkBalanceBeforeSubmit()) {
+      this.spinner.show(); 
       this.enableFormFields();
       const data = this.form.value;
-      this.spinner.show(); 
       this.api.SaveWithdrawal(data).subscribe({
         next: (response: any) => {
-          if (response) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-            this.toaster.success('Withdrawal Successful', 'Success');
+          if (response) {
+            this.form.get('price').reset();
+            this.net_payable_amount = 0;
+            this.tdsAmount = 0;
+            this.getKycInfo();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+            this.toaster.success('Withdrawal Request Submit Successful');
+          }else{
+            this.toaster.error(response.message);
           }
           this.spinner.hide(); 
         },
@@ -151,4 +162,12 @@ export class BankWithdrawalComponent implements OnInit {
     return true;
   }
   
+  calculate(event: any): void {
+    const amount = parseFloat(event.target.value); // Ensure it's a number
+    if (this.walletBalance >= amount) {
+      // Calculate the TDS to deduct (TDS_Percentage % of the amount)
+      this.tdsAmount = Math.round((amount * this.TDS_Percentage) / 100); // Round off the TDS amount
+      this.net_payable_amount = Math.round(amount - this.tdsAmount); // Round off the payable amount
+    }
+  }
 }

@@ -17,7 +17,7 @@
                         <div class="form-group mb-3">
                             <label for="mobile_no" class="form-label">Username</label>
                             <div class="form-input">
-                                <input formControlName="mobile_no" id="mobile_no" class="form-control"
+                                <input id="mobile_no" class="form-control"
                                     [value]="users?.mobile_no" readonly placeholder="Username" />
                             </div>
                         </div>
@@ -27,11 +27,11 @@
                         <div class="form-group mb-3">
                             <label for="title" class="form-label">Title</label>
                             <select formControlName="title" id="title" class="form-control">
-                                <option value="">Select Title</option>
-                                <option value="1">Mr.</option>
-                                <option value="2">Miss.</option>
-                                <option value="3">Mrs.</option>
-                                <option value="4">M/S.</option>
+                                <option disabled value="">Select Title</option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Miss.">Miss.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="M/S.">M/S.</option>
                             </select>
                         </div>
                     </div>
@@ -51,35 +51,37 @@
                             </div>
                         </div>
                     </div>
-    
-                         <!-- Father/Mother Name Field -->
-                         <div class="col-md-12">
-                            <div class="form-group mb-3">
-                                <label for="fatherMotherName" class="form-label">Father/Mother Name</label>
-                                <div class="form-input">
-                                    <input formControlName="fatherandmothername" id="fatherMotherName" class="form-control"
-                                        placeholder="">
-                                </div>
+                    
+                    <!-- Email Field -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="full_name" class="form-label">Email Address<span
+                                    class="display-none text-danger">*</span></label>
+                            <div class="form-input">
+                                <input type="email" id="email" class="form-control"
+                            formControlName="email">
                             </div>
-                        </div>
-    
-                    <!-- Gender Field (Static) -->
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="gender" class="form-label">Gender</label>
-                            <div class="row">
-                                <div class="col-sm-5 col-md-4 col-xs-6 pd-0">
-                                    <input type="radio" formControlName="gender" value="1" title="Male" class="has-content me-2">
-                                    <span>Male</span>
-                                </div>
-                                <div class="col-sm-5 col-md-4 col-xs-6 pd-0">
-                                    <input type="radio" formControlName="gender" checked="checked" value="0" title="Female" class="me-2">
-                                    <span>Female</span>
-                                </div>
+                            <div
+                                *ngIf="editProfileForm.get('email')?.touched && editProfileForm.get('email')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('email')?.hasError('required')">
+                                    Email is required.
+                                </small>
                             </div>
                         </div>
                     </div>
-    
+
+                    <!-- Father/Mother Name Field -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fatherMotherName" class="form-label">Father/Husbend Name</label>
+                            <div class="form-input">
+                                <input formControlName="fatherandmothername" id="fatherMotherName" class="form-control"
+                                placeholder="">
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     <!-- DOB Code Field -->
                     <div class="col-md-4">
                         <div class="form-group mb-3">
@@ -115,26 +117,24 @@
                             </div>
                         </div>
                     </div>
-    
+
+                    <!-- Gender Field (Static) -->
                     <div class="col-md-4">
-                        <div class="form-group mb-3">
-                            <label for="state_id" class="form-label">State <span
-                                    class="display-none text-danger">*</span></label>
-                            <div class="form-input">
-                                <select formControlName="state_id" class="form-select form-control">
-                                    <option value="">Select State</option>
-                                    <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
-                                </select>
-                            </div>
-                            <div
-                                *ngIf="editProfileForm.get('state_id')?.touched && editProfileForm.get('state_id')?.invalid">
-                                <small class="text-danger" *ngIf="editProfileForm.get('state_id')?.hasError('required')">
-                                    State is required.
-                                </small>
+                        <div class="form-group">
+                            <label for="gender" class="form-label">Gender</label>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-xs-6 pd-0">
+                                    <input type="radio" formControlName="gender" value="male" title="Male" class="has-content me-2">
+                                    <span>Male</span>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-xs-6 pd-0">
+                                    <input type="radio" formControlName="gender" value="female" title="Female" class="me-2">
+                                    <span>Female</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-            
+    
                     <div class="col-md-12">
                         <div class="form-group mb-3">
                             <label for="address" class="form-label">Address <span
@@ -157,6 +157,11 @@
                             <label for="pin_code" class="form-label">Pin Code</label>
                             <div class="form-input">
                                 <input formControlName="pin_code" id="pin_code" class="form-control">
+                            </div>
+                            <div *ngIf="editProfileForm.get('pin_code')?.touched && editProfileForm.get('pin_code')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('pin_code')?.hasError('required')">
+                                    Pin Code is required.
+                                </small>
                             </div>
                         </div>
                     </div>                    
@@ -182,6 +187,7 @@
                                         alt="Profile Image" class="img-thumbnail" />
                                 </div>
                             </div>
+                            <div *ngIf="imageError" class="error-message">{{ imageError }}</div>
                         </div>
                         
                         
@@ -209,8 +215,7 @@
             </button>
         </div>
         <div [ngClass]="{'collapse': !isCollapsed, 'show': isCollapsed}" class="panel-body mt-3">
-            <form *ngIf="users" (ngSubmit)="onSubmit()">
-                <div class="row">
+                <div class="row" *ngIf="users">
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-12">
@@ -228,10 +233,8 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn orange-btn w-100">Change</button>
                     </div>
                 </div>
-            </form>
         </div>
     </div>
 </div>

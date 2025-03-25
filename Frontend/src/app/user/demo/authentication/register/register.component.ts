@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit {
         parent_sponsor_id: ['', [ Validators.maxLength(10),Validators.required]],
         full_name: ['', Validators.required],
         country_id: ['98', Validators.required],
-        state_id: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -129,7 +128,7 @@ export class RegisterComponent implements OnInit {
       next: (response: any) => {
         if (response.status) {
           this.otpSent = true;
-            this.otpTimer = 10;
+            this.otpTimer = 60;
             this.signupForm.controls['mobile_no'].disable();
             this.timerInterval = setInterval(() => {
               if (this.otpTimer > 0) {
@@ -177,19 +176,6 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  fetchStates(id:number): void {
-    this.api.getStates(id).subscribe({
-      next: (response: any) => {
-        if (response?.status) {
-          this.spinner.hide();
-          this.states = response.data;
-        }
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
-  }
   fetchCountry(): void {
     this.spinner.show();
     this.api.getCountry().subscribe({
@@ -197,8 +183,8 @@ export class RegisterComponent implements OnInit {
         if (response?.status) {
           this.countries = response.data;
           this.selectedCountryLogo = 'assets/images/flags/IN.png';
-          this.fetchStates(98);
         }
+        this.spinner.hide();
       },
       error: (err) => {
         console.error(err);
@@ -242,7 +228,6 @@ export class RegisterComponent implements OnInit {
     } else {
       this.selectedCountryLogo = null;
     }
-    this.fetchStates(selectedCountryId);
   }
 }
 // Password match validator

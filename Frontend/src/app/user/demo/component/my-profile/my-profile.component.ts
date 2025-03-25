@@ -11,8 +11,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./my-profile.component.scss']
 })
 export class MyProfileComponent implements OnInit {
-    BaseUrl = environment.FilebasePath;
-    // BaseUrl = 'https://sklife.in/sk-portal/backend/public/storage/';
+  BaseUrl = environment.FilebasePath;
   isCollapsed = true;
   users: any;
   editProfileForm: FormGroup;
@@ -22,22 +21,21 @@ export class MyProfileComponent implements OnInit {
   imageUrl: string | ArrayBuffer | null = null;
   imageFile: File | null = null;
   storedImageUrl: string | null = null;
+  imageError:any;
   constructor(private fb: FormBuilder,private api: ApiService,public toaster: ToasterService, public spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
-    this.getUsers();
     this.getCountry();
+    this.getUsers();
     this.editProfileForm = this.fb.group({
       full_name: ['', Validators.required],
-      mobile_no: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
       pin_code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
       address: ['', Validators.required],
-      country_id: ['98', Validators.required],
-      state_id: ['', Validators.required],
+      country_id: ['', Validators.required],
       fatherandmothername: [''],
-      gender: [0, Validators.required],
-      title: [''],
+      gender: [''],
+      title: ['', Validators.required],
       image:[''],
       dob:['']
     });
@@ -50,12 +48,10 @@ export class MyProfileComponent implements OnInit {
 
   getUsers() {
     this.spinner.show();
-    this.api.getUsers().subscribe({
+    this.api.getUser().subscribe({
       next: (response: any) => {
         if (response && response.data) {
           this.users = response.data;
-          console.log(this.users);
-          
           this.storedImageUrl = this.users.image ? `${this.BaseUrl}${this.users.image}` : null;
           this.editProfileForm.patchValue(this.users);
         }
@@ -66,43 +62,13 @@ export class MyProfileComponent implements OnInit {
       }
     });
   }
-  onSubmit() {
 
-    if (this.users) {
-      this.spinner.show();
-      this.api.updateUsers(this.users).subscribe({
-        next: (response: any) => {
-          if (response.status) 
-          this.toaster.success(' Contact and Email updated successfully');
-          this.spinner.hide();
-        },
-        error: (err) => {
-          console.error('Error updating user', err);
-        }
-      });
-    }
-  }
-  getstates(id:number): void {
-    this.spinner.show();
-    this.api.getStates(id).subscribe({
-      next: (response: any) => {
-        if (response?.status) {
-          this.states = response.data;
-        }
-        this.spinner.hide();
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
-  }
   getCountry(): void {
     this.spinner.show();
     this.api.getCountry().subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.countries = response.data;
-          this.getstates(98);
         }
          this.spinner.hide();
 
@@ -120,11 +86,22 @@ export class MyProfileComponent implements OnInit {
     } else {
       this.selectedCountryLogo = null;
     }
-    this.getstates(selectedCountryId);
   }
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      const maxSizeInBytes = 2 * 1024 * 1024;
+      if (file.size > maxSizeInBytes) {
+        this.imageError = 'File size must be less than 2MB';
+        this.imageUrl = null;
+        return;
+      }
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        this.imageError = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
+        this.imageUrl = null;
+        return;
+      }
       this.imageFile = file;
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -134,15 +111,17 @@ export class MyProfileComponent implements OnInit {
       this.editProfileForm.patchValue({
         image: file
       });
+      this.imageError = '';
     }
   }
   editSubmit(): void {
     if (this.editProfileForm.valid) {
       const formData = new FormData();
-      console.log(Object.keys(this.editProfileForm.value));
-      
       Object.keys(this.editProfileForm.value).forEach(key => {
         let value = this.editProfileForm.get(key)?.value;
+        if (value === null || value === undefined || value == '') {
+          return;  // Skip this iteration and do not append to formData
+        }
         if (key === 'dob' && value) {
           const formattedDob = new Date(value).toISOString().split('T')[0]; 
           formData.append(key, formattedDob);
@@ -156,7 +135,9 @@ export class MyProfileComponent implements OnInit {
       this.api.updateProfile(formData).subscribe({
         next: (response: any) => {
           if (response.status) {
+            this.imageError = '';
             this.toaster.success('Profile updated successfully');
+            this.getUsers();
           } else {
             this.toaster.error('Failed to update profile');
           }

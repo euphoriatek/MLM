@@ -13,6 +13,8 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class BankWithdrawalHistoryComponent {
   withdrawals:any;
+  visible:boolean=false;
+  bankInfo:any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(public fb: FormBuilder, public api: ApiService, public spinner: NgxSpinnerService, private toaster: ToasterService, private dialog: MatDialog,) { }
 
@@ -43,7 +45,22 @@ export class BankWithdrawalHistoryComponent {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
-  viewDialog(){
-    
+  viewDialog(data:any){
+    this.bankInfo = data;
+    this.visible = true;
   }
+
+  getStatusText(type: string): string {
+    console.log(type);
+    switch(type) {
+        case 'pending':
+            return 'Pending';
+        case 'approved':
+            return 'Approved';
+        case 'rejected':
+            return 'Rejected';
+        default:
+            return 'Unknown Status';
+    }
+}
 }

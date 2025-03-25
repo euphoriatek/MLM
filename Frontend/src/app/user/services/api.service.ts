@@ -15,9 +15,6 @@ export class ApiService {
     return this.http.post(this.BaseUrl + 'signup', data);
   }
 
-  getStates(id: number) {
-    return this.http.get(this.BaseUrl + 'get-state/' + id);
-  }
   getCountry() {
     return this.http.get(this.BaseUrl + 'get-countries');
   }
@@ -53,12 +50,10 @@ export class ApiService {
     return this.http.post(this.BaseUrl + 'create-kyc-pan', data);
   }
 
-  getUsers() {
-    return this.http.get(this.BaseUrl + 'get-usr');
+  getUser() {
+    return this.http.get(this.BaseUrl + 'get-user');
   }
-  updateUsers(data: any) {
-    return this.http.post(this.BaseUrl + 'update-usr', data);
-  }
+
   updateProfile(data: any) {
     return this.http.post(this.BaseUrl + 'update-profile', data);
   }

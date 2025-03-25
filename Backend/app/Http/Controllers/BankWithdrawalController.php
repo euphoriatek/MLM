@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Withdrawal;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -14,12 +15,21 @@ class BankWithdrawalController extends Controller
 
     public function SaveWithdrawal(Request $request)
     {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not authenticated.',
+            ], 401);
+        }
+
         $validator = Validator::make($request->all(), [
             'price' => 'required|numeric',
             'bank_name' => 'required|string',
             'ifsc_code' => 'required|string',
             'account_holder_name' => 'required|string',
             'branch_name' => 'required|string',
+            'account_no' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -39,9 +49,17 @@ class BankWithdrawalController extends Controller
                     'message' => 'Insufficient balance in wallet',
                 ], 400);
             }
+            $settings = Setting::where('key', 'WITHDRAWAL_TDS')->get()->pluck('value', 'key');
+            $tdsAmount = round(($input['price'] * $settings['WITHDRAWAL_TDS']) / 100); // Round off the TDS amount
+            $netPayableAmount = round($input['price'] - $tdsAmount);
+            $tdsPercentage = $settings['WITHDRAWAL_TDS'];
             $user->wallet_balance -= $input['price'];
+            $user->essrow_balance += $input['price'];
             $user->save();
             $input['user_id'] = $userId;
+            $input['net_payable_amount'] = $netPayableAmount;
+            $input['tds_amount'] = $tdsAmount;
+            $input['tds_percentage'] = $tdsPercentage;
             $withdrawal = Withdrawal::create($input);
 
             return response()->json([

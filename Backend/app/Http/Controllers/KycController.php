@@ -186,7 +186,7 @@ class KycController extends Controller
         $PanKyc = PanDetails::where('user_id', $userId)->first();
         return response()->json([
             'status' => true,
-            'data' => ["bank" => $bankKyc, "pan" => $PanKyc,  'wallet_balance' => $userWallet,],
+            'data' => ["bank" => $bankKyc, "pan" => $PanKyc,  'wallet_balance' => $userWallet],
         ], 200);
         } catch (\Exception $e) {
             return response()->json([

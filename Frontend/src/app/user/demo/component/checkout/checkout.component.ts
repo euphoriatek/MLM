@@ -7,7 +7,8 @@ import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 declare var Razorpay: any;
-import { ChangeDetectorRef } from '@angular/core'
+import { ChangeDetectorRef } from '@angular/core';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -51,6 +52,15 @@ export class CheckoutComponent {
       pin_code: ['', Validators.required],
       alternate_phone_no: [''],
     });
+
+    this.CheckoutForm.patchValue({
+      name: this.user.full_name,
+      email: this.user.email,
+      phone_number: this.user.mobile_no ,
+      address: this.user.address,
+      pin_code: this.user.pin_code,
+    });
+    
   }
 
   Checkout(): void {
@@ -60,7 +70,7 @@ export class CheckoutComponent {
     } else if (this.CheckoutForm.valid) {
       const formData = this.CheckoutForm.value;
           const options = {
-            key: 'rzp_test_er0Zna0Q1TQrgL',
+            key:environment.RazorpayApiKey,
             amount: this.product_data.price * 100,
             currency: 'INR',
             name: this.product_data.name,

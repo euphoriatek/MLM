@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use App\Models\State;
 use App\Models\Country;
 use App\Models\Otp;
 use App\Models\Product;
@@ -24,7 +23,6 @@ class UserController extends Controller
             'full_name' => 'required|string|max:255',
             'country_id' => 'required|string|max:255',
             'mobile_no' => 'required|string|regex:/^[0-9]{10}$/|max:20|unique:users,mobile_no',
-            'state_id' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'password' => 'required|string|min:6',
             'pin_code' => 'required|string|regex:/^[0-9]{5,6}$/|max:6',
@@ -54,18 +52,19 @@ class UserController extends Controller
                     'message' => 'User is not activated. Please use another sponsor ID.'
                 ], 200);
             }
-            $sponsor_id = mt_rand(1000000000, 9999999999);
+            // $sponsor_id = mt_rand(1000000000, 9999999999);
+            $sponsor_id = $request->input('mobile_no');
             $user = User::create([
                 'sponsor_id' => $sponsor_id,
                 'parent_sponsor_id' => $request->input('parent_sponsor_id'),
                 'full_name' => $request->input('full_name'),
                 'country_id' => $request->input('country_id'),
                 'mobile_no' => $request->input('mobile_no'),
-                'state_id' => $request->input('state_id'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
                 'pin_code' => $request->input('pin_code'),
                 'address' => $request->input('address'),
+                'title' => "Mr."
             ]);
             return response()->json([
                 'status' => true,
@@ -79,29 +78,6 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while registering the user.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function getStates(Request $request, $id)
-    {
-        try {
-            $country_id = $id;
-            if ($country_id) {
-                $states = State::where('country_id', $country_id)->get();
-            } else {
-                $states = State::all();
-            }
-
-            return response()->json([
-                'status' => true,
-                'data' => $states,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'An error occurred while fetching the states.',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -381,7 +357,7 @@ class UserController extends Controller
     }
     
 
-    public function getUsers(Request $request)
+    public function getUser(Request $request)
     {
         $userId = auth()->id();
         $User = User::find($userId);
@@ -408,36 +384,6 @@ class UserController extends Controller
         }
 
         return $children;
-    }
-    public function updateUser(Request $request)
-    {
-        $userId = auth()->id();
-        $user = User::find($userId);
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User not found'
-            ], 404);
-        }
-        $request->validate([
-            'mobile_no' => 'nullable|digits:10',
-            'email' => 'nullable|email',
-        ]);
-
-        if ($request->has('mobile_no')) {
-            $user->mobile_no = $request->input('mobile_no');
-        }
-
-        if ($request->has('email')) {
-            $user->email = $request->input('email');
-        }
-        $user->save();
-
-        return response()->json([
-            'status' => true,
-            'data' => $user,
-            'message' => 'User Contact and Email updated successfully'
-        ], 200);
     }
     public function updateProfile(Request $request)
     {

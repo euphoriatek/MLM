@@ -35,7 +35,6 @@ Route::post('/admin/login', [ApiController::class, 'login']);
 // Register User
 Route::post('/signup', [UserController::class, 'store']);
 Route::post('/sync-data', [UserController::class, 'execution']);
-Route::get('/get-state/{id}', [UserController::class, 'getStates']);
 Route::get('/get-countries', [UserController::class, 'getCountries']);
 
 Route::post('/validate-sponsor', [UserController::class, 'validateSponsor']);
@@ -85,10 +84,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
    
     
     Route::post('/create-delievery-address', [PurchaseController::class, 'CreateDeliveryAddress'])->middleware('role:user');
-    
-    Route::get('/get-usr', [UserController::class, 'getUsers']);
-    Route::post('/update-usr', [UserController::class, 'updateUser']);
-    Route::post('/update-profile', [UserController::class, 'updateProfile']);
+    // My-Account
+    Route::get('/get-user', [UserController::class, 'getUser'])->middleware('role:user');
+    Route::post('/update-profile', [UserController::class, 'updateProfile'])->middleware('role:user');
+    // KYC
     Route::post('/create-kyc-pan', [KycController::class, 'createPanKyc'])->middleware('role:user');
     Route::post('/create-kyc', [KycController::class, 'store'])->middleware('role:user');
     Route::post('/verify-old-password', [UserController::class, 'verifyOldPassword'])->middleware('role:user');

@@ -11,7 +11,7 @@ export class NavRightComponent {
   Username:any;
   constructor(public toaster:ToasterService,public cookie:UserCookiesService,public route:Router){
    
-    this.Username = this.cookie.getCookie('CurrentUser')?.username;
+    this.Username = this.cookie.getCookie('CurrentUser')?.full_name;
   }
   // public method
   profile = [

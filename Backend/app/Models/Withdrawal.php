@@ -16,7 +16,11 @@ class Withdrawal extends Model
         'bank_name',
         'ifsc_code',
         'account_holder_name',
-        'branch_name'
+        'account_no',
+        'branch_name',
+        'net_payable_amount',
+        'tds_amount',
+        'tds_percentage'
     ];
     public function user()
     {

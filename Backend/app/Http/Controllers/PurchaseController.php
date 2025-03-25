@@ -146,6 +146,15 @@ class PurchaseController extends Controller
                 'credit_by' => $user->id,
                 'package_price'=> $productPrice
             ]);
+            WalletStatement::create([
+                'user_id' => $admin->id,
+                'amount' => $remainingAmount,
+                'balance' => $admin->wallet_balance,
+                'credit_by'=> $user->id,
+                'remark' => "Level Income",
+                'type' => 'credit',
+                'particulars' => "Level Income Credited"
+            ]);
         }
 
         \DB::table('transactions')->insert([

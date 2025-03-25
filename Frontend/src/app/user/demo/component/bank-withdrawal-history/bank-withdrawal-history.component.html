@@ -34,24 +34,58 @@
                 <span class="image-text">{{data.price}}</span>
             </td>
             <td>
-                <span class="p-column-title">Bank Name</span>
-                <span class="image-text">{{data.bank_name}}</span>
+                <span class="p-column-title">TDS</span>
+                <span class="image-text">{{data.tds_amount}}</span>
             </td>
             <td>
-                <span class="p-column-title">Amount</span>
-                <span class="image-text">{{data.price}}</span>
+                <span class="p-column-title">Net Payable</span>
+                <span class="image-text">{{data.net_payable_amount}}</span>
             </td>
         
             <td>
                 <span class="p-column-title">Status</span>
-                <span class="image-text">{{ data.status}}</span>
+                <span 
+                    [ngClass]="{
+                        'pending-text': data.status == 'pending',
+                        'approved-text': data.status == 'approved',
+                        'rejected-text': data.status == 'rejected'
+                    }"
+                    class="image-text">
+                    {{ getStatusText(data.status) }}
+                </span>
             </td>
             <td>
                 <div class="d-flex">
-                    <button class="btn editbtn" (click)="viewDialog()" title="view">View</button>
+                    <button class="btn editbtn" (click)="viewDialog(data)" title="view">View</button>
                
                   </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
+<p-dialog id="dialog" header="Bank Detail" [(visible)]="visible" [style]="{ width: '34vw' }" [modal]="true">
+    <table>
+        <tbody>
+            <tr>
+                <td>Account Holder Name:</td>
+                <td>{{bankInfo?.account_holder_name}}</td>
+            </tr>
+            <tr>
+                <td>Account No.:</td>
+                <td>{{bankInfo?.account_no}}</td>
+            </tr>
+            <tr>
+                <td>Bank Name :</td>
+                <td>{{bankInfo?.bank_name}}</td>
+            </tr>
+            <tr>
+                <td>Branch Name :</td>
+                <td>{{bankInfo?.branch_name}}</td>
+            </tr>
+            <tr>
+                <td>IFSC :</td>
+                <td>{{bankInfo?.ifsc_code}}</td>
+            </tr>
+        </tbody>
+    </table>
+  </p-dialog>

@@ -26,7 +26,6 @@ class User extends Authenticatable
         'parent_sponsor_id',
         'wallet_balance',
         'country_id',
-        'state_id',
         'pin_code',
         'address',
         'title',
@@ -35,7 +34,8 @@ class User extends Authenticatable
         'image',
         'fatherandmothername',
         'is_active',
-        'is_block'
+        'is_block',
+        'essrow_balance'
     ];
     /**
      * The attributes that should be hidden for serialization.

@@ -224,41 +224,6 @@
                 </div>
               </div>
             </div>
-            <!-- State Field -->
-            <div class="col-md-12">
-              <div class="form-group mb-3">
-                <label for="state_id" class="form-label"
-                  >State <span>*</span></label
-                >
-                <div class="form-input">
-                  <img
-                    src="assets/images/admin_images/icons/country.png"
-                    alt="email"
-                  />
-                  <select
-                    formControlName="state_id"
-                    class="form-select form-control"
-                  >
-                    <option value="">Select State</option>
-                    <option *ngFor="let state of states" [value]="state.id">
-                      {{ state.name }}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  *ngIf="
-                    signupForm.get('state_id')?.touched &&
-                    signupForm.get('state_id')?.invalid
-                  "
-                >
-                  <small
-                    class="text-danger"
-                    *ngIf="signupForm.get('state_id')?.hasError('required')"
-                    >State is required.</small
-                  >
-                </div>
-              </div>
-            </div>
 
             <!-- Email Field -->
             <div class="col-md-12">
