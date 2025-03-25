@@ -155,7 +155,7 @@
       
 
       > a {
-        padding: 12px 20px;
+        padding: 15px 20px;
         display: block;
         border-radius: 0px;
         position: relative;
@@ -166,8 +166,12 @@
         &:hover{
           background-color: rgb(255, 255, 255);
           color: #000000;
-          
+          &:after {
+          transform: rotate(0deg);
+          transform-origin: center;
+              background-image:url('/../../../../assets/images/down-arrow.png') !important;
         }
+      }
 
         .coded-mtext {
           position: relative;
@@ -181,7 +185,7 @@
           vertical-align: middle;
           text-align: left;
           font-weight: bold;
-          width: 23px;
+          width: 30px;
           pointer-events: none;
 
           + .coded-mtext {
@@ -198,7 +202,7 @@
           &:after {
             content: '';
             position: absolute;
-            top: 9px;
+            top: 12px;
             right: 20px;
             transition: 0.3s ease-in-out;
             background-image:url('/../../../../assets/images/next.png');
@@ -207,14 +211,18 @@
             background-size: 16px;
             background-repeat: no-repeat;
             background-position: center right;
-
+            transform-origin: center;
           }
         }
 
         &.coded-trigger {
           > a {
+            background-color: #fff;
+            color: #000000;
             &:after {
               transform: rotate(90deg);
+              transform-origin: center;
+              background-image:url('/../../../../assets/images/down-arrow.png');
             }
           }
         }
@@ -244,7 +252,7 @@
                 padding: 13px 16px 13px 52px;
                 margin: 0;
                 display: block;
-                font-size: 13px;
+                // font-size: 13px;
 
                 &:before {
                   content: '';
@@ -913,7 +921,7 @@
 .logout-Left {
   position: absolute !important;
   bottom: 35px;
-  width: 90%;
+  width: 100%;
 }
 .logout-Left a {
   color: #ff4c04;

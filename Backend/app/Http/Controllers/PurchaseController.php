@@ -249,6 +249,13 @@ class PurchaseController extends Controller
 
      public function getOrders(Request $request){
         try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
             $withdrawals = Purchase::get();
             return response()->json([
                 'status' => true,

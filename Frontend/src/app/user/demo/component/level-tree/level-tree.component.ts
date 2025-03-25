@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ElementRef} from '@angular/core';
 import { TreeNode, MessageService } from 'primeng/api';
 import { ApiService } from 'src/app/user/services/api.service';
 import $ from "jquery";
@@ -7,6 +7,7 @@ import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { Renderer2 } from '@angular/core';
 import { NgxSpinnerService } from "ngx-spinner";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-level-tree',
   templateUrl: './level-tree.component.html',
@@ -21,6 +22,7 @@ export class LevelTreeComponent implements OnInit {
   users:any;
   user:any;
   SearchForm!: FormGroup;
+  fullScreenVisible: boolean;
   constructor(
     private messageService: MessageService,
     public api: ApiService,
@@ -28,7 +30,8 @@ export class LevelTreeComponent implements OnInit {
     public UserCookies:UserCookiesService,
     private renderer: Renderer2,
     public spinner:NgxSpinnerService,
-    public fb:FormBuilder
+    public fb:FormBuilder,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -181,5 +184,17 @@ export class LevelTreeComponent implements OnInit {
         }
       });
     }
+  }
+  openFullScreen() {
+    this.fullScreenVisible = true;
+    this.renderer.addClass(this.el.nativeElement, 'fullscreen');
+    setTimeout(() => {
+      this.cdRef.detectChanges();
+      $(".showchield").first().trigger("click");
+    }, 200);
+  }
+  removeFullScreen(){
+    this.fullScreenVisible = false;
+    this.renderer.removeClass(this.el.nativeElement, 'fullscreen');
   }
 }

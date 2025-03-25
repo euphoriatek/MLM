@@ -12,7 +12,7 @@
   z-index: 1025;
   display: flex;
   border-radius: 0px;
-  box-shadow: 0px 2px 21px rgb(225 225 225);
+  box-shadow: 0px 2px 21px rgb(216 229 240);
 
   ul {
     margin-bottom: 0;
@@ -53,7 +53,6 @@
       max-width: 100%;
 
       @media (max-width: 1024px) {
-        width: 100%;
       }
     }
 
@@ -110,7 +109,7 @@
       color: $primary;
 
       > i {
-        color: $primary;
+        color: #000;
       }
     }
     > svg {
@@ -349,9 +348,7 @@
         margin-right: 16px;
       }
     }
-    @media (max-width: 575.98px) {
-      min-width: 100%;
-    }
+
   }
 }
 
@@ -526,15 +523,27 @@
 }
 
 .header-button{
+  display: flex;
+  align-items: center;
 a{
   background-color: #345d99;
   padding: 6px 16px;
   margin: 2px;
   border-radius: 39px;
   color: #fff;
+  display: block;
+  text-align: center;
+
 }
 .kyc_btn{
   background-color: #e34f25;
 }
 }
 // header css end
+
+@media(max-width:576px){
+.pc-header .header-button a{
+  font-size: 12px;
+  padding: 6px 15px;
+}
+}

@@ -5,8 +5,8 @@
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
             <h3>Wallet Statement</h3>
-            <div>
-                <span class="p-input-icon-left">
+            <div class="product-search">
+                <span class="p-input-icon-left w-100">
                     <i class="ti ti-search"></i>
                     <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
                         placeholder="Global Search" />
@@ -16,12 +16,12 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="created_at">Date<p-sortIcon field="created_at"></p-sortIcon></th>
-            <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
-            <th pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon></th>
-            <th pSortableColumn="amount">Amount(₹)<p-sortIcon field="amount"></p-sortIcon></th>
-            <th pSortableColumn="balance">Balance(₹)<p-sortIcon field="balance"></p-sortIcon></th>
-            <th pSortableColumn="particulars">Particulars<p-sortIcon field="particulars"></p-sortIcon></th>
+            <th style="min-width: 190px;" pSortableColumn="created_at">Date<p-sortIcon field="created_at"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
+            <th style="min-width: 100px;" pSortableColumn="type">Type<p-sortIcon field="type"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="amount">Amount(₹)<p-sortIcon field="amount"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="balance">Balance(₹)<p-sortIcon field="balance"></p-sortIcon></th>
+            <th style="min-width: 200px;" pSortableColumn="particulars">Particulars<p-sortIcon field="particulars"></p-sortIcon></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>

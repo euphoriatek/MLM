@@ -3,8 +3,7 @@
     <span class="coded-micon" *ngIf="item.icon">
       <i class="{{ item.icon }}"></i>
     </span>
-    <span class="coded-mtext">
-      {{item.title}}
+    <span class="coded-mtext">{{item.title}}
     </span>
   </a>
   <ul class="coded-submenu" [routerLinkActive]="['active']" [ngClass]="item.classes!">

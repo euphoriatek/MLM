@@ -4,125 +4,139 @@
       <div class="card-body">
         <mat-tab-group animationDuration="0ms">
 
-          <mat-tab label="changePassword">
+          <mat-tab label="Change Password">
             <form [formGroup]="changePasswordform" (ngSubmit)="changePassword()">
 
-              <div class="row chnagePassword">
-                <div class="col-lg-12">
+              <div class="row justify-content-center">
+                <div class="col-lg-6">
+                  <div class="chnagePassword">
                   <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                       <div class="form-group">
                         <label>Old Login Password</label>
                         <input type="password" id="password" class="form-control" formControlName="password">
-                      </div>
-                      <div
+
+                        <div
                         *ngIf=" changePasswordform.get('password')?.touched && changePasswordform.get('password')?.invalid  ">
                         <small class="text-danger" *ngIf=" changePasswordform.get('password')?.hasError('required') ">
-                          password is required. </small>
+                          Password is Required. </small>
                       </div>
+                      </div>
+           
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                       <div class="form-group">
                         <label>New Login Password</label>
                         <input type="password" id="new_password" class="form-control" formControlName="new_password">
-                      </div>
-                      <div
+                        <div
                         *ngIf=" changePasswordform.get('new_password')?.touched && changePasswordform.get('new_password')?.invalid  ">
                         <small class="text-danger"
-                          *ngIf=" changePasswordform.get('new_password')?.hasError('required') ">new password is
-                          required. </small>
+                          *ngIf=" changePasswordform.get('new_password')?.hasError('required') ">New Password is
+                          Required. </small>
                         <small class="text-danger"
                           *ngIf="changePasswordform.get('new_password')?.hasError('minlength')">Password must be at
                           least 6 characters.</small>
                         <small class="text-danger"
-                          *ngIf="changePasswordform.get('new_password')?.hasError('pattern')">Password must include
+                          *ngIf="changePasswordform.get('new_password')?.hasError('pattern')">Password must Include
                           uppercase, lowercase, number.</small>
                       </div>
+                      </div>
+                      
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                       <div class="form-group">
                         <label>Confirm Login Password</label>
                         <input type="password" id="confirm_password" class="form-control"
                           formControlName="confirm_password">
-                      </div>
-                      <div *ngIf="changePasswordform.get('confirm_password')?.touched">
-                        <small class="text-danger"
-                          *ngIf="changePasswordform.get('confirm_password')?.hasError('required')">
-                          Confirm password is required.
-                        </small>
-                        <small class="text-danger"
-                          *ngIf="changePasswordform.get('confirm_password')?.hasError('passwordMismatch')">
-                          Confirm Password does not match.
-                        </small>
-                      </div>
 
+                          <div *ngIf="changePasswordform.get('confirm_password')?.touched">
+                            <small class="text-danger"
+                              *ngIf="changePasswordform.get('confirm_password')?.hasError('required')">
+                              Confirm password is required.
+                            </small>
+                            <small class="text-danger"
+                              *ngIf="changePasswordform.get('confirm_password')?.hasError('passwordMismatch')">
+                              Confirm Password does not match.
+                            </small>
+                          </div>
+                      </div>
                     </div>
                   </div>
                   <button type="submit" class="btn btn-primary">Change</button>
                 </div>
               </div>
+              </div>
             </form>
           </mat-tab>
-          <mat-tab label="loginHistory">
-        
+
+          <mat-tab label="Login History">
             <p-table #dt [value]="filteredHistory" dataKey="s.no" styleClass="p-datatable-customers" [rowHover]="true"
               [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
               [globalFilterFields]="['s_no','email', 'date', 'mobile_no', 'login_status']">
 
               <ng-template pTemplate="caption">
-                <div class="table-header mb-4">
+                <div class="table-header d-block mb-4">
                   <h3>Login History</h3>
-                  <form [formGroup]="form">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group mb-3">
-                          <label class="form-label">From Date</label>
-                          <mat-form-field appearance="fill" class="full-width">
-                            <!-- <mat-label>From Date</mat-label> -->
-                            <input matInput [matDatepicker]="fromPicker" formControlName="fromDate"
-                              (dateChange)="filterByDate()" (focus)="fromPicker.open()">
-                            <mat-datepicker #fromPicker></mat-datepicker>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group mb-3">
-                          <label class="form-label">To Date</label>
-                          <mat-form-field appearance="fill" class="full-width">
-                            <!-- <mat-label>To Date</mat-label> -->
-                            <input matInput [matDatepicker]="toPicker" formControlName="toDate"
-                              (dateChange)="filterByDate()" (focus)="toPicker.open()">
-                            <mat-datepicker #toPicker></mat-datepicker>
-                          </mat-form-field>
-                        </div>
-                      </div>
-                      <div class="col-md-4 d-flex flex-column justify-content-center">
+                  <div class="row align-items-end">
+                    <div class="col-lg-9">
+                      <form [formGroup]="form">
+                        <div class="row align-items-end">
+                          <div class="col-md-3">
+                            <div class="form-group mb-2">
+                              <label class="form-label">From Date</label>
+                              <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>From Date</mat-label>
+                                <input matInput [matDatepicker]="fromPicker" formControlName="fromDate"
+                                  (dateChange)="filterByDate()" (focus)="fromPicker.open()">
+                                <mat-datepicker #fromPicker></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group mb-2">
+                              <label class="form-label">To Date</label>
+                              <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>To Date</mat-label>
+                                <input matInput [matDatepicker]="toPicker" formControlName="toDate"
+                                  (dateChange)="filterByDate()" (focus)="toPicker.open()">
+                                <mat-datepicker #toPicker></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div class="col-md-3 mb-2">
+                           
+                            <!-- <button mat-raised-button color="primary" (click)="filterByDate()">Filter</button> -->
+                            <button mat-raised-button color="warn" (click)="resetForm()" >Reset</button>
                        
-                        <!-- <button mat-raised-button color="primary" (click)="filterByDate()">Filter</button> -->
-                        <button mat-raised-button color="warn" (click)="resetForm()" >Reset</button>
-                   
-                      </div>
+                          </div>
+                        </div>
+                      </form>
                     </div>
-                  </form>
 
+                    <div class="col-lg-3 col-md-12 text-end">
                   <!-- Search Input -->
-                  <div class="mt-3">
-                    <span class="p-input-icon-left">
+                  <div class="mb-2">
+                    <span class="p-input-icon-left w-100">
                       <i class="ti ti-search"></i>
                       <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
                         placeholder="Global Search" />
                     </span>
                   </div>
+                    </div>
+                  </div>
+                  
+
+
                 </div>
               </ng-template>
       
               <ng-template pTemplate="header">
                 <tr>
-                  <th pSortableColumn="s_no">S.No <p-sortIcon field="s_no"></p-sortIcon></th>
-                  <th>Email</th>
-                  <th>Date</th>
-                  <th>Mobile No</th>
-                  <th>Login Status</th>
+                  <th style="width: 80px;" pSortableColumn="s_no">S.No <p-sortIcon field="s_no"></p-sortIcon></th>
+                  <th style="min-width: 200px;">Email</th>
+                  <th style="min-width: 150px;">Date</th>
+                  <th style="min-width: 150px;">Mobile No</th>
+                  <th style="min-width: 100px;">Login Status</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-data>
@@ -145,7 +159,7 @@
                   </td>
                   <td>
                     <span class="p-column-title">Login Status</span>
-                    {{ data.login_status }}
+                    <div class="status_success">{{ data.login_status }}</div>   
                   </td>
                 </tr>
               </ng-template>

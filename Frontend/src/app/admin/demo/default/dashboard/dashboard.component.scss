@@ -12,6 +12,9 @@
       color: #ebf3ff;
       font-size: 15px;
       font-weight: 400;
+      word-break: break-word;
+      font-size: 15px;
+      padding-right: 45px;
     }
   
     .copy-link {
@@ -216,3 +219,12 @@
     font-weight: bold;
   }
   
+
+  @media(max-width:767px){
+    .sticky_right{
+      .price {
+        flex-direction: column !important;
+
+      }
+    }
+  }

@@ -219,11 +219,12 @@ a{
   .p-datatable-header{
     background-color: transparent;
     border:none;
-    padding: 1rem 0rem;
+    padding: 0rem 0rem;
   .table-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     input.form-control{
       padding-left: 43px;
       height: 40px;
@@ -236,7 +237,6 @@ a{
     h3{
       font-size: 22px;
       font-weight: 600;
-      width: 35%;
     }
     .add_user_btn{
       margin-left: 5px;
@@ -308,12 +308,22 @@ a{
 
 table tbody tr td button.btn {
   padding: 5px 9px !important;
-  background: #e3e8f1 !important;
+  background: #eaeff3 !important;
   margin: 2px;
   border-radius: 4px !important;
-  min-width: 35px;
+  min-width: 33px;
   min-height: 35px;
+  color: #72787f;
+  &:hover{
+    background: #e45026 !important;
+    color: #fff;
+  }
 }
+.p-paginator.p-component button {
+  min-width: 37px;
+  height: 37px;
+}
+
 table tbody tr td button.btn i {
   font-size: 14px;
 }
@@ -351,8 +361,8 @@ p-paginator{
     margin-top: 3rem;
     padding: 0px;
     .p-paginator-pages .p-paginator-page.p-highlight {
-      background: #3a434b;
-      border-color: #EFF6FF;
+      background: #254470;
+      border-color: #254470;
       color: #ffffff;
       border-radius: 5px;
     }
@@ -631,4 +641,23 @@ border: solid 2px #e84b43;
 }
 .toast-top-right {
   position: fixed !important;
+  left: 50%;
+  top:10px;
+  transform: translate(-50%, 5px);
+  animation: mover 0.6s;
+
+}
+@keyframes mover {
+  from {
+    top:-200px;
+  }
+  to {
+    top:10px;
+  }
+}
+
+@media(max-width:576px){
+  .product-search {
+    width: 100%;
+}
 }

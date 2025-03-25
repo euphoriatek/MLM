@@ -276,6 +276,12 @@
   .pc-header .pc-h-item.pc-sidebar-collapse {
     display: none;
   }
+  .mob-open ~ app-nav-bar .pc-header{
+    margin-left: 260px;
+  }
+  .mob-open ~  .pc-container{
+    margin-left: 260px;
+  }
   .pc-sidebar {
     left: -#{$sidebar-width};
     box-shadow: none;

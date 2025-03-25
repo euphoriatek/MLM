@@ -1,4 +1,5 @@
-<p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible" [style]="{ width: '32vw' }" [modal]="true">
+<p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible"
+  [style]="{ width: '32vw' }" [modal]="true">
   <div class="container">
     <table class="table table-open-cls dataTable">
       <tbody>
@@ -17,7 +18,7 @@
         <tr>
           <td>Registration Date</td>
           <td><span>{{ node_data?.created_at | date: 'dd-MM-yyyy' || 'No Registration Date Available' }}</span></td>
-        </tr>                        
+        </tr>
         <tr>
           <td>Mobile No</td>
           <td><span>{{ node_data?.mobile_no || 'No Mobile Available' }}</span></td>
@@ -34,7 +35,7 @@
     <button type="button" pButton icon="pi pi-times" label="Close" (click)="visible = false"></button>
   </p-footer>
 </p-dialog>
-<div class="row mt-4">
+<!-- <div class="row mt-4">
   <div class="col-lg-8">
       <div class="row">
         <form method="post" (ngSubmit)="Search()" [formGroup]="SearchForm">
@@ -47,22 +48,51 @@
         </form>
       </div>
   </div>
+</div> -->
+<!-- search section -->
+<div class="d-block d-sm-flex align-items-center mt-4 mb-5 gap-5">
+  <div class="tree_search d-flex align-items-center mb-sm-0 mb-4">
+    <form method="post" (ngSubmit)="Search()" [formGroup]="SearchForm" class="d-flex align-items-center w-100">
+      <input type="text" class="form-control me-2" formControlName="search">
+      <button type="submit" mat-raised-button color="warn" class="me-2">Search</button>
+        <!-- Full Screen Toggle Buttons -->
+    <a *ngIf="!fullScreenVisible" (click)="openFullScreen()" class="text-primary fw-bold" style="cursor: pointer;">Full Screen</a>
+    <a *ngIf="fullScreenVisible" (click)="removeFullScreen()" class="text-primary fw-bold" style="cursor: pointer;">Remove Full Screen</a>
+      <!-- <a id="b" (click)="openFullScreen()" class="text-primary fw-bold" style="cursor: pointer;">Full Screen</a>
+      <a id="b" (click)="removeFullScreen()" class="text-primary fw-bold" style="cursor: pointer;">Remove Full Screen</a> -->
+    </form>
+  </div>
+  <div class="d-flex align-items-start gap-3">
+    <div class="d-flex align-items-center">
+      <div class="bg-black me-2" style="width: 15px; height: 15px;"></div>
+      <span><b>Block</b></span>
+    </div>
+    <div class="d-flex align-items-center">
+      <div class="bg-success me-2" style="width: 15px; height: 15px;"></div>
+      <span><b>Active</b></span>
+    </div>
+    <div class="d-flex align-items-center">
+      <div class="bg-danger me-2" style="width: 15px; height: 15px;"></div>
+      <span><b>Inactive</b></span>
+    </div>
+  </div>
 </div>
 <table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
-    <tbody>
-      <tr class="node-cells">
-        <td class="node-cell" colspan="2">
-          <div class="node" style="cursor: default;">
-            <a href="javascript:void(0)" class="showchield" id="{{user?.id}}">
-              <img class="tree_icon" src="https://login.progressfashion.com/images/redimage.png" alt="{{user?.mobile_no}}" id="userlink_{{user?.mobile_no}}" title="">
-            </a>
-            <div colspan="2" class="line down addcolspan"></div>
-            <div class="username" title="{{user?.mobile_no}}" style="background: #454552 !important;cursor:pointer">
-              <img src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree">
-              <span>{{user?.mobile_no}}</span>
-            </div>
+  <tbody>
+    <tr class="node-cells">
+      <td class="node-cell" colspan="2">
+        <div class="node" style="cursor: default;">
+          <a href="javascript:void(0)" class="showchield" id="{{user?.id}}">
+            <img class="tree_icon" src="https://login.progressfashion.com/images/redimage.png" alt="{{user?.mobile_no}}"
+              id="userlink_{{user?.mobile_no}}" title="">
+          </a>
+          <div colspan="2" class="line down addcolspan"></div>
+          <div class="username" title="{{user?.mobile_no}}" style="background: #454552 !important;cursor:pointer">
+            <img src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree">
+            <span>{{user?.mobile_no}}</span>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

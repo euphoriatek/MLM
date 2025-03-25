@@ -179,3 +179,38 @@ ul.list-inline.indicate-color-cls li.grey-cls figure {
   top: 0;
   left: 0;
 }
+::ng-deep{
+  /* Full Screen Mode */
+  .fullscreen {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+  }
+  #tree_div {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tree_search{
+    .form-control{
+      min-height: 38px !important;
+      padding: 5px;
+    }
+    button{
+      width: 140px;
+    }
+    a{
+    color: #000 !important;
+    font-weight: 600 !important;
+    }
+
+  }
+  }
+

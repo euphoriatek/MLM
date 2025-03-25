@@ -51,22 +51,22 @@ const NavigationItems = [
     title: 'Balance Request',
     type: 'collapse',
     icon: 'fa-solid fa-money-bill',
-    // children: [
-    //   {
-    //     id: 'new-request',
-    //     title: 'New Request',
-    //     type: 'item',
-    //     url: '/admin/new_product',
-    //     breadcrumbs: true,
-    //   },
-    //   {
-    //     id: 'reports',
-    //     title: 'Reports',
-    //     type: 'item',
-    //     url: '/admin/orders',
-    //     breadcrumbs: true,
-    //   }
-    // ],
+    children: [
+      {
+        id: 'new-request',
+        title: 'New Request',
+        type: 'item',
+        url: '/admin/new_product',
+        breadcrumbs: true,
+      },
+      {
+        id: 'reports',
+        title: 'Reports',
+        type: 'item',
+        url: '/admin/orders',
+        breadcrumbs: true,
+      }
+    ],
   },
   {
     id: 'members',

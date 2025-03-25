@@ -1,6 +1,9 @@
 <form action="" [formGroup]="productForm" (ngSubmit)="addProduct()">
-    <!-- Product Name -->
+<div class="row">
     <div class="col-lg-8">
+    <div class="row">
+    <!-- Product Name -->
+    <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label for="name">Product Name</label>
             <input type="text" id="name" formControlName="name" class="form-control" />
@@ -11,7 +14,7 @@
     </div>
   
     <!-- Price -->
-    <div class="col-lg-8">
+    <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label for="price">Price</label>
             <input type="text" id="price" formControlName="price" class="form-control" />
@@ -22,7 +25,7 @@
     </div>
   
     <!-- DP (Discount Price) -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="form-group">
             <label for="dp">DP (Discount Price)</label>
             <input type="text" id="dp" formControlName="dp" class="form-control" />
@@ -44,33 +47,27 @@
     </div> -->
   
     <!-- Category -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="form-group">
-            <label>Category</label>
-            <div class="category-options">
-                <input type="radio" formControlName="category" value="1" id="healthcare" />
-                <label for="healthcare">Health Care</label>
-
-                <input type="radio" formControlName="category" value="2" id="personalcare" />
-                <label for="personalcare">Personal Care</label>
-
-                <input type="radio" formControlName="category" value="3" id="homecare" />
-                <label for="homecare">Home Care</label>
-
-                <input type="radio" formControlName="category" value="4" id="agriculture" />
-                <label for="agriculture">Agriculture</label>
-            </div>
+        <label>Category</label>
+        <div class="category-options">  
+        <label for="healthcare"><input type="radio" formControlName="category" value="1" id="healthcare" /> Health Care</label>
+        <label for="personalcare"><input type="radio" formControlName="category" value="2" id="personalcare" /> Personal Care</label>
+        <label for="homecare"><input type="radio" formControlName="category" value="3" id="homecare" /> Home Care</label>
+        <label for="agriculture"><input type="radio" formControlName="category" value="4" id="agriculture" />Agriculture</label>
+        </div>
         </div>
     </div>
   
     <!-- Product Description -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="form-group">
             <label for="description">Product Description</label>
             <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>
            
         </div>
     </div>
+    <div class="col-lg-12">
     <div class="form-group">
         <label for="image">product image</label>
         <input type="file" class="form-control" (change)="onFileChange($event)" #fileInput />
@@ -90,4 +87,8 @@
             </div>
           </div>
     </div>
+</div>
+</div>
+</div>
+</div>
 </form>
