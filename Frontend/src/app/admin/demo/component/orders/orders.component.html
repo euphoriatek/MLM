@@ -48,38 +48,36 @@
             </td>
             <td>
                 <div class="d-flex">
-                    <button class="btn editbtn"  (click)="openEditDialog()"><i class="fa-solid fa-eye"></i></button>
+                    <button class="btn editbtn"  (click)="openViewDialog(data)"><i class="fa-solid fa-eye"></i></button>
                   </div>
             </td>
           
         </tr>
     </ng-template>
 </p-table>
-<p-dialog id="dialog" header="Orders Details" [(visible)]="visible" [style]="{ 'max-width': '580px', 'width':'100%'}" [modal]="true">
-    <div *ngFor="let order of orders">
-      <div class="order-details">
-        <div class="order-row">
-          <div class="order-column">
-            <p><strong>Name:</strong> {{ order.name }}</p>
-            <p><strong>Price:</strong> {{ order.price }}</p>
-            <p><strong>Size:</strong> {{ order.size }}</p>
-          
-          </div>
-  
-          <div class="order-column">
-            <p><strong>Email:</strong> {{ order.email }}</p>
-            <p><strong>Phone Number:</strong> {{ order.phone_number }}</p>
-            <p><strong>Address:</strong> {{ order.address }}</p>
-          </div>
-  
-          <div class="order-column">
-            <p><strong>Pin Code:</strong> {{ order.pin_code }}</p>
-            <p><strong>Alternate Phone Number:</strong> {{ order.alternate_phone_no || 'N/A' }}</p>
-            <p><strong>Created At:</strong> {{ order.created_at | date}}</p>
-          </div>
+<p-dialog id="dialog" header="Order Details" [(visible)]="visible" [style]="{ 'max-width': '580px', 'width':'100%'}" [modal]="true">
+    <div *ngIf="order">
+        <div class="order-details">
+            <div class="order-row">
+                <div class="order-column">
+                    <p><strong>Name:</strong> {{ order.name }}</p>
+                    <p><strong>Price:</strong> {{ order.price }}</p>
+                    <p><strong>Size:</strong> {{ order.size }}</p>
+                </div>
+
+                <div class="order-column">
+                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p><strong>Phone Number:</strong> {{ order.phone_number }}</p>
+                    <p><strong>Address:</strong> {{ order.address }}</p>
+                </div>
+
+                <div class="order-column">
+                    <p><strong>Pin Code:</strong> {{ order.pin_code }}</p>
+                    <p><strong>Created At:</strong> {{ order.created_at | date }}</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </p-dialog>
-  
+</p-dialog>
+
   

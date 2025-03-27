@@ -15,6 +15,7 @@ import { TreeViewComponent } from './demo/component/tree-view/tree-view.componen
 import { MembersListComponent } from './demo/component/members-list/members-list.component';
 import { OrdersComponent } from './demo/component/orders/orders.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
+import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
 const routes: Routes = [
   {
     path: '',
@@ -78,6 +79,11 @@ const routes: Routes = [
       {
         path: 'level-income',
         component: LevelIncomeComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'wallet-statement',
+        component: WalletStatementComponent,
         canActivate:[authGuard]
       }
       

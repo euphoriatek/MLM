@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class OrdersComponent {
   orders:any;
+  order: any;  
   visible: boolean = false;
     @ViewChild('dt') dt: Table | undefined;
     constructor(public fb: FormBuilder, public api: ApiService, public spinner: NgxSpinnerService, private toaster: ToasterService, private dialog: MatDialog,) { }
@@ -43,7 +44,8 @@ export class OrdersComponent {
     applyFilterGlobal($event: any, stringVal: any) {
       this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
     }
-    openEditDialog(){
+    openViewDialog(order: any) {
+      this.order = order; 
       this.visible=true;
     }
 }

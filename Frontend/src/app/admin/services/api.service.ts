@@ -180,4 +180,12 @@ export class ApiService {
   UserDetails(data: any){
     return this.http.post(this.AdminBaseUrl + 'user-details', {user:data});
   }
+
+  // Earning Wallet
+  getLevelIncome(){
+    return this.http.get(this.AdminBaseUrl + 'level-income');
+  }
+  walletStatement(){
+    return this.http.get(this.AdminBaseUrl + 'wallet-statement');
+  }
 }

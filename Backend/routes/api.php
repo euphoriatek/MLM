@@ -77,7 +77,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-withdrawals', [BankWithdrawalController::class, 'getWithdrawals'])->middleware('role:admin');
     Route::post('/admin/update-approved-staus', [BankWithdrawalController::class, 'approvedStatus'])->middleware('role:admin');
     Route::post('/admin/update-rejected-staus', [BankWithdrawalController::class, 'rejectStatus'])->middleware('role:admin');
-
+ // Earning Wallet
+    // Level Income
+    Route::get('/admin/level-income', [CommissionController::class, 'getLevelIncomeAdmin'])->middleware('role:admin');
+    Route::get('/admin/wallet-statement', [CommissionController::class, 'walletStatementAdmin'])->middleware('role:admin');
     // User API
     Route::get('/auth', [UserController::class, 'getAuthDetails'])->middleware('role:user');
     Route::post('/validate-Ifsc', [KycController::class, 'bankifscCodeValidate'])->middleware('role:user');

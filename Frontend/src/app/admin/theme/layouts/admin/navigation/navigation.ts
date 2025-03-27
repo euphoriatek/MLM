@@ -110,13 +110,6 @@ const NavigationItems = [
         url: '/admin/level-income',
         target: false,
         breadcrumbs: true,
-      },
-      {
-        id: 'repurchase-income',
-        title: 'Repurchase Income',
-        type: 'item',
-        url: '',
-        breadcrumbs: true,
       }
     ],
   },
@@ -126,6 +119,14 @@ const NavigationItems = [
     type: 'collapse',
     icon: 'fa-solid fa-wallet',
     children: [
+      {
+        id: 'wallet-statement',
+        title: 'Wallet Statement',
+        type: 'item',
+        url: '/admin/wallet-statement',
+        target: false,
+        breadcrumbs: true,
+      },
       {
         id: 'pending-withdrawals ',
         title: 'Pending Withdrawals',

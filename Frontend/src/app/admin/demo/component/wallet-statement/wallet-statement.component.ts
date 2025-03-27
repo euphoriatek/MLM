@@ -8,23 +8,23 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-level-income',
-  templateUrl: './level-income.component.html',
-  styleUrls: ['./level-income.component.scss']
+  selector: 'app-wallet-statement',
+  templateUrl: './wallet-statement.component.html',
+  styleUrls: ['./wallet-statement.component.scss']
 })
-export class LevelIncomeComponent {
+export class WalletStatementComponent {
   users:any;
   @ViewChild('dt') dt: Table | undefined;
   constructor(public fb: FormBuilder, public api: ApiService, public spinner: NgxSpinnerService, private toaster: ToasterService, private dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    this.getTransactions();
+    this.getWalletStatement();
   }
 
 
-  getTransactions() {
+  getWalletStatement() {
     this.spinner.show();
-    this.api.getLevelIncome().subscribe({
+    this.api.walletStatement().subscribe({
       next: (response: any) => {
         if (response && response.status) {
           this.users = response.data;
