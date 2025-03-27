@@ -50,7 +50,6 @@ export class CheckoutComponent {
       ]],
       address: ['', Validators.required],
       pin_code: ['', Validators.required],
-      alternate_phone_no: [''],
     });
 
     this.CheckoutForm.patchValue({

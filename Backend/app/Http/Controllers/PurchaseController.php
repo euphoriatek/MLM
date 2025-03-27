@@ -66,7 +66,6 @@ class PurchaseController extends Controller
                 'phone_number' => $data['delivery_address']['phone_number'],
                 'address' => $data['delivery_address']['address'],
                 'pin_code' => $data['delivery_address']['pin_code'],
-                'alternate_phone_no' => $data['delivery_address']['alternate_phone_no'],
                 'order_id' => $orderId
             ]);
 
@@ -284,6 +283,7 @@ class PurchaseController extends Controller
                 $pdf = Pdf::loadView('invoice', ['order' => $purchase, 'invoice' => $invoice, 'image' => $base64_image_src]);
                 $fileName = "invoice_{$orderId}.pdf";
                 Storage::disk('public')->put('invoices/' . $fileName, $pdf->output());
+                $invoice->update(["file" => 'invoices/' . $fileName]);
                 return true;
             }else{
                 return false;
@@ -308,7 +308,6 @@ class PurchaseController extends Controller
             'name' => 'required|string',
             'email' => 'required|email',
             'phone_number' => 'required|string|size:10',
-            'alternate_phone_no' => 'nullable|string|size:10',
             'address' => 'required|string',
             'pin_code' => 'required|numeric'
         ]);
@@ -325,7 +324,6 @@ class PurchaseController extends Controller
                 'user_id' => $userId,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
-                'alternate_phone_no' => $request->alternate_phone_no,
                 'address' => $request->address,
                 'pin_code' => $request->pin_code
             ]);

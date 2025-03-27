@@ -17,10 +17,63 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-7">
                 <div class="card rounded-3">
                     <div class="card-body">
                         <h4 class="title">Account KYC Summary</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Account KYC</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="idcard">
+                                        <i class="fa-solid fa-id-card"></i> PAN Card
+                                    </td>
+                                    <td *ngIf="UserInfo">
+                                        <span *ngIf="UserInfo.pan_verified" class="verified">
+                                            <i class="fa fa-check verified-icon"></i> APPROVED
+                                        </span>
+                                        <span *ngIf="!UserInfo.pan_verified" class="pending">
+                                            <i class="fa-regular fa-clock verified-icon"></i> PENDING
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="idcard">
+                                        <i class="fa-regular fa-credit-card"></i> Bank Info
+                                    </td>
+                                    <td *ngIf="UserInfo">
+                                        <span *ngIf="UserInfo.kyc_status === 'verified'" class="verified">
+                                            <i class="fa fa-check verified-icon"></i> APPROVED
+                                        </span>
+                                        <span *ngIf="UserInfo.kyc_status === 'pending'" class="pending">
+                                            <i class="fa-regular fa-clock verified-icon"></i> PENDING
+                                        </span>
+                                        <span *ngIf="UserInfo.kyc_status === 'rejected'" class="rejected">
+                                            <i class="fa fa-xmark verified-icon"></i> REJECTED
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="border-0">
+                                    <th colspan="2">
+                                        <a [routerLink]="['/referral/kyc']" class="btn orange-btn">{{btn_text}}</a>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card rounded-3">
+                    <div class="card-body">
+                        <h4 class="title">Activation Package</h4>
                         <table class="table">
                             <thead>
                                 <tr>

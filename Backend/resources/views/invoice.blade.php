@@ -76,6 +76,7 @@
                                 </table>
                             </td>
                             <td style="border:none; padding:2px 0px; text-align:center;">
+                            <strong style="padding-bottom:2px;">DELHIVERY</strong>
                             {!! DNS1D::getBarcodeHTML($invoice['waybill'], 'C128', 2, 50) !!}
                             <div style="padding-top:4px;">{{ $invoice['waybill'] }}</div>
                             </td>

@@ -10,5 +10,5 @@ class DeliveryAddress extends Model
 {
     use HasFactory;
     protected $table = 'delievery_address';
-    protected $fillable = ['name','email','user_id','phone_number', 'address', 'pin_code', 'alternate_phone_no'];
+    protected $fillable = ['name','email','user_id','phone_number', 'address', 'pin_code'];
 }

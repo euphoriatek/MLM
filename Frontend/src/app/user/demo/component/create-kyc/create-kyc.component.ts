@@ -287,7 +287,6 @@ getKycInfo(): void {
           }
           this.disableFormFields();
           this.isFormReadonly = true;
-          this.router.navigate(['/activation']);
         }
       }
       this.spinner.hide();
