@@ -1,15 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DB;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
 use App\Models\Payments;
 use App\Models\User;
+use App\Models\Setting;
+use App\Models\Invoice;
+use Carbon\Carbon;
 use App\Models\WalletStatement;
 use App\Models\DeliveryAddress;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 class PurchaseController extends Controller
 {
 
@@ -47,8 +53,9 @@ class PurchaseController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-
+        DB::beginTransaction();
         try {
+            $orderId = strtoupper('ORD' . uniqid());
             $purchase = Purchase::create([
                 'user_id' => $userId,
                 'product_id' => $request->product_id,
@@ -60,6 +67,7 @@ class PurchaseController extends Controller
                 'address' => $data['delivery_address']['address'],
                 'pin_code' => $data['delivery_address']['pin_code'],
                 'alternate_phone_no' => $data['delivery_address']['alternate_phone_no'],
+                'order_id' => $orderId
             ]);
 
             Payments::create([
@@ -72,14 +80,25 @@ class PurchaseController extends Controller
                 'amount' => $request->amount,
                 'json_response' => json_encode(json_decode($request->json_response, true)),
             ]);
+            
+            $createDelhivery = $this->createDelhivery($data,$orderId, $purchase->id,$userId);
+            if(!$createDelhivery){
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'The order could not be created. Please try again.',
+                ], 200);
+            }
             $this->execution($userId, productId: $request->product_id);
             $user->update(['is_active' => true]);
+            DB::commit();
             return response()->json([
                 'status' => true,
                 'message' => 'Purchase and payment details saved successfully!',
             ], 200);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while processing your request.',
@@ -90,11 +109,11 @@ class PurchaseController extends Controller
 
     public function execution($userId, $productId)
     {
-        $product = \DB::table('products')->where('id', $productId)->first();
+        $product = DB::table('products')->where('id', $productId)->first();
         $productPrice = $product->price;
-        $user = \DB::table('users')->where('id', $userId)->first();
+        $user = DB::table('users')->where('id', $userId)->first();
         $currentSponsorId = $user->parent_sponsor_id;
-        $commissionLevels = \DB::table('mlm_levels')->where('deleted_at', null)->orderBy('level_no', 'asc')->get();
+        $commissionLevels = DB::table('mlm_levels')->where('deleted_at', null)->orderBy('level_no', 'asc')->get();
         $remainingAmount = $productPrice;
 
         foreach ($commissionLevels as $level) {
@@ -103,19 +122,19 @@ class PurchaseController extends Controller
             }
 
             
-            $sponsor = \DB::table('users')->where('sponsor_id', $currentSponsorId)->first();
+            $sponsor = DB::table('users')->where('sponsor_id', $currentSponsorId)->first();
             if (!$sponsor) {
                 break;
             }
 
-            $checkAdmin = \DB::table('users')->where('sponsor_id', $currentSponsorId)->where('role', 'admin')->first();
+            $checkAdmin = DB::table('users')->where('sponsor_id', $currentSponsorId)->where('role', 'admin')->first();
             if ($checkAdmin) {
                 break;
             }
             
             $commission = $level->commission_by_level;
-            \DB::table('users')->where('id', $sponsor->id)->increment('wallet_balance', $commission);
-            \DB::table('commissions')->insert([
+            DB::table('users')->where('id', $sponsor->id)->increment('wallet_balance', $commission);
+            DB::table('commissions')->insert([
                 'user_id' => $sponsor->id,
                 'amount' => $commission,
                 'package_price'=> $productPrice,
@@ -137,9 +156,9 @@ class PurchaseController extends Controller
         }
 
         if ($remainingAmount > 0) {
-            $admin = \DB::table('users')->where('role', 'admin')->first();
-            \DB::table('users')->where('id', $admin->id)->increment('wallet_balance', $remainingAmount);
-            \DB::table('commissions')->insert([
+            $admin = DB::table('users')->where('role', 'admin')->first();
+            DB::table('users')->where('id', $admin->id)->increment('wallet_balance', $remainingAmount);
+            DB::table('commissions')->insert([
                 'user_id' => $admin->id,
                 'amount' => $remainingAmount,
                 'description' => "Remaining commission credited to admin",
@@ -157,7 +176,7 @@ class PurchaseController extends Controller
             ]);
         }
 
-        \DB::table('transactions')->insert([
+        DB::table('transactions')->insert([
             'user_id' => $userId,
             'product_id' => $productId,
             'quantity' => 1,
@@ -168,7 +187,111 @@ class PurchaseController extends Controller
         // return response()->json(['message' => 'Commission distributed successfully.']);
     }
 
+    public function createDelhivery($data,$orderId, $purchase_id,$userId){
+        $settings = Setting::where('key', 'DELHIVERY_API_KEY')->get()->pluck('value', 'key');
+        $response = Http::withHeaders([
+            'Authorization' => 'Token '.$settings['DELHIVERY_API_KEY'],
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ])
+        ->asForm()->post('https://api.delhivery.com/api/cmu/create.json', [
+            'format' => 'json',
+            'data' => json_encode([
+                'shipments' => [
+                    [
+                        'name' => $data['delivery_address']['name'],
+                        'add' => $data['delivery_address']['address'],
+                        'pin' => $data['delivery_address']['pin_code'],
+                        'city' => 'Indore',
+                        'state' => 'Madhya Pradesh',
+                        'country' => 'India',
+                        'phone' => $data['delivery_address']['phone_number'],
+                        'order' => $orderId,
+                        'payment_mode' => 'Prepaid',
+                        'return_pin' => '',
+                        'return_city' => '',
+                        'return_phone' => '',
+                        'return_add' => '',
+                        'return_state' => '',
+                        'return_country' => '',
+                        'products_desc' => 'Activation Package T-Shirt Size :'.$data['size'],
+                        'hsn_code' => '',
+                        'cod_amount' => '',
+                        'order_date' =>  Carbon::now(),
+                        'total_amount' =>  $data['price'],
+                        'seller_add' => '',
+                        'seller_name' => '',
+                        'seller_inv' => '',
+                        'quantity' => '1',
+                        'waybill' => '',
+                        'shipment_width' => '',
+                        'shipment_height' => '',
+                        'weight' => '',
+                        'seller_gst_tin' => '',
+                        'shipping_mode' => 'Surface',
+                        'address_type' => 'office',
+                    ]
+                ],
+                'pickup_location' => [
+                    'name' => 'SK LIFE',
+                    'add' => 'Block B 08 Flat 906 Gulmarg parisar Badiya kima, bicholi mardana, indore 452016',
+                    'city' => 'Indore',
+                    'pin_code' => '452016',
+                    'country' => 'India',
+                    'phone' => '7354809319',
+                ],
+                'items' => [
+                    [
+                        'item_name' => 'T-Shirt',
+                        'item_quantity' => 1,
+                        'item_weight' => 250,
+                        'item_value' => $data['price'],
+                        'item_description' => 'Activation Package T-Shirt Size :'.$data['size'],
+                    ]
+                ]
+            ])
+        ]);
+        if ($response->successful()) {
+            // Handle the response here
+            $responseData = $response->json();
+            if($responseData['success'] == 1){
+                $number = 'INV-' . date('Ymd') . '-' . mt_rand(1000, 9999);
+                $gst_amout = $data['price'] * 5 / 100;
+                $subtotal = $data['price'] - $gst_amout;
+                $invoice = Invoice::create([
+                    "invoice_number" => $number,
+                    "customer_id" => $userId,
+                    "purchase_id" => $purchase_id,
+                    "invoice_date" => date(format: 'Y-m-d'),
+                    "total_amount" => $data['price'],
+                    "gst_amount" => $gst_amout,
+                    "subtotal" => $subtotal,
+                    "gst_rate" => 5,
+                    "client" => $responseData['packages'][0]['client'],
+                    "waybill" => $responseData['packages'][0]['waybill']
+                ]);
+                $purchase = Purchase::find($purchase_id);
 
+                $image_url = "https://sklife.in/sk-portal/assets/images/logo.png";
+
+                // Get the image content using file_get_contents
+                $image_data = file_get_contents($image_url);
+
+                // Convert the image to base64
+                $base64_image = base64_encode($image_data);
+
+                // Generate the complete base64 string with the correct MIME type
+                $base64_image_src = "data:image/png;base64," . $base64_image;
+                $pdf = Pdf::loadView('invoice', ['order' => $purchase, 'invoice' => $invoice, 'image' => $base64_image_src]);
+                $fileName = "invoice_{$orderId}.pdf";
+                Storage::disk('public')->put('invoices/' . $fileName, $pdf->output());
+                return true;
+            }else{
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     public function CreateDeliveryAddress(Request $request)
     {
 

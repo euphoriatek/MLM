@@ -91,8 +91,8 @@
                     !firstSend &&
                     !is_optVerify &&
                     NumberIsValid
-                  " type="button" (click)="sendOtp()">
-                  Send OTP
+                  " type="button" (click)="sendOtp()" [disabled]="is_send">
+                  Send OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
                 </button>
                 <button *ngIf="
                     signupForm.get('mobile_no')?.valid &&
@@ -101,8 +101,8 @@
                     firstSend &&
                     !is_optVerify &&
                     NumberIsValid
-                  " type="button" (click)="sendOtp()">
-                  Resend OTP
+                  " type="button" (click)="sendOtp()" [disabled]="is_send">
+                  Resend OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
                 </button>
                 <div id="RegsistOtp" *ngIf="otpSent && !is_optVerify">
                   <div id="div_timer" class="timer-otp" *ngIf="otpTimer > 0">

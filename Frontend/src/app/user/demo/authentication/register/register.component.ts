@@ -31,6 +31,7 @@ export class RegisterComponent implements OnInit {
   firstSend:boolean=false;
   NumberIsValid:boolean=false;
   Sponserid: string | null = null;
+  is_send:boolean=false;
   
   constructor(private fb: FormBuilder, private route: ActivatedRoute,private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
 
@@ -125,9 +126,11 @@ export class RegisterComponent implements OnInit {
 
 
   sendOtp(){
+    this.is_send = true;
     const data = {"mobile_number":this.signupForm.value.mobile_no};
     this.api.GenerateOTP(data).subscribe({
       next: (response: any) => {
+        this.is_send = false;
         if (response.status) {
           this.otpSent = true;
             this.otpTimer = 60;

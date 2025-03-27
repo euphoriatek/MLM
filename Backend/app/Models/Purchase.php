@@ -10,5 +10,5 @@ class Purchase extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = 'purchase';
-    protected $fillable = ['name', 'user_id', 'product_id', 'price', 'size','email', 'phone_number', 'address', 'pin_code', 'alternate_phone_no','status'];
+    protected $fillable = ['name', 'user_id', 'product_id', 'price', 'size','email', 'phone_number', 'address', 'pin_code', 'alternate_phone_no','status','order_id'];
 }
