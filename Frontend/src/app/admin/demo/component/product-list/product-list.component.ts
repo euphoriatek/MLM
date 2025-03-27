@@ -27,7 +27,7 @@ export class ProductListComponent {
       id: ['', Validators.required],
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
-      dp: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
+      // dp: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
       // pv: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
       // category: ['1', Validators.required],
       description: [''],
@@ -83,7 +83,7 @@ export class ProductListComponent {
       id: data.id,
       name: data.name,
       price: parseInt(data.price),
-      dp: parseInt(data.dp),
+      // dp: parseInt(data.dp),
       // pv: parseInt(data.pv),
       description: data.description,
     });

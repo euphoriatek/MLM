@@ -173,4 +173,33 @@ class BankWithdrawalController extends Controller
             ], 500);
         }
     }
+
+    public function transferToBulkpe(Request $request)
+    {
+        $user = auth()->user();
+
+        $amount = $user->wallet_balance;
+
+        if ($amount <= 0) {
+            return response()->json(['message' => 'Insufficient funds'], 400);
+        }
+
+        // Example Bulkpe API call (Replace with real API endpoint)
+        $bulkpeResponse = Http::post('https://bulkpe.in/api/transfer', [
+            'mobile_no' => $user->mobile_no,
+            'amount' => $amount,
+            'api_key' => env('BULKPE_API_KEY'),
+        ]);
+
+        if ($bulkpeResponse->successful()) {
+            // Deduct from internal wallet after successful transfer
+            $user->wallet_balance = 0;
+            $user->save();
+
+            return response()->json(['message' => 'Funds transferred successfully']);
+        } else {
+            return response()->json(['message' => 'Transfer failed'], 500);
+        }
+    }
+
 }

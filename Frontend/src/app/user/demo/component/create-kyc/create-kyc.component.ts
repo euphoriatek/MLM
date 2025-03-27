@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { environment } from 'src/environments/environment';
 
+
 @Component({
   selector: 'app-create-kyc',
   templateUrl: './create-kyc.component.html',
@@ -29,7 +30,7 @@ export class CreateKycComponent {
   is_pan_verify:boolean=false;
   BaseUrl = environment.FilebasePath;
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService,
-    public api: ApiService, public toaster: ToasterService
+    public api: ApiService, public toaster: ToasterService,private router: Router
   ) {
 
   }
@@ -284,13 +285,13 @@ getKycInfo(): void {
           if(panData.pan_image){
             this.imageUrlPan = this.BaseUrl+panData.pan_image;
           }
-          
-          // Disable the PAN fields and set the readonly flag
           this.disableFormFields();
           this.isFormReadonly = true;
+          this.router.navigate(['/activation']);
         }
       }
       this.spinner.hide();
+   
     },
     error: (err) => {
       console.log(err);
@@ -299,40 +300,4 @@ getKycInfo(): void {
   });
 }
 
-// getKycInfo(): void {
-//   this.spinner.show();
-//   this.api.getUserKyc().subscribe({
-//     next: (response: any) => {
-//       if (response.status && response.data) {
-//         if(response.data.bank){
-//           var data = response.data.bank;
-//           this.KycForm.patchValue({
-//             account_holder_name: data.account_holder_name,
-//             ifsc_code: data.ifsc_code,
-//             account_no: data.account_no,
-//             bank_name: data.bank_name,
-//             branch_name: data.branch_name,
-//             image: data.image
-//           });
-//           this.disableFormBnkFields();
-//           this.isReadonly = true;
-//         }else if(response.data.pan){
-//           var data = response.data.pan;
-//           this.PanKycForm.patchValue({
-//             tax_document: data.tax_document,
-//             id_number: data.id_number,
-//             pan_image: data.pan_image,
-//           });
-//           this.disableFormFields();
-//           this.isFormReadonly = true;
-//         }
-//       }
-//       this.spinner.hide();
-//     },
-//     error: (err) => {
-//       console.log(err);
-//       this.spinner.hide();
-//     }
-//   });
-// }
 }

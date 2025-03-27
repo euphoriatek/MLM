@@ -1,7 +1,7 @@
 <p-table #dt [value]="commissions" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="" [filterDelay]="0"
-    [globalFilterFields]="['username','description','created_at','commission_amount']">
+    [globalFilterFields]="['user.full_name','description','created_at','amount']">
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
             <h3>Commission List</h3>
@@ -16,8 +16,7 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="id">Id<p-sortIcon field="id"></p-sortIcon></th>
-            <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
+            <th pSortableColumn="user.full_name">Username <p-sortIcon field="user.full_name"></p-sortIcon></th>
             <th pSortableColumn="description">Description<p-sortIcon field="description"></p-sortIcon></th>
             <th pSortableColumn="amount">Amount<p-sortIcon field="amount"></p-sortIcon></th>
             <th pSortableColumn="created_at">Created At <p-sortIcon field="created_at"></p-sortIcon></th>
@@ -25,10 +24,6 @@
     </ng-template>
     <ng-template pTemplate="body" let-data>
         <tr class="p-selectable-row">
-            <td>
-                <span class="p-column-title">S.No.</span>
-                <span class="image-text">{{data.id}}</span>
-            </td>
             <td>
                 <span class="p-column-title">Username</span>
                 <span class="image-text">{{data.user.full_name}}</span>

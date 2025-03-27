@@ -36,7 +36,7 @@ Route::post('/admin/login', [ApiController::class, 'login']);
 Route::post('/signup', [UserController::class, 'store']);
 Route::post('/sync-data', [UserController::class, 'execution']);
 Route::get('/get-countries', [UserController::class, 'getCountries']);
-
+Route::get('/get-state', [UserController::class, 'getStates']);
 Route::post('/validate-sponsor', [UserController::class, 'validateSponsor']);
 Route::post('/generate-otp', [UserController::class, 'generateOtp']);
 Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
@@ -73,7 +73,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Transactions
     Route::get('/admin/get-transactions', [TransactionController::class, 'GetTransaction'])->middleware('role:admin');
     // payments
-    Route::get('/admin/get-payments', [PaymentController::class, 'GetPayment'])->middleware('role:admin');
+    Route::get('/admin/get-payments', [PaymentController::class, 'getPayment'])->middleware('role:admin');
     Route::get('/admin/get-withdrawals', [BankWithdrawalController::class, 'getWithdrawals'])->middleware('role:admin');
     Route::post('/admin/update-approved-staus', [BankWithdrawalController::class, 'approvedStatus'])->middleware('role:admin');
     Route::post('/admin/update-rejected-staus', [BankWithdrawalController::class, 'rejectStatus'])->middleware('role:admin');
@@ -114,3 +114,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // / Bank Withdrawal
     Route::post('/save-withdrawal', [BankWithdrawalController::class, 'SaveWithdrawal'])->middleware('role:user');
 });
+Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);

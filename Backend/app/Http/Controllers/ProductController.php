@@ -14,8 +14,8 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'dp' => 'required|numeric',
-            'category' => 'required|integer',
+            // 'dp' => 'required|numeric',
+            // 'category' => 'required|integer',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -73,7 +73,7 @@ class ProductController extends Controller
             'id' => 'required|numeric',
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'dp' => 'required|numeric',
+            // 'dp' => 'required|numeric',
             'description' => 'nullable|string',
         ]);
         if ($validator->fails()) {
@@ -92,7 +92,7 @@ class ProductController extends Controller
             }
             $object->name = $input['name'];
             $object->price = $input['price'];
-            $object->dp = $input['dp'];
+            // $object->dp = $input['dp'];
             $object->description = $input['description'];
             $object->save();
             return response()->json([

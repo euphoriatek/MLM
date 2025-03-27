@@ -27,11 +27,11 @@
     <!-- DP (Discount Price) -->
     <div class="col-lg-12">
         <div class="form-group">
-            <label for="dp">DP (Discount Price)</label>
-            <input type="text" id="dp" formControlName="dp" class="form-control" />
-            <div *ngIf="productForm.get('dp').hasError('required') && productForm.get('dp').touched">
+            <label for="dp">GST</label>
+            <input type="text" id="dp" formControlName="dp" class="form-control" placeholder="5%  GST " readonly/>
+            <!-- <div *ngIf="productForm.get('dp').hasError('required') && productForm.get('dp').touched">
                 <span class="error-message">Discount Price is required</span>
-            </div>
+            </div> -->
         </div>
     </div>
   
@@ -47,7 +47,7 @@
     </div> -->
   
     <!-- Category -->
-    <div class="col-lg-12">
+    <!-- <div class="col-lg-12">
         <div class="form-group">
         <label>Category</label>
         <div class="category-options">  
@@ -58,7 +58,7 @@
         </div>
         </div>
     </div>
-  
+   -->
     <!-- Product Description -->
     <div class="col-lg-12">
         <div class="form-group">

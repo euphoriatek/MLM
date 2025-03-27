@@ -46,31 +46,31 @@ const NavigationItems = [
   //     }
   //   ],
   // },
-  {
-    id: 'balance-request',
-    title: 'Balance Request',
-    type: 'collapse',
-    icon: 'fa-solid fa-money-bill',
-    children: [
-      {
-        id: 'new-request',
-        title: 'New Request',
-        type: 'item',
-        url: '/admin/new_product',
-        breadcrumbs: true,
-      },
-      {
-        id: 'reports',
-        title: 'Reports',
-        type: 'item',
-        url: '/admin/orders',
-        breadcrumbs: true,
-      }
-    ],
-  },
+  // {
+  //   id: 'balance-request',
+  //   title: 'Balance Request',
+  //   type: 'collapse',
+  //   icon: 'fa-solid fa-money-bill',
+  //   children: [
+  //     {
+  //       id: 'new-request',
+  //       title: 'New Request',
+  //       type: 'item',
+  //       url: '/admin/new_product',
+  //       breadcrumbs: true,
+  //     },
+  //     {
+  //       id: 'reports',
+  //       title: 'Reports',
+  //       type: 'item',
+  //       url: '/admin/orders',
+  //       breadcrumbs: true,
+  //     }
+  //   ],
+  // },
   {
     id: 'members',
-    title: 'Members',
+    title: "Member's",
     type: 'collapse',
     icon: 'fa-solid fa-user-group',
     children: [
@@ -83,7 +83,7 @@ const NavigationItems = [
       // },
       {
         id: 'members-list',
-        title: 'Members List',
+        title: "Member's List",
         type: 'item',
         url: '/admin/members-list',
         breadcrumbs: true,
@@ -104,10 +104,11 @@ const NavigationItems = [
     icon: 'fa-solid fa-chart-pie',
     children: [
       {
-        id: 'autopool-income ',
-        title: 'Autopool Income ',
+        id: 'level-income',
+        title: 'Level Income',
         type: 'item',
-        url: '',
+        url: '/admin/level-income',
+        target: false,
         breadcrumbs: true,
       },
       {

@@ -39,7 +39,8 @@ export class RegisterComponent implements OnInit {
       {
         parent_sponsor_id: ['', [ Validators.maxLength(10),Validators.required]],
         full_name: ['', Validators.required],
-        country_id: ['98', Validators.required],
+        // country_id: ['98', Validators.required],
+        state_id: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -58,7 +59,7 @@ export class RegisterComponent implements OnInit {
       },
       { validators: passwordMatchValidator() }
     );
-    this.fetchCountry();
+    this. fetchStates(); 
       this.currentRoute.paramMap.subscribe(params => {
         this.Sponserid = params.get('id');
         if (this.Sponserid) {
@@ -72,6 +73,7 @@ export class RegisterComponent implements OnInit {
           parent_sponsor_id: this.spnsrId['referral']
         });
       }
+          
   }
 
   checkSPSid(event:any){
@@ -176,15 +178,28 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  fetchCountry(): void {
-    this.spinner.show();
-    this.api.getCountry().subscribe({
+  // fetchCountry(): void {
+  //   this.spinner.show();
+  //   this.api.getCountry().subscribe({
+  //     next: (response: any) => {
+  //       if (response?.status) {
+  //         this.countries = response.data;
+  //         this.selectedCountryLogo = 'assets/images/flags/IN.png';
+  //       }
+  //       this.spinner.hide();
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+  fetchStates(): void {
+    this.api.getStates().subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.countries = response.data;
-          this.selectedCountryLogo = 'assets/images/flags/IN.png';
+          this.spinner.hide();
+          this.states = response.data;
         }
-        this.spinner.hide();
       },
       error: (err) => {
         console.error(err);
@@ -237,4 +252,5 @@ function passwordMatchValidator() {
     const confirmPassword = control.get('confirm_password')?.value;
     return password && confirmPassword && password !== confirmPassword ? { passwordMismatch: true } : null;
   };
+  
 }

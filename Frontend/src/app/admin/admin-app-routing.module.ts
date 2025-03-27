@@ -14,6 +14,7 @@ import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/
 import { TreeViewComponent } from './demo/component/tree-view/tree-view.component';
 import { MembersListComponent } from './demo/component/members-list/members-list.component';
 import { OrdersComponent } from './demo/component/orders/orders.component';
+import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 const routes: Routes = [
   {
     path: '',
@@ -73,7 +74,13 @@ const routes: Routes = [
         path: 'orders',
         component: OrdersComponent,
         canActivate:[authGuard]
+      },
+      {
+        path: 'level-income',
+        component: LevelIncomeComponent,
+        canActivate:[authGuard]
       }
+      
     ]
   },
   {

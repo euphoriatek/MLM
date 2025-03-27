@@ -169,22 +169,6 @@ export class LevelTreeComponent implements OnInit {
     });
   }
 
-  Search(){
-    if(this.SearchForm.valid){
-      this.api.searchTreeUser(this.SearchForm.value.search).subscribe({
-        next: (response: any) => {
-          this.spinner.hide();
-          if (response && response.status) {
-            this.user = response.user;
-          }
-        },
-        error: (err) => {
-          this.spinner.hide();
-          console.error(err);
-        }
-      });
-    }
-  }
   openFullScreen() {
     this.fullScreenVisible = true;
     this.renderer.addClass(this.el.nativeElement, 'fullscreen');
@@ -197,4 +181,132 @@ export class LevelTreeComponent implements OnInit {
     this.fullScreenVisible = false;
     this.renderer.removeClass(this.el.nativeElement, 'fullscreen');
   }
+  Search() {
+    if (this.SearchForm.valid) {
+      this.spinner.show();
+      this.api.searchTreeUser(this.SearchForm.value.search.trim()).subscribe({
+        next: (response: any) => {
+          this.spinner.hide();
+  
+          if (response && response.status) {
+            this.user = response.user;
+            const mobile_no = (this.user.mobile_no || "").trim();
+  
+            // Clear the tree div before adding the new search result
+            $('#tree_div').empty(); 
+  
+            // Append the main user node
+            const existingUserNode = $('#tree_div').find(`#userlink_${mobile_no}`);
+            if (existingUserNode.length === 0) {
+              let searchUserHtml = `
+                <tr class="node-cells">
+                  <td class="node-cell" colspan="2">
+                    <div class="node" style="cursor: default;">
+                      <a style="display:block" class="showchield" id="${this.user.id}">
+                        <img class="tree_icon" src="https://login.progressfashion.com/images/redimage.png" 
+                        alt="${mobile_no}" id="userlink_${mobile_no}" title="">
+                      </a>
+                      <div colspan="2" class="line down"></div>
+                      <div class="username" title="${mobile_no}" style="background: #454552 !important;cursor:pointer">
+                        <img src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree">
+                        <span>${mobile_no}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>`;
+  
+              // Append the search result (main user node)
+              $('#tree_div').append(searchUserHtml);
+            }
+  
+            // Process child nodes if available
+            if (response.data && response.data.length > 0) {
+              let ICount = 1;
+              $.each(response.data, (key, value) => {
+                const childMobileNo = (value.mobile_no || "").trim();
+                // Ensure the child node doesn't duplicate
+                const existingChildNode = $('#tree_div').find(`#userlink_${childMobileNo}`);
+                if (existingChildNode.length === 0) {
+                  let ForAppend = `<tr class="node-cells">
+                                    <td class="node-cell" colspan="2">
+                                      <div class="node" style="cursor: default;">
+                                        <a style="display:block" class="showchield" id="${value.id}">
+                                          <img style="pointer-events: none;" class="tree_icon" 
+                                          src="https://login.progressfashion.com/images/redimage.png" 
+                                          alt="${value.mobile_no}" id="userlink_${value.mobile_no}" title="">
+                                        </a>
+                                        <div colspan="2" class="line down"></div>
+                                        <div class="username" title="${value.mobile_no}" style="background: #454552 !important;cursor:pointer">
+                                          <img style="pointer-events: none;" 
+                                          src="https://login.progressfashion.com/images/info-tree.svg" 
+                                          class="info-icon-tree">
+                                          <span style="pointer-events: none;">${value.mobile_no}</span>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>`;
+                  // Append child nodes to the container
+                  $('#tree_div').find('tbody').append(ForAppend);
+                }
+  
+                // Now check if the current user has child nodes (nested records)
+                if (value.data && value.data.length > 0) {
+                  // Create a nested table for the child nodes
+                  let nestedTableHtml = `<tr><td colspan="2"><div class="line down addcolspan"></div></td></tr>
+                                         <tr class="trspace"><td class="line left">&nbsp;</td><td class="line right">&nbsp;</td></tr>
+                                         <tr class="trcontainer">
+                                           <td class="node-container" colspan="2">
+                                             <table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
+                                               <tbody></tbody>
+                                             </table>
+                                           </td>
+                                         </tr>`;
+  
+                  // Append nested table to the parent row
+                  $('#tree_div').find('.trcontainer').last().find('tbody').append(nestedTableHtml);
+  
+                  // Recursively append child nodes of this current node
+                  $.each(value.data, (childKey, childValue) => {
+                    const childMobileNo = (childValue.mobile_no || "").trim();
+                    const existingNestedChildNode = $('#tree_div').find(`#userlink_${childMobileNo}`);
+                    if (existingNestedChildNode.length === 0) {
+                      let nestedChildHtml = `<tr class="node-cells">
+                                              <td class="node-cell" colspan="2">
+                                                <div class="node" style="cursor: default;">
+                                                  <a style="display:block" class="showchield" id="${childValue.id}">
+                                                    <img style="pointer-events: none;" class="tree_icon" 
+                                                    src="https://login.progressfashion.com/images/redimage.png" 
+                                                    alt="${childValue.mobile_no}" id="userlink_${childValue.mobile_no}" title="">
+                                                  </a>
+                                                  <div colspan="2" class="line down"></div>
+                                                  <div class="username" title="${childValue.mobile_no}" 
+                                                   style="background: #454552 !important;cursor:pointer">
+                                                    <img style="pointer-events: none;" 
+                                                    src="https://login.progressfashion.com/images/info-tree.svg" 
+                                                    class="info-icon-tree">
+                                                    <span style="pointer-events: none;">${childValue.mobile_no}</span>
+                                                  </div>
+                                                </div>
+                                              </td>
+                                            </tr>`;
+                      // Append nested child node to the nested table
+                      $('#tree_div').find('.trcontainer').last().find('tbody').append(nestedChildHtml);
+                    }
+                  });
+                }
+  
+                ICount++;
+              });
+            }
+          }
+        },
+        error: (err) => {
+          this.spinner.hide();
+          console.error(err);
+        }
+      });
+    }
+  }
+
+
 }

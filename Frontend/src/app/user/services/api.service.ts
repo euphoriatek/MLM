@@ -19,6 +19,10 @@ export class ApiService {
     return this.http.get(this.BaseUrl + 'get-countries');
   }
 
+  getStates() {
+    return this.http.get(this.BaseUrl + 'get-state');
+  }
+
   validateWithSponsor(id: number) {
     return this.http.post(this.BaseUrl + 'validate-sponsor', { "SponsorID": id });
   }

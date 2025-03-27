@@ -51,6 +51,7 @@ import { PaymentsComponent } from './demo/component/payments/payments.component'
 import { WithdrawalListingComponent } from './demo/component/withdrawal-listing/withdrawal-listing.component';
 import { TreeViewComponent } from './demo/component/tree-view/tree-view.component';
 import { MembersListComponent } from './demo/component/members-list/members-list.component';
+import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -73,7 +74,8 @@ import { MembersListComponent } from './demo/component/members-list/members-list
     PaymentsComponent,
     WithdrawalListingComponent,
     TreeViewComponent,
-    MembersListComponent
+    MembersListComponent,
+    LevelIncomeComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule

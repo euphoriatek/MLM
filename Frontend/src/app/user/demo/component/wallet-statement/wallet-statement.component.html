@@ -1,10 +1,10 @@
 <p-table #dt [value]="users" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="" [filterDelay]="0"
-    [globalFilterFields]="['mobile_no','full_name','created_at','purchases.created_at','country.name']">
+    [globalFilterFields]="['remark','type','amount','created_at','balance','particulars']">
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
-            <h3>Wallet Statement</h3>
+            <!-- <h3>Wallet Statement</h3> -->
             <div class="product-search">
                 <span class="p-input-icon-left w-100">
                     <i class="ti ti-search"></i>

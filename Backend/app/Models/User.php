@@ -25,7 +25,8 @@ class User extends Authenticatable
         'sponsor_id',
         'parent_sponsor_id',
         'wallet_balance',
-        'country_id',
+        // 'country_id',
+        'state_id',
         'pin_code',
         'address',
         'title',
@@ -69,6 +70,10 @@ class User extends Authenticatable
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+    public function states()
+    {
+        return $this->belongsTo(State::class, 'state_id');
     }
 
     public function purchases()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Country;
+use App\Models\State;
 use App\Models\Otp;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -21,8 +22,9 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'parent_sponsor_id' => 'required|string|max:255',
             'full_name' => 'required|string|max:255',
-            'country_id' => 'required|string|max:255',
+            // 'country_id' => 'required|string|max:255',
             'mobile_no' => 'required|string|regex:/^[0-9]{10}$/|max:20|unique:users,mobile_no',
+            'state_id' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'password' => 'required|string|min:6',
             'pin_code' => 'required|string|regex:/^[0-9]{5,6}$/|max:6',
@@ -58,7 +60,8 @@ class UserController extends Controller
                 'sponsor_id' => $sponsor_id,
                 'parent_sponsor_id' => $request->input('parent_sponsor_id'),
                 'full_name' => $request->input('full_name'),
-                'country_id' => $request->input('country_id'),
+                // 'country_id' => $request->input('country_id'),
+                'state_id' => $request->input('state_id'),
                 'mobile_no' => $request->input('mobile_no'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
@@ -98,7 +101,28 @@ class UserController extends Controller
             ], 500);
         }
     }
-
+    public function getStates(Request $request)
+    {
+        try {
+            // $country_id = $id;
+            // if ($country_id) {
+            //     $states = State::where('country_id', $country_id)->get();
+            // } else {
+                // $states = State::all();
+            // }
+            $states = State::get();
+            return response()->json([
+                'status' => true,
+                'data' => $states,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching the states.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function validateSponsor(Request $request)
     {
         $SponsorID = $request->input('SponsorID');
@@ -156,7 +180,7 @@ class UserController extends Controller
         $response = Http::get($url);
         $data = $response->json();
         $otp_expiry = Carbon::now()->addMinutes(1);
-        if($data['ErrorCode'] == 000){
+        if ($data['ErrorCode'] == 000) {
             Otp::create([
                 'mobile_number' => $mobile_number,
                 'otp' => $otp,
@@ -167,7 +191,7 @@ class UserController extends Controller
                 'message' => 'OTP sent successfully',
                 'status' => true
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'Try Again',
                 'status' => false
@@ -194,13 +218,13 @@ class UserController extends Controller
                 'message' => 'Invalid OTP'
             ], 400);
         }
-    
+
         if (Carbon::now()->lt($otpRecord->otp_expiry)) {
             $otpRecord->is_verified = true;
             $otpRecord->otp = null;
             $otpRecord->otp_expiry = null;
             $otpRecord->save();
-    
+
             return response()->json([
                 'status' => true,
                 'message' => 'OTP verified successfully'
@@ -212,7 +236,7 @@ class UserController extends Controller
             'message' => 'OTP has expired. Please resend.'
         ], status: 200);
     }
-    
+
     public function validateMobile(Request $request)
     {
         $mobile_number = $request->input('mobile_number');
@@ -301,7 +325,7 @@ class UserController extends Controller
 
     public function getUsersTree(Request $request)
     {
-       
+
         $user = auth()->user();
         if (!$user) {
             return response()->json([
@@ -310,7 +334,7 @@ class UserController extends Controller
             ], 401);
         }
         $input = $request->all();
-        $userId =  $input['user_id'];
+        $userId = $input['user_id'];
         $loggedInUser = User::find($userId);
         $rootSponsorId = $loggedInUser->sponsor_id;
         $users = User::where('parent_sponsor_id', $rootSponsorId)->get();
@@ -324,9 +348,78 @@ class UserController extends Controller
         ], 200);
     }
 
+    // public function getUsersTreeSearch(Request $request)
+    // {
+
+    //     $user = auth()->user();
+    //     if (!$user) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'User is not authenticated.',
+    //         ], 401);
+    //     }
+    //     $input = $request->all();
+    //     $User = User::where('mobile_no', $input['data'])->first();
+    //     if(!$User){
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'No Matched',
+    //         ], 400);
+    //     }
+    //     $rootSponsorId = $User->sponsor_id;
+    //     $users = User::where('parent_sponsor_id', $rootSponsorId)->get();
+    //     $usersWithCount = $users->map(function ($user) {
+    //         $user->Downlinecount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
+    //         return $user;
+    //     });
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'data' => $usersWithCount,
+    //         'user' => $User
+    //     ], 200);
+    // }
+    // public function getUsersTreeSearch(Request $request)
+    // {
+    //     $user = auth()->user();
+    //     if (!$user) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'User is not authenticated.',
+    //         ], 401);
+    //     }
+
+    //     $input = $request->all();
+    //     $User = User::where('mobile_no', trim($input['data']))->first();
+
+    //     if (!$User) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'No Matched',
+    //         ], 400);
+    //     }
+
+    //     $rootSponsorId = $User->sponsor_id;
+
+    //     // ✅ Exclude the searched user from the downline results
+    //     $users = User::where('parent_sponsor_id', $rootSponsorId)
+    //         ->where('id', '!=', $User->id) 
+    //         ->get();
+
+    //     $usersWithCount = $users->map(function ($user) {
+    //         $user->Downlinecount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
+    //         return $user;
+    //     });
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'data' => $usersWithCount,
+    //         'user' => $User // Only send the searched user separately
+    //     ], 200);
+    // }
+
     public function getUsersTreeSearch(Request $request)
     {
-       
         $user = auth()->user();
         if (!$user) {
             return response()->json([
@@ -334,21 +427,29 @@ class UserController extends Controller
                 'message' => 'User is not authenticated.',
             ], 401);
         }
+    
         $input = $request->all();
-        $User = User::where('mobile_no', $input['data'])->first();
-        if(!$User){
+        $User = User::where('mobile_no', trim($input['data']))->first();
+    
+        if (!$User) {
             return response()->json([
                 'status' => false,
                 'message' => 'No Matched',
             ], 400);
         }
+    
         $rootSponsorId = $User->sponsor_id;
-        $users = User::where('parent_sponsor_id', $rootSponsorId)->get();
+    
+        // Fetch users where parent_sponsor_id matches the rootSponsorId and exclude the current user.
+        $users = User::where('parent_sponsor_id', $rootSponsorId)
+            ->where('id', '!=', $User->id)
+            ->distinct() 
+            ->get();
         $usersWithCount = $users->map(function ($user) {
             $user->Downlinecount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
             return $user;
         });
-
+    
         return response()->json([
             'status' => true,
             'data' => $usersWithCount,
@@ -356,7 +457,6 @@ class UserController extends Controller
         ], 200);
     }
     
-
     public function getUser(Request $request)
     {
         $userId = auth()->id();
@@ -501,9 +601,10 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function getUserDetails(Request $request){
+    public function getUserDetails(Request $request)
+    {
 
-        $user = User::select('full_name','email','sponsor_id', 'created_at', 'mobile_no', 'address')->where('mobile_no', $request->input('user'))->first();
+        $user = User::select('full_name', 'email', 'sponsor_id', 'created_at', 'mobile_no', 'address')->where('mobile_no', $request->input('user'))->first();
 
         if (!$user) {
             return response()->json([
@@ -518,7 +619,8 @@ class UserController extends Controller
         ], status: 200);
     }
 
-    public function getReferralUsers(Request $request){
+    public function getReferralUsers(Request $request)
+    {
         $user = auth()->user();
         if (!$user) {
             return response()->json([
@@ -526,13 +628,14 @@ class UserController extends Controller
                 'message' => 'User is not authenticated.',
             ], 401);
         }
-        $Referral = User::with(['purchases:user_id,price,created_at', 'country:id,name'])->where('parent_sponsor_id', $user->sponsor_id)->get();
+        $Referral = User::with(['purchases:user_id,price,created_at', 'states:id,name'])->where('parent_sponsor_id', $user->sponsor_id)->get();
         return response()->json([
             'status' => true,
             'data' => $Referral
         ], status: 200);
     }
-    public function getDownlineUsers(Request $request){
+    public function getDownlineUsers(Request $request)
+    {
         $user = auth()->user();
         if (!$user) {
             return response()->json([
@@ -551,7 +654,7 @@ class UserController extends Controller
 
     private function getDownlineChain($sponsor_id, &$chain)
     {
-        $users = User::with(['purchases', 'country:id,name'])
+        $users = User::with(['purchases', 'states:id,name'])
             ->where('parent_sponsor_id', $sponsor_id)
             ->get();
 
@@ -565,9 +668,9 @@ class UserController extends Controller
     {
         try {
             $input = $request->input('user_id');
-            if($input) {
+            if ($input) {
                 $user = User::find($input);
-                
+
                 if (!$user) {
                     return response()->json([
                         'status' => false,
@@ -575,11 +678,11 @@ class UserController extends Controller
                     ], 404);
                 }
                 $user->update(['is_block' => $user->is_block == 1 ? 0 : 1]);
-                
+
                 return response()->json([
                     'status' => true,
                     'message' => 'User status updated successfully.',
-                    'is_block' => $user->is_block 
+                    'is_block' => $user->is_block
                 ], 200);
             } else {
                 return response()->json([
@@ -595,5 +698,5 @@ class UserController extends Controller
             ], 500);
         }
     }
-    
+
 }

@@ -17,7 +17,6 @@ export class ActivationComponent {
   ActivationForm!: FormGroup;
   product:any;
   BaseUrl = environment.FilebasePath;
-  // BaseUrl = 'https://sklife.in/sk-portal/backend/public/storage/';
   purchaseData: { name: any; user_id: number; product_id: any; size: any; price: any; };
   userInfo:any;
   is_activated:boolean=false;

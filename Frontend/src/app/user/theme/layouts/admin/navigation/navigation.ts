@@ -108,7 +108,7 @@ const NavigationItems = [
       },
       {
         id: 'bank-withdrawal-history',
-        title: 'Bank Withdrawal History',
+        title: 'Withdrawal History',
         type: 'item',
         url: '/bank-withdrawal-history',
         target: false,
@@ -179,25 +179,25 @@ const NavigationItems = [
     title: 'Help Desk',
     type: 'collapse',
     icon: 'fa-solid fa-circle-info',
-    children: [
-      {
-        id: 'create-ticket',
-        title: 'Create Ticket',
-        type: 'item',
-        url: '/auth/create-ticket',
-        target: true,
-        breadcrumbs: false,
-      },
+    // children: [
+    //   {
+    //     id: 'create-ticket',
+    //     title: 'Create Ticket',
+    //     type: 'item',
+    //     url: '/auth/create-ticket',
+    //     target: true,
+    //     breadcrumbs: false,
+    //   },
 
-      {
-        id: 'ticket-list',
-        title: 'Ticket List',
-        type: 'item',
-        url: '/auth/ticket-list',
-        target: true,
-        breadcrumbs: false,
-      },
-    ],
+    //   {
+    //     id: 'ticket-list',
+    //     title: 'Ticket List',
+    //     type: 'item',
+    //     url: '/auth/ticket-list',
+    //     target: true,
+    //     breadcrumbs: false,
+    //   },
+    // ],
   },
 ];
 

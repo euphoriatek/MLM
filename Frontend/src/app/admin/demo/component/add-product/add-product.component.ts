@@ -28,9 +28,9 @@ export class AddProductComponent {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      dp: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      // dp: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       // pv: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      category: ['1', Validators.required],
+      // category: ['1', Validators.required],
       description: [''],
       image:['', Validators.required],
     });
@@ -46,9 +46,9 @@ export class AddProductComponent {
     const formData = new FormData();
     formData.append('name', this.productForm.get('name').value);
     formData.append('price', this.productForm.get('price').value);
-    formData.append('dp', this.productForm.get('dp').value);
+    // formData.append('dp', this.productForm.get('dp').value);
     // formData.append('pv', this.productForm.get('pv').value);
-    formData.append('category', this.productForm.get('category').value);
+    // formData.append('category', this.productForm.get('category').value);
     formData.append('description', this.productForm.get('description').value);
     if (this.productForm.get('image').value) {
       formData.append('image', this.productForm.get('image').value);

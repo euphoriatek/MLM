@@ -13,7 +13,7 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label>Old Login Password</label>
+                        <label>Old Password</label>
                         <input type="password" id="password" class="form-control" formControlName="password">
 
                         <div
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label>New Login Password</label>
+                        <label>New Password</label>
                         <input type="password" id="new_password" class="form-control" formControlName="new_password">
                         <div
                         *ngIf=" changePasswordform.get('new_password')?.touched && changePasswordform.get('new_password')?.invalid  ">
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label>Confirm Login Password</label>
+                        <label>Confirm Password</label>
                         <input type="password" id="confirm_password" class="form-control"
                           formControlName="confirm_password">
 
@@ -85,7 +85,7 @@
                             <div class="form-group mb-2">
                               <label class="form-label">From Date</label>
                               <mat-form-field appearance="fill" class="full-width">
-                                <mat-label>From Date</mat-label>
+                                <!-- <mat-label>From Date</mat-label> -->
                                 <input matInput [matDatepicker]="fromPicker" formControlName="fromDate"
                                   (dateChange)="filterByDate()" (focus)="fromPicker.open()">
                                 <mat-datepicker #fromPicker></mat-datepicker>
@@ -96,7 +96,7 @@
                             <div class="form-group mb-2">
                               <label class="form-label">To Date</label>
                               <mat-form-field appearance="fill" class="full-width">
-                                <mat-label>To Date</mat-label>
+                                <!-- <mat-label>To Date</mat-label> -->
                                 <input matInput [matDatepicker]="toPicker" formControlName="toDate"
                                   (dateChange)="filterByDate()" (focus)="toPicker.open()">
                                 <mat-datepicker #toPicker></mat-datepicker>
@@ -132,7 +132,7 @@
       
               <ng-template pTemplate="header">
                 <tr>
-                  <th style="width: 80px;" pSortableColumn="s_no">S.No <p-sortIcon field="s_no"></p-sortIcon></th>
+                  <!-- <th style="width: 80px;" pSortableColumn="s_no">S.No <p-sortIcon field="s_no"></p-sortIcon></th> -->
                   <th style="min-width: 200px;">Email</th>
                   <th style="min-width: 150px;">Date</th>
                   <th style="min-width: 150px;">Mobile No</th>
@@ -141,10 +141,10 @@
               </ng-template>
               <ng-template pTemplate="body" let-data>
                 <tr class="p-selectable-row">
-                  <td>
+                  <!-- <td>
                     <span class="p-column-title">S.No</span>
                     {{ data['s_no'] }}
-                  </td>
+                  </td> -->
                   <td>
                     <span class="p-column-title">Email</span>
                     {{ data.email }}

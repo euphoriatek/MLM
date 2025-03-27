@@ -7,11 +7,20 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function GetPayment()
+    public function getPayment()
     {
         try {
-
-            $payments = Payments::get();
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+            // $payments = Payments::get();
+            $payments = Payments::with(['user' => function($query) {
+                $query->select('id', 'full_name');
+            }])->get();
             return response()->json([
                 'status' => true,
                 'data' => $payments,

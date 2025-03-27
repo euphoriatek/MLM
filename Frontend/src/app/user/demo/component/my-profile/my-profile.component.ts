@@ -25,14 +25,15 @@ export class MyProfileComponent implements OnInit {
   constructor(private fb: FormBuilder,private api: ApiService,public toaster: ToasterService, public spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
-    this.getCountry();
+    this.getstates();
     this.getUsers();
     this.editProfileForm = this.fb.group({
       full_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       pin_code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
       address: ['', Validators.required],
-      country_id: ['', Validators.required],
+      // country_id: ['', Validators.required],
+      state_id: ['', Validators.required],
       fatherandmothername: [''],
       gender: [''],
       title: ['', Validators.required],
@@ -72,6 +73,20 @@ export class MyProfileComponent implements OnInit {
         }
          this.spinner.hide();
 
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+  getstates(): void {
+    this.spinner.show();
+    this.api.getStates().subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.states = response.data;
+        }
+        this.spinner.hide();
       },
       error: (err) => {
         console.error(err);

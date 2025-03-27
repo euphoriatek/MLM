@@ -47,7 +47,7 @@ export default class LoginComponent {
             const UserInfo = response.data;
             this.cookiesService.setCookie('CurrentUser', UserInfo);
             this.route.navigate(['/dashboard/default']);
-            this.toaster.success('Login Successful', 'Login');
+            // this.toaster.success('Login Successful', 'Login');
           } else {
             this.toaster.error('Invalid mobile number and Password!', 'Login');
           }

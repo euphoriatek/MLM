@@ -1,7 +1,7 @@
 <p-table #dt [value]="users" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="" [filterDelay]="0"
-    [globalFilterFields]="['mobile_no','full_name','created_at','purchases.created_at','country.name']">
+    [globalFilterFields]="['mobile_no','full_name','created_at','purchases.created_at','states.name']">
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
             <h3>Direct Referral Users List</h3>
@@ -16,14 +16,14 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="mobile_no">Username<p-sortIcon field="mobile_no"></p-sortIcon></th>
-            <th pSortableColumn="full_name">Name<p-sortIcon field="full_name"></p-sortIcon></th>
-            <th pSortableColumn="created_at">Join Date<p-sortIcon field="created_at"></p-sortIcon></th>
-            <th pSortableColumn="purchases.created_at">Activation Date<p-sortIcon field="purchases.created_at"></p-sortIcon></th>
-            <th pSortableColumn="purchases.price">BV<p-sortIcon field="purchases.price"></p-sortIcon></th>
-            <th pSortableColumn="mobile_no">Mobile No.<p-sortIcon field="mobile_no"></p-sortIcon></th>
-            <th pSortableColumn="country.name">Country<p-sortIcon field="country.name"></p-sortIcon></th>
-            <th pSortableColumn="is_block">Status <p-sortIcon field="is_block"></p-sortIcon></th>
+            <th style="min-width: 180px;" pSortableColumn="mobile_no">Username<p-sortIcon field="mobile_no"></p-sortIcon></th>
+            <th style="min-width: 180px;" pSortableColumn="full_name">Name<p-sortIcon field="full_name"></p-sortIcon></th>
+            <th style="min-width: 180px;" pSortableColumn="created_at">Join Date<p-sortIcon field="created_at"></p-sortIcon></th>
+            <th style="min-width: 180px;" pSortableColumn="purchases.created_at">Activation Date<p-sortIcon field="purchases.created_at"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="purchases.price">BV<p-sortIcon field="purchases.price"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="mobile_no">Mobile No.<p-sortIcon field="mobile_no"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="states.name">States<p-sortIcon field="states.name"></p-sortIcon></th>
+            <th style="min-width: 150px;" pSortableColumn="is_block">Status <p-sortIcon field="is_block"></p-sortIcon></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data>
@@ -54,13 +54,13 @@
                 <span class="image-text">+91-{{data.mobile_no}}</span>
             </td>
             <td>
-                <span class="p-column-title">Country</span>
-                <span class="image-text">{{data?.country?.name}}</span>
+                <span class="p-column-title">States</span>
+                <span class="image-text">{{data?.states?.name}}</span>
             </td>
             <td>
                 <span class="p-column-title">Status</span>
-                <span *ngIf="data.is_block"><button mat-stroked-button color="warn">In Active</button></span> 
-                <span *ngIf="!data.is_block"><button mat-stroked-button color="primary">Active</button></span>
+                <span *ngIf="data.is_block"><button class="inactive-status">In Active</button></span> 
+                <span *ngIf="!data.is_block"><button class="active-status">Active</button></span>
             </td>
         </tr>
     </ng-template>

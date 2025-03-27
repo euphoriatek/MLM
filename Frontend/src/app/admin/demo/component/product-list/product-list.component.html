@@ -18,7 +18,7 @@
         <tr>
             <th pSortableColumn="name">Product Name <p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-            <th pSortableColumn="dp">Discount Price<p-sortIcon field="dp"></p-sortIcon></th>
+            <th pSortableColumn="dp">GST<p-sortIcon field="dp"></p-sortIcon></th>
             <!-- <th pSortableColumn="pv">Bonus Value <p-sortIcon field="pv"></p-sortIcon></th> -->
             <th pSortableColumn="created_at">Created At <p-sortIcon field="created_at"></p-sortIcon></th>
             <th>Image</th>
@@ -36,8 +36,8 @@
                 <span class="image-text">{{data.price}}</span>
             </td>
             <td>
-                <span class="p-column-title">Discount Price</span>
-                <span class="image-text">{{data.dp}}</span>
+                <span class="p-column-title">GST</span>
+                <span class="image-text">5%</span>
             </td>
             <!-- <td>
                 <span class="p-column-title">Bonus Value</span>
@@ -89,7 +89,7 @@
     </div>
   
     <!-- DP (Discount Price) -->
-    <div class="col-lg-8">
+    <!-- <div class="col-lg-8">
         <div class="form-group">
             <label for="dp">DP (Discount Price)</label>
             <input type="text" id="dp" formControlName="dp" class="form-control" />
@@ -97,7 +97,7 @@
                 <span class="error-message">Discount Price is required</span>
             </div>
         </div>
-    </div>
+    </div> -->
   
     <!-- PV (Bonus Value) -->
     <!-- <div class="col-lg-8">

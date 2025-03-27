@@ -97,7 +97,25 @@
                             </div>
                         </div>
                     </div>
-    
+                    <div class="col-md-4">
+                        <div class="form-group mb-3">
+                            <label for="state_id" class="form-label">State <span
+                                    class="display-none text-danger">*</span></label>
+                            <div class="form-input">
+                                <select formControlName="state_id" class="form-select form-control">
+                                    <option value="">Select State</option>
+                                    <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+                                </select>
+                            </div>
+                            <div
+                                *ngIf="editProfileForm.get('state_id')?.touched && editProfileForm.get('state_id')?.invalid">
+                                <small class="text-danger" *ngIf="editProfileForm.get('state_id')?.hasError('required')">
+                                    State is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+<!--     
                     <div class="col-md-4">
                         <div class="form-group mb-3">
                             <label for="country_id" class="form-label">Country <span
@@ -116,7 +134,7 @@
                                 </small>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Gender Field (Static) -->
                     <div class="col-md-4">
