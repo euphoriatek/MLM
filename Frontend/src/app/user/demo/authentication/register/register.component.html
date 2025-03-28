@@ -78,13 +78,12 @@
             <!-- Mobile Number Field -->
             <div class="col-md-12">
               <div class="form-group mb-3">
-                <label for="mobile_no" class="form-label">Mobile No *(username)</label>
+                <label for="mobile_no" class="form-label">Mobile No *</label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/phone.png" alt="mobile_no" />
-                  <input (blur)="checkMobile($event)" formControlName="mobile_no" id="mobile_no" class="form-control"
+                  <input (keyup)="checkMobile($event)" formControlName="mobile_no" id="mobile_no" class="form-control"
                     placeholder="" maxlength="10" />
-                </div>
-                <button *ngIf="
+                    <button class="sendotpBtn" *ngIf="
                     signupForm.get('mobile_no')?.valid &&
                     !signupForm.get('mobile_no')?.pristine &&
                     otpTimer === 0 &&
@@ -94,7 +93,7 @@
                   " type="button" (click)="sendOtp()" [disabled]="is_send">
                   Send OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
                 </button>
-                <button *ngIf="
+                <button class="sendotpBtn" *ngIf="
                     signupForm.get('mobile_no')?.valid &&
                     !signupForm.get('mobile_no')?.pristine &&
                     otpTimer === 0 &&
@@ -104,6 +103,7 @@
                   " type="button" (click)="sendOtp()" [disabled]="is_send">
                   Resend OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
                 </button>
+                </div>
                 <div id="RegsistOtp" *ngIf="otpSent && !is_optVerify">
                   <div id="div_timer" class="timer-otp" *ngIf="otpTimer > 0">
                     <span id="otp-count">{{ otpTimer }}</span>
@@ -130,7 +130,7 @@
                 <label for="mobile_no" class="form-label">Mobile OTP *</label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/phone.png" alt="email" />
-                  <input type="text" (keyup)="verifyOtp()" formControlName="otp" id="otp" class="form-control"
+                  <input #otpInput type="text" (keyup)="verifyOtp()" formControlName="otp" id="otp" class="form-control"
                     placeholder="Enter OTP" maxlength="6" />
                 </div>
               </div>

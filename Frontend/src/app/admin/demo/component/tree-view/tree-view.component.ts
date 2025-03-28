@@ -73,7 +73,7 @@ export class TreeViewComponent {
             $.each(data, function (key, value) {
               var ForAppend = '<td class="node-container" colspan="2"><table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">';
               
-              var ImageName = "https://login.progressfashion.com/images/redimage.png";
+              var ImageName = "./assets/images/redimage.png";
               var color = "green";
     
               if (value.Downlinecount > 0) {
@@ -82,10 +82,10 @@ export class TreeViewComponent {
                   '<div class="node" style="cursor: default;">' +
                   '<a style="display:block" class="showchield" id="' + value.id + '">' +
                   '<img style="pointer-events: none;" class="tree_icon" style="border: 2px solid ' + color + ' !important;" src="' + ImageName + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
-                  '<span style="pointer-events: none;" class="imgdowns" title="View Downline"><img src="https://login.progressfashion.com/images/down_arrowtree.svg"></span>' +
+                  '<span style="pointer-events: none;" class="imgdowns" title="View Downline"><img src="./assets/images/down_arrowtree.svg"></span>' +
                   '</a>' +
                   '<div colspan="2" class="line down"></div>' +
-                  '<div class="username" title="' + value.mobile_no + '" style="background: #454552 !important;cursor:pointer"><img style="pointer-events: none;" src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree"><span style="pointer-events: none;">' + value.mobile_no + '</span></div>' +
+                  '<div class="username" title="' + value.mobile_no + '" style="background: #454552 !important;cursor:pointer"><img style="pointer-events: none;" src="./assets/images/info-tree.svg" class="info-icon-tree"><span style="pointer-events: none;">' + value.mobile_no + '</span></div>' +
                   '</div></td></tr>';
               }
   
@@ -98,7 +98,7 @@ export class TreeViewComponent {
                   '<img style="pointer-events: none;" class="tree_icon" style="border: 2px solid ' + color + ' !important;" src="' + ImageName + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
                   '</a>' +
                   '<div colspan="2" class="line down"></div>' +
-                  '<div class="username" title="' + value.mobile_no + '" style="background: #454552 !important;cursor:pointer"><img style="pointer-events: none;" src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree"><span style="pointer-events: none;">' + value.mobile_no + '</span></div>' +
+                  '<div class="username" title="' + value.mobile_no + '" style="background: #454552 !important;cursor:pointer"><img style="pointer-events: none;" src="./assets/images/info-tree.svg" class="info-icon-tree"><span style="pointer-events: none;">' + value.mobile_no + '</span></div>' +
                   '</div></td></tr>';
               }
     

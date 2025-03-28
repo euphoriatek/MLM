@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\InvoiceMail;
+use Illuminate\Support\Facades\Mail;
 class PurchaseController extends Controller
 {
 
@@ -80,7 +82,7 @@ class PurchaseController extends Controller
                 'json_response' => json_encode(json_decode($request->json_response, true)),
             ]);
             
-            $createDelhivery = $this->createDelhivery($data,$orderId, $purchase->id,$userId);
+            $createDelhivery = $this->createDelhivery($data,$orderId, $purchase->id,$userId,$user->email);
             if(!$createDelhivery){
                 DB::rollBack();
                 return response()->json([
@@ -186,7 +188,7 @@ class PurchaseController extends Controller
         // return response()->json(['message' => 'Commission distributed successfully.']);
     }
 
-    public function createDelhivery($data,$orderId, $purchase_id,$userId){
+    public function createDelhivery($data,$orderId, $purchase_id,$userId,$email){
         $settings = Setting::where('key', 'DELHIVERY_API_KEY')->get()->pluck('value', 'key');
         $response = Http::withHeaders([
             'Authorization' => 'Token '.$settings['DELHIVERY_API_KEY'],
@@ -284,6 +286,7 @@ class PurchaseController extends Controller
                 $fileName = "invoice_{$orderId}.pdf";
                 Storage::disk('public')->put('invoices/' . $fileName, $pdf->output());
                 $invoice->update(["file" => 'invoices/' . $fileName]);
+                Mail::to($email)->send(new InvoiceMail($purchase->name, $fileName));
                 return true;
             }else{
                 return false;

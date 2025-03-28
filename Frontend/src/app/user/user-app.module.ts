@@ -59,6 +59,7 @@ import { MyDownlineListComponent } from './demo/component/my-downline-list/my-do
 import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
 import { BankWithdrawalHistoryComponent } from './demo/component/bank-withdrawal-history/bank-withdrawal-history.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
+import { InvoiceComponent } from './demo/component/invoice/invoice.component';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -87,7 +88,8 @@ import { LevelIncomeComponent } from './demo/component/level-income/level-income
     MyDownlineListComponent,
     WalletStatementComponent,
     BankWithdrawalHistoryComponent,
-    LevelIncomeComponent
+    LevelIncomeComponent,
+    InvoiceComponent
   ],
   imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule],
   providers: [NavigationItem],

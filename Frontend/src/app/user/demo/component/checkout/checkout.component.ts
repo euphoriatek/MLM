@@ -75,6 +75,7 @@ export class CheckoutComponent {
             name: this.product_data.name,
             description: `Checkout for ${this.product_data.name}`,
             handler: (paymentResponse: any) => {
+              console.log(paymentResponse);
               this.spinner.show();
               const orderData = {
                 product_id: this.product_data.product_id,

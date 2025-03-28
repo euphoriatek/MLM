@@ -20,6 +20,7 @@ import { MyDownlineListComponent } from './demo/component/my-downline-list/my-do
 import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
 import { BankWithdrawalHistoryComponent } from './demo/component/bank-withdrawal-history/bank-withdrawal-history.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
+import { InvoiceComponent } from './demo/component/invoice/invoice.component';
 const routes: Routes = [
   {
     path: '',
@@ -97,6 +98,11 @@ const routes: Routes = [
       {
         path: 'level-income',
         component: LevelIncomeComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'invoice/:id',
+        component: InvoiceComponent,
         canActivate:[authGuard]
       },
       {

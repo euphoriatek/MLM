@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
   NumberIsValid:boolean=false;
   Sponserid: string | null = null;
   is_send:boolean=false;
-  
+  @ViewChild('otpInput') otpInputRef: ElementRef | undefined;
   constructor(private fb: FormBuilder, private route: ActivatedRoute,private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -147,6 +147,9 @@ export class RegisterComponent implements OnInit {
                 clearInterval(this.timerInterval);
               }
             }, 1000);
+            setTimeout(() => {
+              this.otpInputRef?.nativeElement.focus();
+            }, 100);
         }else{
           this.toaster.error( "Try again!", 'Signup');
         }

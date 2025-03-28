@@ -6,6 +6,8 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\Otp;
 use App\Models\Product;
+use App\Models\Purchase;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -262,6 +264,10 @@ class UserController extends Controller
                 'status' => false,
                 'message' => 'User is not authenticated.',
             ], 401);
+        }
+        $Invoice = Invoice::where('customer_id',$user->id)->first();
+        if($Invoice){
+            $user->invoice_id = $Invoice->invoice_number;
         }
         return response()->json([
             'status' => true,
