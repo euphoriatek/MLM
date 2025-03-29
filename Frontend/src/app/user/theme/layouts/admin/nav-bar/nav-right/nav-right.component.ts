@@ -17,7 +17,8 @@ export class NavRightComponent {
   profile = [
     {
       icon: 'ti ti-edit-circle',
-      title: 'Edit Profile'
+      title: 'Edit Profile',
+      url: '/profile',
     },
     // {
     //   icon: 'ti ti-user',

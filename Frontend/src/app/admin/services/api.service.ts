@@ -11,8 +11,8 @@ export class ApiService {
   login(data: any) {
     return this.http.post(this.AdminBaseUrl + 'login', data);
   }
-  updateStatus(user_id:number){
-    return this.http.post(this.AdminBaseUrl + 'update-user-status', {user_id:user_id});
+  updateStatus(user_id: number) {
+    return this.http.post(this.AdminBaseUrl + 'update-user-status', { user_id: user_id });
   }
   // SupeR Admin Dashboard
   dashboardData() {
@@ -34,20 +34,20 @@ export class ApiService {
   deleteServer(serverId) {
     return this.http.post(this.AdminBaseUrl + 'delete-server', { server_id: serverId });
   }
-  
+
   updateUser(data: any) {
     return this.http.post(this.AdminBaseUrl + 'edit-regaykar-user', data);
   }
 
-  addAdminUser(data:any){
+  addAdminUser(data: any) {
     return this.http.post(this.AdminBaseUrl + 'add-admin-usr', data);
   }
 
-  getAdminUsers(){
+  getAdminUsers() {
     return this.http.get(this.AdminBaseUrl + 'get-admin-usr');
   }
 
-  
+
   deleteUser(id: number) {
     return this.http.delete(this.AdminBaseUrl + 'delete-regaykar-user/' + id);
   }
@@ -55,7 +55,7 @@ export class ApiService {
   addUser(data: any) {
     return this.http.post(this.AdminBaseUrl + 'add-regaykar-user', data);
   }
-  
+
   getUserList() {
     return this.http.get(this.AdminBaseUrl + 'users-list');
   }
@@ -68,7 +68,7 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'add-object', data);
   }
 
-  editAdminUser(data: any){
+  editAdminUser(data: any) {
     return this.http.post(this.AdminBaseUrl + 'edit-admin-user', data);
   }
 
@@ -80,27 +80,27 @@ export class ApiService {
     return this.http.post(this.AdminBaseUrl + 'create-group', data);
   }
 
-  getSales(id:number){
-    return this.http.post(this.AdminBaseUrl + 'get-objects', {user_id:id});
+  getSales(id: number) {
+    return this.http.post(this.AdminBaseUrl + 'get-objects', { user_id: id });
   }
 
-  updateSales(data){
+  updateSales(data) {
     return this.http.post(this.AdminBaseUrl + 'update-objects', data);
   }
 
-  deleteSales(data){
-    return this.http.delete(this.AdminBaseUrl + 'delete-object/' +data);
+  deleteSales(data) {
+    return this.http.delete(this.AdminBaseUrl + 'delete-object/' + data);
   }
 
-  getUserInfo(data){
-    return this.http.post(this.AdminBaseUrl + 'get-user-info', {user_id:data});
+  getUserInfo(data) {
+    return this.http.post(this.AdminBaseUrl + 'get-user-info', { user_id: data });
   }
 
-  getSalesList(){
+  getSalesList() {
     return this.http.get(this.AdminBaseUrl + 'get-objects-list');
   }
-  
-  changePassword(data){
+
+  changePassword(data) {
     return this.http.post(this.AdminBaseUrl + 'change-password', data);
   }
 
@@ -115,16 +115,16 @@ export class ApiService {
   getAdminrSalesList() {
     return this.http.get(this.AdminBaseUrl + 'get-admin-objects-list');
   }
-  
-// MLM
+
+  // MLM
   addProduct(data: any) {
     return this.http.post(this.AdminBaseUrl + 'add-product', data);
   }
-  getProduct(){
+  getProduct() {
     return this.http.get(this.AdminBaseUrl + 'get-product');
   }
-  updateProduct(data){
-    return this.http.post(this.AdminBaseUrl + 'update-product',data);
+  updateProduct(data) {
+    return this.http.post(this.AdminBaseUrl + 'update-product', data);
   }
   deleteProduct(id: number) {
     return this.http.delete(this.AdminBaseUrl + 'delete-product/' + id);
@@ -141,51 +141,55 @@ export class ApiService {
   // }
 
   // commission
-  getCommissions(){
+  getCommissions() {
     return this.http.get(this.AdminBaseUrl + 'get-commissions');
   }
   // transaction
-  getTransactions(){
+  getTransactions() {
     return this.http.get(this.AdminBaseUrl + 'get-transactions');
   }
   // payment
-  getPayments(){
+  getPayments() {
     return this.http.get(this.AdminBaseUrl + 'get-payments');
   }
-  getWithdrawals(){
+  getWithdrawals() {
     return this.http.get(this.AdminBaseUrl + 'get-withdrawals');
   }
-  updateWithdrawalsStatus(data){
-    return this.http.post(this.AdminBaseUrl + 'update-approved-staus',data);
+  updateWithdrawalsStatus(data) {
+    return this.http.post(this.AdminBaseUrl + 'update-approved-staus', data);
   }
-  updateWithdrawals(data){
-    return this.http.post(this.AdminBaseUrl + 'update-rejected-staus',data);
+  updateWithdrawals(data) {
+    return this.http.post(this.AdminBaseUrl + 'update-rejected-staus', data);
   }
 
-  getmembersList(){
+  getmembersList() {
     return this.http.get(this.AdminBaseUrl + 'get-members-list');
   }
   updateBlock(user_id:number){
     return this.http.post(this.AdminBaseUrl + 'update-user-status', {user_id:user_id});
   }
+  // updateBlock(user_id: number, is_active: number, is_block: number) {
+  //   return this.http.post(this.AdminBaseUrl + 'update-user-status', {user_id: user_id,is_active: is_active,is_block: is_block});
+  // }
+
   getAuth() {
     return this.http.get(this.AdminBaseUrl + 'auth');
   }
-  getOrders(){
+  getOrders() {
     return this.http.get(this.AdminBaseUrl + 'get-orders-list');
   }
   getTreeUser(User_ID) {
-    return this.http.post(this.AdminBaseUrl + 'get-tree-usr', {user_id: User_ID});
+    return this.http.post(this.AdminBaseUrl + 'get-tree-usr', { user_id: User_ID });
   }
-  UserDetails(data: any){
-    return this.http.post(this.AdminBaseUrl + 'user-details', {user:data});
+  UserDetails(data: any) {
+    return this.http.post(this.AdminBaseUrl + 'user-details', { user: data });
   }
 
   // Earning Wallet
-  getLevelIncome(){
+  getLevelIncome() {
     return this.http.get(this.AdminBaseUrl + 'level-income');
   }
-  walletStatement(){
+  walletStatement() {
     return this.http.get(this.AdminBaseUrl + 'wallet-statement');
   }
 }

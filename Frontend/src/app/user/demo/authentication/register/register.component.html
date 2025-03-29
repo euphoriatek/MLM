@@ -223,14 +223,18 @@
                 <label for="pin_code" class="form-label">Pin Code <span>*</span></label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/pin-code.png" alt="email" />
-                  <input formControlName="pin_code" id="pin_code" class="form-control" placeholder="" />
+                  <input formControlName="pin_code" id="pin_code" class="form-control" placeholder="" maxlength="6"/>
                 </div>
-                <div *ngIf="
-                    signupForm.get('pin_code')?.touched &&
-                    signupForm.get('pin_code')?.invalid
-                  ">
-                  <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('required')">Pin code is
-                    required.</small>
+                <div *ngIf="signupForm.get('pin_code')?.touched && signupForm.get('pin_code')?.invalid">
+                  <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('required')">
+                    Pin code is required.
+                  </small>
+                  <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('pattern')">
+                    Pin code must be 6 digits.
+                  </small>
+                  <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('minlength') || signupForm.get('pin_code')?.hasError('maxlength')">
+                    Pin code must be exactly 6 digits long.
+                  </small>
                 </div>
               </div>
             </div>

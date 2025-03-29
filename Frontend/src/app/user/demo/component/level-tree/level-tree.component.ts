@@ -154,6 +154,8 @@ export class LevelTreeComponent implements OnInit {
             if (response.status) {
               this.spinner.hide();
               this.node_data = response.data;
+              console.log(this.node_data);
+              
               this.visible = true;
             }else{
               this.spinner.hide();

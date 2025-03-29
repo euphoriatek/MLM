@@ -2,89 +2,9 @@
 
 
   <li class="header-button">
-    <a href="#" class="kyc_btn" [routerLink]="['/create-kyc']">1. KYC</a>
-    <a href="#" [routerLink]="['/activation']">2. Activation</a>
+    <a href="#" class="greenbtn" [routerLink]="['/create-kyc']">1. KYC</a>
+    <a href="#" [routerLink]="['/activation']" class="greenbtn">2. Activation</a>
   </li>
-  
-  <!-- <li class="header_notification">
-    <a herf="" class="notification_icon">
-      <i class="fa-solid fa-bell"></i>
-      <span class="notification_count">10</span>
-    </a>
-    <div class="notification-list">
-      <ul>
-        <li>
-          <a>
-            <div class="profile-notification">
-              <img src="https://cdn.prod.website-files.com/6600e1eab90de089c2d9c9cd/662c092880a6d18c31995e13_66236537d4f46682e079b6ce_Casual%2520Portrait.webp">
-            </div>
-            <div class="notification-title">
-              <p>
-                <b>Brigid Dawson</b> followed you
-              </p>
-              <span class="notification_time">4 hours ago</span>
-            </div>
-          </a>
-        </li>
-
-        <li>
-          <a>
-            <div class="profile-notification">
-              <img src="https://cdn.prod.website-files.com/6600e1eab90de089c2d9c9cd/662c092880a6d18c31995e13_66236537d4f46682e079b6ce_Casual%2520Portrait.webp">
-            </div>
-            <div class="notification-title">
-              <p>
-                <b>Brigid Dawson</b> followed you
-              </p>
-              <span class="notification_time">4 hours ago</span>
-            </div>
-          </a>
-        </li>
-
-        <li>
-          <a>
-            <div class="profile-notification">
-              <img src="https://cdn.prod.website-files.com/6600e1eab90de089c2d9c9cd/662c092880a6d18c31995e13_66236537d4f46682e079b6ce_Casual%2520Portrait.webp">
-            </div>
-            <div class="notification-title">
-              <p>
-                <b>Brigid Dawson</b> followed you
-              </p>
-              <span class="notification_time">4 hours ago</span>
-            </div>
-          </a>
-        </li>
-
-        <li>
-          <a>
-            <div class="profile-notification">
-              <img src="https://cdn.prod.website-files.com/6600e1eab90de089c2d9c9cd/662c092880a6d18c31995e13_66236537d4f46682e079b6ce_Casual%2520Portrait.webp">
-            </div>
-            <div class="notification-title">
-              <p>
-                <b>Brigid Dawson</b> followed you
-              </p>
-              <span class="notification_time">4 hours ago</span>
-            </div>
-          </a>
-        </li>
-
-        <li>
-          <a>
-            <div class="profile-notification">
-              <img src="https://cdn.prod.website-files.com/6600e1eab90de089c2d9c9cd/662c092880a6d18c31995e13_66236537d4f46682e079b6ce_Casual%2520Portrait.webp">
-            </div>
-            <div class="notification-title">
-              <p>
-                <b>Brigid Dawson</b> followed you
-              </p>
-              <span class="notification_time">4 hours ago</span>
-            </div>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </li> -->
 
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
@@ -105,13 +25,15 @@
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
         <li ngbNavItem="1">
-          <a ngbNavLink><i class="ti ti-user"></i> Edit Profile</a>
+          <a ngbNavLink>
+            <!-- <i class="ti ti-user"></i> Edit Profile -->
+          </a>
           <ng-template ngbNavContent>
             <div *ngFor="let task of profile">
-              <a class="dropdown-item">
-                <i class="{{ task.icon }}"></i>
-                <span>{{ task.title }}</span>
-              </a>
+            <a class="dropdown-item" [href]="task.url">
+              <i class="{{ task.icon }}"></i>
+              <span>{{ task.title }}</span>
+            </a>
             </div>
             <div>
               <a class="dropdown-item">

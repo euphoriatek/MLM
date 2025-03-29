@@ -9,6 +9,7 @@ import { AdminCookiesService } from 'src/app/admin/services/admincookies.service
 import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -29,7 +30,6 @@ export default class LoginComponent {
     });
   }
     
-
   Login(): void {
     this.spinner.show();
     if (this.LoginForm.invalid) {
@@ -45,9 +45,9 @@ export default class LoginComponent {
             const AdminInfo = response.data;
             this.cookiesService.setCookie('AdminUser', AdminInfo);
             this.route.navigate(['/admin/dashboard/default']);
-            // this.toaster.success('Login Successful', 'Login');
+            this.toaster.success(response.message || 'Login Successful');
           }else{
-            this.toaster.error('Invalid mobile number and Password!', 'Login');
+            this.toaster.error(response.message || 'Invalid Mobile Number and Password!', 'Login');
           }
         },
         error: (err) => {

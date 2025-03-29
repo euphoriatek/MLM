@@ -34,10 +34,16 @@ class TransactionController extends Controller
             ], 500);
         }
     }
-
     public function getMembersList()
     {
         try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
             $members =User::where('role','user')->get();
             return response()->json([
                 'status' => true,
@@ -51,6 +57,4 @@ class TransactionController extends Controller
             ], 500);
         }
     }
-    
-
 }

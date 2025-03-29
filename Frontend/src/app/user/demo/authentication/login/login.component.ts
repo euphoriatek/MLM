@@ -9,6 +9,7 @@ import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
+import * as CryptoJS from 'crypto-js';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -47,19 +48,20 @@ export default class LoginComponent {
             const UserInfo = response.data;
             this.cookiesService.setCookie('CurrentUser', UserInfo);
             this.route.navigate(['/dashboard/default']);
-            // this.toaster.success('Login Successful', 'Login');
+            this.toaster.success(response.message || 'Login Successful');
           } else {
-            this.toaster.error('Invalid mobile number and Password!', 'Login');
+            this.toaster.error(response.message || 'Invalid Mobile Number and Password!', 'Login');
           }
         },
         error: (err) => {
-          this.toaster.error('Invalid mobile number and Password!', 'Login');
+          this.toaster.error('Invalid Mobile Number and Password!', 'Login');
           this.spinner.hide();
           console.error(err);
         }
       });
     }
   }
+  
   togglePasswordVisibility() {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }

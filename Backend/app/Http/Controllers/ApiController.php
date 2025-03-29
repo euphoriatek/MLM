@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 class ApiController extends Controller
 {
     /**
@@ -37,7 +38,7 @@ class ApiController extends Controller
             if (Auth::attempt(['mobile_no' => $request->mobile_no, 'password' => $request->password]) && 
                 in_array(Auth::user()->role, ['admin', 'superadmin'])) {
                 $user = Auth::user();
-                if ($user->role == 'admin' && $user->is_active == 0) {
+                if ($user->role == 'admin' && $user->is_block == 0) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Your admin account is inactive. Please contact support.',
@@ -84,12 +85,12 @@ class ApiController extends Controller
             }
             if (Auth::attempt(['mobile_no' => $request->mobile_no, 'password' => $request->password, 'role' => 'user'])) {
                 $user = Auth::user();
-                // if ($user->is_active == 0) {
-                //     return response()->json([
-                //         'status' => false,
-                //         'message' => 'Your account is inactive. Please contact support.',
-                //     ], 200);
-                // }
+                if ($user->is_block == 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Your account is inactive. Please contact support.',
+                    ], 200);
+                }
                 $token = $user->createToken('remember_token')->plainTextToken;
                 $user->remember_token = $token;
                 $user->save();

@@ -612,7 +612,8 @@ class UserController extends Controller
                 'message' => 'User not found'
             ], 404);
         }
-
+        $downlineCount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
+        $user->Downlinecount = $downlineCount;
         return response()->json([
             'status' => true,
             'data' => $user

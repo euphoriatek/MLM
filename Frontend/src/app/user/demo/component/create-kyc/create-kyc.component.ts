@@ -49,7 +49,7 @@ export class CreateKycComponent {
     });
     this.getKycInfo();
     this.PanKycForm = this.fb.group({
-      tax_document: ['', Validators.required],
+      tax_document: ['pan', Validators.required],
       id_number: ['', Validators.required],
       pan_image: ['', Validators.required], 
     });
@@ -220,6 +220,7 @@ CreatePanKyc(): void {
                         this.isFormReadonly = true;
                         this.getKycInfo();
                         this.toaster.success('PAN KYC created successfully!');
+                        this.router.navigate(['/activation']);
                     } else {
                         this.toaster.error(response.message);
                     }

@@ -99,14 +99,16 @@
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
         <li ngbNavItem="1">
-          <a ngbNavLink><i class="ti ti-user"></i> Edit Profile</a>
+          <a ngbNavLink>
+            <!-- <i class="ti ti-user"></i> Edit Profile -->
+          </a>
           <ng-template ngbNavContent>
-            <div *ngFor="let task of profile">
+            <!-- <div *ngFor="let task of profile">
               <a class="dropdown-item">
                 <i class="{{ task.icon }}"></i>
                 <span>{{ task.title }}</span>
               </a>
-            </div>
+            </div> -->
             <div>
               <a class="dropdown-item">
                 <i class="ti ti-power"></i>

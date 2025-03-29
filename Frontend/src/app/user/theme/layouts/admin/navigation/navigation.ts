@@ -32,10 +32,10 @@ const NavigationItems = [
     icon: 'fa-solid fa-gear',
     children: [
       {
-        id: 'my-profile',
-        title: 'My Profile',
+        id: 'profile',
+        title: 'Profile',
         type: 'item',
-        url: '/my-profile',
+        url: '/profile',
         target: false,
         breadcrumbs: true,
       },
