@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\KycDetails;
 use App\Models\PanDetails;
@@ -33,7 +31,6 @@ class KycController extends Controller
                     'data' => $existingPan,
                 ], 200);
             }
-    
         $validator = Validator::make($request->all(), [
             'account_holder_name' => 'required|string|max:255',
             'ifsc_code' => 'required|string',
@@ -42,19 +39,16 @@ class KycController extends Controller
             'branch_name' => 'required|string|max:255',
             // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
             ], 400);
         }
-
         // if ($request->hasFile('image')) {
         //     $image = $request->file('image');
         //     $imageName = time() . '.' . $image->getClientOriginalExtension();
         //     $imagePath = $image->storeAs('public/kyc_images', $imageName);
         // }
-
         $input = $request->all();
         try {
             $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
@@ -64,18 +58,14 @@ class KycController extends Controller
                 'x-api-key' => $settings['SANDBOX_API_KEY'],
             ])
                 ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code']);
-
             $data = $response->json();
-        
             if (!$response->successful()) {
-
                 return response()->json([
                     'status' => false,
                     'message' => 'Not Found',
                     'data' => $data
                 ], 404);
             }
-
             $response = Http::withHeaders([
                 'accept' => 'application/json',
                 'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
@@ -83,7 +73,6 @@ class KycController extends Controller
                 'x-api-key' => $settings['SANDBOX_API_KEY'],
             ])
                 ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code'] . '/accounts/' . $input['account_no'] . '/penniless-verify');
-
             $data = $response->json();
             if ($response->successful()) {
                 if ($data['code'] === 200) {
@@ -98,7 +87,7 @@ class KycController extends Controller
                             'status' => false,
                             'message' => 'Account Holder Name does not match.'
                         ], 201);
-                    }                    
+                    }
                 } else {
                     return response()->json([
                         'status' => false,
@@ -126,7 +115,6 @@ class KycController extends Controller
                 'data' => $kycDetails,
                 'status' => true,
             ], 201);
-
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'An error occurred while storing the KYC details.',
@@ -135,11 +123,9 @@ class KycController extends Controller
             ], 500);
         }
     }
-
     public function bankifscCodeValidate(Request $request)
     {
         $ifsc_code = $request->input('ifsc');
-
         if (!$ifsc_code) {
             return response()->json([
                 'status' => false,
@@ -153,7 +139,6 @@ class KycController extends Controller
             'x-api-key' => $settings['SANDBOX_API_KEY'],
         ])
             ->get('https://api.sandbox.co.in/bank/' . $ifsc_code);
-
         $data = $response->json();
         if ($response->successful()) {
             return response()->json([
@@ -161,9 +146,7 @@ class KycController extends Controller
                 'message' => 'Success',
                 'data' => $data
             ], 200);
-
         } else {
-
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid IFSC Code',
@@ -195,13 +178,10 @@ class KycController extends Controller
             ], 500);
         }
     }
-    
     public function createPanKyc(Request $request)
     {
-        // $userId = Auth::id();
         $userId = auth()->id();
         $user = User::find($userId);
-
         if (!$user) {
             return response()->json([
                 'status' => false,
@@ -211,7 +191,7 @@ class KycController extends Controller
         $validator = Validator::make($request->all(), [
             'tax_document' => 'required|string|max:255',
             'id_number' => 'required|string',
-            'pan_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'pan_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -223,11 +203,11 @@ class KycController extends Controller
         //     $imageName = time() . '.' . $image->getClientOriginalExtension();
         //     $imagePath = $image->storeAs('public/pan_images', $imageName);
         // }
-        $imagePath = null;
-        if ($request->hasFile('pan_image')) {
-            $image = $request->file('pan_image');
-            $imagePath = $image->store('pan_images', 'public');
-        }
+        // $imagePath = null;
+        // if ($request->hasFile('pan_image')) {
+        //     $image = $request->file('pan_image');
+        //     $imagePath = $image->store('pan_images', 'public');
+        // }
         $input = $request->all();
         try {
             $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
@@ -249,7 +229,7 @@ class KycController extends Controller
                     'user_id' => $userId,
                     'tax_document' => $input['tax_document'],
                     'id_number' => $input['id_number'],
-                    'pan_image' => $imagePath,
+                    // 'pan_image' => $imagePath,
                 ]);
                 User::where('id', $userId)->update(['pan_verified' => 1]);
                 return response()->json([
@@ -276,10 +256,8 @@ class KycController extends Controller
     public function getExistingBnkKyc(Request $request)
     {
         $userId = Auth::id();
-
         // Check if the record already exists
         $existingPan = KycDetails::where('user_id', $userId)->first();
-
         if ($existingPan) {
             return response()->json([
                 'status' => true,
@@ -287,11 +265,9 @@ class KycController extends Controller
                 'data' => $existingPan,
             ], 200);
         }
-
         return response()->json([
             'status' => false,
             'message' => 'No existing Kyc record found for this user.',
         ], 200);
     }
-
 }

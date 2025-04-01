@@ -140,7 +140,7 @@ const routes: Routes = [
         path: 'register/:id',
         loadComponent: () => import('./demo/authentication/register/register.component')
           .then(m => m.RegisterComponent),
-        canActivate: [unAuthGuard]
+        // canActivate: [unAuthGuard]
       }
     ]
   }

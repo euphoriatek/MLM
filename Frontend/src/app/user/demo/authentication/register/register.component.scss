@@ -51,3 +51,16 @@
     margin-left: 7px;
     position: initial !important;
 }
+.form-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    width: 20px;
+  }
+  

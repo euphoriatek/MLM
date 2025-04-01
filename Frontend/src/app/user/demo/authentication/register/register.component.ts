@@ -32,6 +32,8 @@ export class RegisterComponent implements OnInit {
   NumberIsValid:boolean=false;
   Sponserid: string | null = null;
   is_send:boolean=false;
+  passwordFieldType: string = 'password';
+  passwordType: string = 'password';
   @ViewChild('otpInput') otpInputRef: ElementRef | undefined;
   constructor(private fb: FormBuilder, private route: ActivatedRoute,private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
 
@@ -42,13 +44,14 @@ export class RegisterComponent implements OnInit {
         full_name: ['', Validators.required],
         // country_id: ['98', Validators.required],
         state_id: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        // email: ['', [Validators.required, Validators.email]],
+        email: ['', Validators.email],
         password: [
           '',
           [
             Validators.required,
-            Validators.minLength(6),
-            Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
+            // Validators.minLength(6),
+            // Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
           ]
         ],
         mobile_no: ['', [Validators.maxLength(10),Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -249,6 +252,12 @@ export class RegisterComponent implements OnInit {
     } else {
       this.selectedCountryLogo = null;
     }
+  }
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
+  passwordVisibility() {
+    this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
   }
 }
 // Password match validator

@@ -83,7 +83,7 @@
                   <img src="assets/images/admin_images/icons/phone.png" alt="mobile_no" />
                   <input (keyup)="checkMobile($event)" formControlName="mobile_no" id="mobile_no" class="form-control"
                     placeholder="" maxlength="10" />
-                    <button class="sendotpBtn" *ngIf="
+                  <button class="sendotpBtn" *ngIf="
                     signupForm.get('mobile_no')?.valid &&
                     !signupForm.get('mobile_no')?.pristine &&
                     otpTimer === 0 &&
@@ -91,9 +91,9 @@
                     !is_optVerify &&
                     NumberIsValid
                   " type="button" (click)="sendOtp()" [disabled]="is_send">
-                  Send OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
-                </button>
-                <button class="sendotpBtn" *ngIf="
+                    Send OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
+                  </button>
+                  <button class="sendotpBtn" *ngIf="
                     signupForm.get('mobile_no')?.valid &&
                     !signupForm.get('mobile_no')?.pristine &&
                     otpTimer === 0 &&
@@ -101,8 +101,8 @@
                     !is_optVerify &&
                     NumberIsValid
                   " type="button" (click)="sendOtp()" [disabled]="is_send">
-                  Resend OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
-                </button>
+                    Resend OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
+                  </button>
                 </div>
                 <div id="RegsistOtp" *ngIf="otpSent && !is_optVerify">
                   <div id="div_timer" class="timer-otp" *ngIf="otpTimer > 0">
@@ -165,7 +165,7 @@
                   <img src="assets/images/admin_images/mail.svg" alt="email" />
                   <input formControlName="email" id="email" class="form-control" placeholder="" />
                 </div>
-                <div *ngIf="
+                <!-- <div *ngIf="
                     signupForm.get('email')?.touched &&
                     signupForm.get('email')?.invalid
                   ">
@@ -173,7 +173,7 @@
                     required.</small>
                   <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('email')">Please enter a valid
                     email address.</small>
-                </div>
+                </div> -->
               </div>
             </div>
             <!-- paasword field -->
@@ -181,18 +181,21 @@
               <label for="password">Password</label>
               <div class="form-input">
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
-                <input id="password" formControlName="password" type="password" class="form-control" />
-                <div *ngIf="
-                    signupForm.get('password')?.touched &&
-                    signupForm.get('password')?.invalid
-                  " class="error">
-                  <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('required')">Password is
-                    required.</small>
-                  <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('minlength')">Password must be
-                    at least 6 characters.</small>
-                  <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('pattern')">Password must
-                    include uppercase, lowercase, number.</small>
-                </div>
+                <input formControlName="password" [type]="passwordFieldType" class="form-control" id="password"
+                  placeholder="password" />
+                <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+
+              </div>
+              <div *ngIf="
+              signupForm.get('password')?.touched &&
+              signupForm.get('password')?.invalid
+            " class="error">
+                <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('required')">Password is
+                  required.</small>
+                <!-- <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('minlength')">Password must be
+              at least 6 characters.</small>
+            <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('pattern')">Password must
+              include uppercase, lowercase, number.</small> -->
               </div>
             </div>
 
@@ -201,29 +204,33 @@
               <label for="confirm_password">Confirm Password</label>
               <div class="form-input">
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
-                <input id="confirm_password" formControlName="confirm_password" type="password" class="form-control" />
-                <div *ngIf="
-                    signupForm.get('confirm_password')?.touched &&
-                    signupForm.get('confirm_password')?.invalid
-                  " class="error">
-                  <small class="text-danger" *ngIf="
-                      signupForm.get('confirm_password')?.hasError('required')
-                    ">Confirm password is required.</small>
-                </div>
-                <!-- Fix the access to passwordMismatch error -->
-                <div *ngIf="signupForm.errors?.['passwordMismatch']" class="error">
-                  <small class="text-danger">Passwords do not match.</small>
-                </div>
+                <input id="confirm_password" formControlName="confirm_password" [type]="passwordType"
+                  class="form-control" />
+                <i class="fa-solid fa-eye toggle-password" (click)="passwordVisibility()"></i>
+                <!-- <input id="confirm_password" formControlName="confirm_password" type="password" class="form-control" /> -->
+
+              </div>
+              <div *ngIf="
+              signupForm.get('confirm_password')?.touched &&
+              signupForm.get('confirm_password')?.invalid
+            " class="error">
+                <small class="text-danger" *ngIf="
+                signupForm.get('confirm_password')?.hasError('required')
+              ">Confirm password is required.</small>
+              </div>
+              <!-- Fix the access to passwordMismatch error -->
+              <div *ngIf="signupForm.errors?.['passwordMismatch']" class="error">
+                <small class="text-danger">Passwords do not match.</small>
               </div>
             </div>
 
             <!-- Pin Code Field -->
             <div class="col-md-12">
               <div class="form-group mb-3">
-                <label for="pin_code" class="form-label">Pin Code <span>*</span></label>
+                <label for="pin_code" class="form-label">Pin Code</label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/pin-code.png" alt="email" />
-                  <input formControlName="pin_code" id="pin_code" class="form-control" placeholder="" maxlength="6"/>
+                  <input formControlName="pin_code" id="pin_code" class="form-control" placeholder="" maxlength="6" />
                 </div>
                 <div *ngIf="signupForm.get('pin_code')?.touched && signupForm.get('pin_code')?.invalid">
                   <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('required')">
@@ -232,7 +239,8 @@
                   <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('pattern')">
                     Pin code must be 6 digits.
                   </small>
-                  <small class="text-danger" *ngIf="signupForm.get('pin_code')?.hasError('minlength') || signupForm.get('pin_code')?.hasError('maxlength')">
+                  <small class="text-danger"
+                    *ngIf="signupForm.get('pin_code')?.hasError('minlength') || signupForm.get('pin_code')?.hasError('maxlength')">
                     Pin code must be exactly 6 digits long.
                   </small>
                 </div>

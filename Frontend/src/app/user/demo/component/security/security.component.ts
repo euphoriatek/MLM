@@ -32,8 +32,8 @@ export class SecurityComponent {
         new_password: [ "",
           [
             Validators.required,
-            Validators.minLength(6),
-            Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$"),
+            // Validators.minLength(6),
+            // Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$"),
           ],
         ],
         confirm_password: ["", Validators.required],

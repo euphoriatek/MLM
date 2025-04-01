@@ -26,7 +26,7 @@ export default class DashboardComponent implements OnInit {
   }
   ngOnInit(): void {
     this.sponserId = this.cookie.getCookie('CurrentUser')?.sponsor_id;
-    this.ReferralUrl = this.BaseUrl + 'Register/' + this.sponserId;
+    this.ReferralUrl = this.BaseUrl + 'register/' + this.sponserId;
     this.getInfo();
   }
   getInfo(){

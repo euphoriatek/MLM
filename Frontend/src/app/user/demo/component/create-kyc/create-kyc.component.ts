@@ -51,7 +51,7 @@ export class CreateKycComponent {
     this.PanKycForm = this.fb.group({
       tax_document: ['pan', Validators.required],
       id_number: ['', Validators.required],
-      pan_image: ['', Validators.required], 
+      // pan_image: ['', Validators.required], 
     });
      
 
@@ -160,40 +160,40 @@ export class CreateKycComponent {
   //   reader.readAsDataURL(file);
   // }
 
-  onFileChangePanForm(event: Event): void {
-    const fileInput = event.target as HTMLInputElement;
-    const file = fileInput.files ? fileInput.files[0] : null;
+  // onFileChangePanForm(event: Event): void {
+  //   const fileInput = event.target as HTMLInputElement;
+  //   const file = fileInput.files ? fileInput.files[0] : null;
   
-    if (file) {
-      const maxSizeInBytes = 2 * 1024 * 1024;
-      if (file.size > maxSizeInBytes) {
-        this.imageErrorPan = 'File size must be less than 2MB';
-        this.imageUrlPan = null;
-        return;
-      }
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
-      if (!allowedTypes.includes(file.type)) {
-        this.imageErrorPan = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
-        this.imageUrlPan = null;
-        return;
-      }
-      if (file) {
-        this.PanKycForm.patchValue({
-          pan_image: file
-        });
-        this.previewFilePan(file);
-        this.imageErrorPan = '';
-      }
-    }
-  }
+  //   if (file) {
+  //     const maxSizeInBytes = 2 * 1024 * 1024;
+  //     if (file.size > maxSizeInBytes) {
+  //       this.imageErrorPan = 'File size must be less than 2MB';
+  //       this.imageUrlPan = null;
+  //       return;
+  //     }
+  //     const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
+  //     if (!allowedTypes.includes(file.type)) {
+  //       this.imageErrorPan = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
+  //       this.imageUrlPan = null;
+  //       return;
+  //     }
+  //     if (file) {
+  //       this.PanKycForm.patchValue({
+  //         pan_image: file
+  //       });
+  //       this.previewFilePan(file);
+  //       this.imageErrorPan = '';
+  //     }
+  //   }
+  // }
   
-  previewFilePan(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageUrlPan = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
+  // previewFilePan(file: File): void {
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     this.imageUrlPan = reader.result as string;
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
 
 CreatePanKyc(): void {
     this.spinner.show();
@@ -206,10 +206,10 @@ CreatePanKyc(): void {
         formData.append('tax_document', this.PanKycForm.get('tax_document').value);
         formData.append('id_number', this.PanKycForm.get('id_number').value);
 
-        const image = this.PanKycForm.get('pan_image').value;
-        if (image && !this.isFormReadonly) {
-            formData.append('pan_image', image);
-        }
+        // const image = this.PanKycForm.get('pan_image').value;
+        // if (image && !this.isFormReadonly) {
+        //     formData.append('pan_image', image);
+        // }
         this.api.CreatePanKyc(formData).subscribe({
             next: (response: any) => {
                 this.spinner.hide();
@@ -240,7 +240,7 @@ CreatePanKyc(): void {
 private disableFormFields(): void {
     this.PanKycForm.controls['tax_document'].disable();
     this.PanKycForm.controls['id_number'].disable();
-    this.PanKycForm.controls['pan_image'].disable();
+    // this.PanKycForm.controls['pan_image'].disable();
 }
 
 
@@ -281,11 +281,11 @@ getKycInfo(): void {
           this.PanKycForm.patchValue({
             tax_document: panData.tax_document,
             id_number: panData.id_number,
-            pan_image: panData.pan_image,
+            // pan_image: panData.pan_image,
           });
-          if(panData.pan_image){
-            this.imageUrlPan = this.BaseUrl+panData.pan_image;
-          }
+          // if(panData.pan_image){
+          //   this.imageUrlPan = this.BaseUrl+panData.pan_image;
+          // }
           this.disableFormFields();
           this.isFormReadonly = true;
         }

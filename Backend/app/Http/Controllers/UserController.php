@@ -27,7 +27,7 @@ class UserController extends Controller
             // 'country_id' => 'required|string|max:255',
             'mobile_no' => 'required|string|regex:/^[0-9]{10}$/|max:20|unique:users,mobile_no',
             'state_id' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'password' => 'required|string|min:6',
             'pin_code' => 'required|string|regex:/^[0-9]{5,6}$/|max:6',
             'address' => 'required|string|max:500',

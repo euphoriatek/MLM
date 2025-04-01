@@ -9,5 +9,5 @@ class PanDetails extends Model
 {
     use HasFactory;
     protected $table = 'pan_kyc_details';
-     protected $fillable = ['user_id','tax_document', 'id_number', 'pan_image'];
+     protected $fillable = ['user_id','tax_document', 'id_number'];
 }
