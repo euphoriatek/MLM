@@ -34,6 +34,7 @@ import {ToastModule} from 'primeng/toast';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {DropdownModule} from 'primeng/dropdown';
 import { OrganizationChartModule } from 'primeng/organizationchart';
+import { AccordionModule } from 'primeng/accordion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';  
 import { MatOptionModule } from '@angular/material/core';
@@ -91,7 +92,7 @@ import { InvoiceComponent } from './demo/component/invoice/invoice.component';
     LevelIncomeComponent,
     InvoiceComponent
   ],
-  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule],
+  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule,AccordionModule],
   providers: [NavigationItem],
   bootstrap: [UserAppComponent]
 })

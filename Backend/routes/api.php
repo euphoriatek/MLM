@@ -37,6 +37,7 @@ Route::post('/signup', [UserController::class, 'store']);
 Route::post('/sync-data', [UserController::class, 'execution']);
 Route::get('/get-countries', [UserController::class, 'getCountries']);
 Route::get('/get-state', [UserController::class, 'getStates']);
+Route::get('/get-cities/{id}', [UserController::class, 'getCities']);
 Route::post('/validate-sponsor', [UserController::class, 'validateSponsor']);
 Route::post('/generate-otp', [UserController::class, 'generateOtp']);
 Route::post('/verify-otp', [UserController::class, 'verifyOtp']);

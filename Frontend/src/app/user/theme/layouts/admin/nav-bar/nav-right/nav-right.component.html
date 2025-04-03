@@ -1,39 +1,27 @@
 <ul class="list-unstyled">
 
 
-  <li class="header-button">
-    <a href="#" class="greenbtn" [routerLink]="['/create-kyc']">1. KYC</a>
-    <a href="#" [routerLink]="['/activation']" class="greenbtn">2. Activation</a>
+  <li class="header-button" *ngIf="User">
+    <a href="#" [ngClass]="{'greenbtn': User.pan_verified && User.kyc_status === 'verified'}"
+      [routerLink]="['/create-kyc']">1. KYC</a>
+    <a href="#" [ngClass]="{'greenbtn': User.is_active}" [routerLink]="['/activation']" class="greenbtn">2. Activation</a>
   </li>
 
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
-      <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
-      <span>{{Username ?? ''}}</span>
+      <img *ngIf="!image" src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+      <img *ngIf="image" src="{{image}}" alt="user-image" class="user-avtar wid-35" />
+      <span *ngIf="User">{{User?.full_name ?? ''}}</span>
     </a>
     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
-      <div class="dropdown-header">
-        <div class="d-flex mb-1">
-          <div class="flex-shrink-0">
-            <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
-          </div>
-          <div class="flex-grow-1 ms-3">
-            <h6 class="mb-1">{{Username ?? ''}}</h6>
-          </div>
-          <a (click)="logOut()" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>
-        </div>
-      </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
         <li ngbNavItem="1">
-          <a ngbNavLink>
-            <!-- <i class="ti ti-user"></i> Edit Profile -->
-          </a>
           <ng-template ngbNavContent>
             <div *ngFor="let task of profile">
-            <a class="dropdown-item" [href]="task.url">
-              <i class="{{ task.icon }}"></i>
-              <span>{{ task.title }}</span>
-            </a>
+              <a class="dropdown-item" [routerLink]="['/' + task.url]">
+                <i class="{{ task.icon }}"></i>
+                <span>{{ task.title }}</span>
+              </a>
             </div>
             <div>
               <a class="dropdown-item">
@@ -43,17 +31,6 @@
             </div>
           </ng-template>
         </li>
-        <!-- <li ngbNavItem="2">
-          <a ngbNavLink><i class="ti ti-settings"></i> Setting</a>
-          <ng-template ngbNavContent>
-            <div *ngFor="let task of setting">
-              <a class="dropdown-item">
-                <i class="{{ task.icon }}"></i>
-                <span>{{ task.title }}</span>
-              </a>
-            </div>
-          </ng-template>
-        </li> -->
       </ul>
       <div [ngbNavOutlet]="nav"></div>
     </div>

@@ -230,7 +230,8 @@
       }
 
       .user-avtar {
-        width: 24px;
+        width: 42px;
+        border:solid 3px #2544701f;
       }
 
       @include media-breakpoint-down(sm) {
@@ -249,8 +250,16 @@
   }
 
   .dropdown-user-profile {
-    min-width: 290px;
+    min-width: 180px;
     max-width: 100%;
+    padding: 0px;
+    .dropdown-item{
+      transition: 0.5s;
+      &:hover{
+        background: #254470;
+        color: #ffffff;
+      }
+    }
     .drp-tabs {
       border-bottom: 0;
       display: flex;

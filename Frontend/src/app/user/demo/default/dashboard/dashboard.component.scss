@@ -215,3 +215,23 @@ table {
   color: red;
   font-weight: bold;
 }
+
+
+@media(max-width:767px){
+  .referral {
+    padding: 8px 16px;
+    border-radius: 6px;
+  
+    .referral-link {
+      font-size: 13px;
+    }
+
+    .copy-link{
+      height: 31px;
+      width: 31px;
+      border-radius: 6px;
+      right: 0px;
+    }
+
+  }
+}

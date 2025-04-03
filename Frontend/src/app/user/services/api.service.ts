@@ -22,7 +22,11 @@ export class ApiService {
   getStates() {
     return this.http.get(this.BaseUrl + 'get-state');
   }
+  getCities(id: number){
+    return this.http.get(this.BaseUrl + 'get-cities/' + id);
 
+  }
+ 
   validateWithSponsor(id: number) {
     return this.http.post(this.BaseUrl + 'validate-sponsor', { "SponsorID": id });
   }

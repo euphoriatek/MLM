@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\City;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\State;
@@ -27,6 +28,7 @@ class UserController extends Controller
             // 'country_id' => 'required|string|max:255',
             'mobile_no' => 'required|string|regex:/^[0-9]{10}$/|max:20|unique:users,mobile_no',
             'state_id' => 'required|string|max:255',
+            'city_id' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'password' => 'required|string|min:6',
             'pin_code' => 'required|string|regex:/^[0-9]{5,6}$/|max:6',
@@ -64,6 +66,7 @@ class UserController extends Controller
                 'full_name' => $request->input('full_name'),
                 // 'country_id' => $request->input('country_id'),
                 'state_id' => $request->input('state_id'),
+                'city_id' => $request->input('city_id'),
                 'mobile_no' => $request->input('mobile_no'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
@@ -106,13 +109,7 @@ class UserController extends Controller
     public function getStates(Request $request)
     {
         try {
-            // $country_id = $id;
-            // if ($country_id) {
-            //     $states = State::where('country_id', $country_id)->get();
-            // } else {
-                // $states = State::all();
-            // }
-            $states = State::get();
+            $states = State::all();
             return response()->json([
                 'status' => true,
                 'data' => $states,
@@ -121,6 +118,28 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while fetching the states.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function getCities(Request $request,$id)
+    {
+        try {
+            $state_id = $id;
+            if ($state_id) {
+                $cities = City::where('state_id', $state_id)->get();
+            } else {
+                $cities = City::all();
+            }
+            $cities = City::get();
+            return response()->json([
+                'status' => true,
+                'data' => $cities,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching the cities.',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -181,7 +200,7 @@ class UserController extends Controller
         // Send GET request
         $response = Http::get($url);
         $data = $response->json();
-        $otp_expiry = Carbon::now()->addMinutes(1);
+        $otp_expiry = Carbon::now()->addMinutes(5);
         if ($data['ErrorCode'] == 000) {
             Otp::create([
                 'mobile_number' => $mobile_number,

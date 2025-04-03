@@ -1,15 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
-import { environment } from 'src/environments/environment';
-
+import { DataShareService } from 'src/app/user/services/data-share.service';
 
 @Component({
   selector: 'app-create-kyc',
@@ -19,41 +15,34 @@ import { environment } from 'src/environments/environment';
 export class CreateKycComponent {
   KycForm!: FormGroup;
   PanKycForm!:FormGroup;
-  imageUrl: any | null = null;
-  imageError: string | null = null;
-  imageErrorPan: string | null = null;
-  imageUrlPan: any | null = null;
   isFormReadonly = false; 
   isReadonly = false;
   user:any;
   is_bank_verif:string='pending';
   is_pan_verify:boolean=false;
-  BaseUrl = environment.FilebasePath;
+  activeIndex: number = 0;
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService,
-    public api: ApiService, public toaster: ToasterService,private router: Router
+    public api: ApiService, public toaster: ToasterService,private router: Router,private service: DataShareService
   ) {
 
   }
   ngOnInit(): void {
     this.user = this.cookiesService.getCookie('CurrentUser');
     this.is_bank_verif = this.user.kyc_status;
-    console.log(this.is_bank_verif);
     this.is_pan_verify = this.user.pan_verified;
     this.KycForm = this.fb.group({
       account_holder_name: ['', [Validators.required, Validators.pattern('^[A-Za-z ]*$')]],
       ifsc_code: ['', [Validators.required]],
       account_no: ['', [Validators.required]],
       bank_name: ['', Validators.required],
-      branch_name: ['', [Validators.required]],
-      // image:['', [Validators.required]]
+      branch_name: ['', [Validators.required]]
     });
     this.getKycInfo();
     this.PanKycForm = this.fb.group({
       tax_document: ['pan', Validators.required],
-      id_number: ['', Validators.required],
-      // pan_image: ['', Validators.required], 
+      id_number: ['', Validators.required]
     });
-     
+    this.openDefault(); 
 
   }
 
@@ -93,22 +82,14 @@ export class CreateKycComponent {
       this.spinner.hide();
       return;
     } else if (this.KycForm.valid) {
-      // const formData = new FormData();
-      // formData.append('account_holder_name', this.KycForm.get('account_holder_name').value);
-      // formData.append('ifsc_code', this.KycForm.get('ifsc_code').value);
-      // formData.append('account_no', this.KycForm.get('account_no').value);
-      // formData.append('bank_name', this.KycForm.get('bank_name').value);
-      // formData.append('branch_name', this.KycForm.get('branch_name').value);
-      // if (this.KycForm.get('image').value) {
-      //   formData.append('image', this.KycForm.get('image').value);
-      // }
       this.api.CreateKyc(this.KycForm.value).subscribe({
         next: (response: any) => {
           this.spinner.hide();
           if (response && response.status) {
+            this.activeIndex = 1;
             this.is_bank_verif = "verified";
             this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'verified');
-            this.toaster.success('Kyc Details created Successfully!');
+            this.toaster.success('Kyc Details Created Successfully!');
             this.getKycInfo();
           }else{
             this.toaster.error(response.message);
@@ -126,75 +107,6 @@ export class CreateKycComponent {
     }
   }
   
-  // onFileChange(event: Event): void {
-  //   const fileInput = event.target as HTMLInputElement;
-  //   const file = fileInput.files ? fileInput.files[0] : null;
-
-  //   if (file) {
-  //     const maxSizeInBytes = 2 * 1024 * 1024;
-  //     if (file.size > maxSizeInBytes) {
-  //       this.imageError = 'File size must be less than 2MB';
-  //       this.imageUrl = null;
-  //       return;
-  //     }
-  //     const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
-  //     if (!allowedTypes.includes(file.type)) {
-  //       this.imageError = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
-  //       this.imageUrl = null;
-  //       return;
-  //     }
-  //     if (file) {
-  //       this.KycForm.patchValue({
-  //         image: file
-  //       });
-  //       this.previewFile(file);
-  //     }
-  //   }
-  // }
-  
-  // previewFile(file: File): void {
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     this.imageUrl = reader.result as string;
-  //   };
-  //   reader.readAsDataURL(file);
-  // }
-
-  // onFileChangePanForm(event: Event): void {
-  //   const fileInput = event.target as HTMLInputElement;
-  //   const file = fileInput.files ? fileInput.files[0] : null;
-  
-  //   if (file) {
-  //     const maxSizeInBytes = 2 * 1024 * 1024;
-  //     if (file.size > maxSizeInBytes) {
-  //       this.imageErrorPan = 'File size must be less than 2MB';
-  //       this.imageUrlPan = null;
-  //       return;
-  //     }
-  //     const allowedTypes = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
-  //     if (!allowedTypes.includes(file.type)) {
-  //       this.imageErrorPan = 'Only JPG, PNG, JPEG, BMP, and GIF files are allowed';
-  //       this.imageUrlPan = null;
-  //       return;
-  //     }
-  //     if (file) {
-  //       this.PanKycForm.patchValue({
-  //         pan_image: file
-  //       });
-  //       this.previewFilePan(file);
-  //       this.imageErrorPan = '';
-  //     }
-  //   }
-  // }
-  
-  // previewFilePan(file: File): void {
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     this.imageUrlPan = reader.result as string;
-  //   };
-  //   reader.readAsDataURL(file);
-  // }
-
 CreatePanKyc(): void {
     this.spinner.show();
     if (this.PanKycForm.invalid) {
@@ -205,11 +117,6 @@ CreatePanKyc(): void {
         const formData = new FormData();
         formData.append('tax_document', this.PanKycForm.get('tax_document').value);
         formData.append('id_number', this.PanKycForm.get('id_number').value);
-
-        // const image = this.PanKycForm.get('pan_image').value;
-        // if (image && !this.isFormReadonly) {
-        //     formData.append('pan_image', image);
-        // }
         this.api.CreatePanKyc(formData).subscribe({
             next: (response: any) => {
                 this.spinner.hide();
@@ -219,8 +126,9 @@ CreatePanKyc(): void {
                         this.cookiesService.updateCookie('CurrentUser', 'pan_verified', true);
                         this.isFormReadonly = true;
                         this.getKycInfo();
-                        this.toaster.success('PAN KYC created successfully!');
+                        this.toaster.success('PAN KYC Created successfully!');
                         this.router.navigate(['/activation']);
+                        this.service.updateProfileInfo(true);
                     } else {
                         this.toaster.error(response.message);
                     }
@@ -240,7 +148,6 @@ CreatePanKyc(): void {
 private disableFormFields(): void {
     this.PanKycForm.controls['tax_document'].disable();
     this.PanKycForm.controls['id_number'].disable();
-    // this.PanKycForm.controls['pan_image'].disable();
 }
 
 
@@ -250,7 +157,6 @@ private disableFormBnkFields(): void {
   this.KycForm.controls['account_no'].disable();
   this.KycForm.controls['bank_name'].disable();
   this.KycForm.controls['branch_name'].disable();
-  // this.KycForm.controls['image'].disable();
 }
 
 getKycInfo(): void {
@@ -280,12 +186,8 @@ getKycInfo(): void {
           const panData = response.data.pan;
           this.PanKycForm.patchValue({
             tax_document: panData.tax_document,
-            id_number: panData.id_number,
-            // pan_image: panData.pan_image,
+            id_number: panData.id_number
           });
-          // if(panData.pan_image){
-          //   this.imageUrlPan = this.BaseUrl+panData.pan_image;
-          // }
           this.disableFormFields();
           this.isFormReadonly = true;
         }
@@ -300,4 +202,27 @@ getKycInfo(): void {
   });
 }
 
+activeIndexChange(index: number | number[]) {
+  this.activeIndex = Array.isArray(index) ? index[0] : index;
+  if (this.activeIndex === 1 && this.is_bank_verif != 'verified') {
+    this.activeIndex = 0;
+  }
+}
+
+openDefault(){
+  if (this.is_bank_verif === 'verified' && this.is_pan_verify) {
+    this.activeIndex = 0;
+  } else if(this.is_bank_verif == 'verified' && !this.is_pan_verify) {
+    this.activeIndex = 1;
+  }else{
+    this.activeIndex = 0;
+  }
+}
+openPanCardTab() {
+  if (this.is_bank_verif === 'verified') {
+    this.activeIndex = 1;
+  } else {
+    this.toaster.error("Please verify your Bank Info before accessing the Pan Card section.");
+  }
+}
 }

@@ -43,7 +43,7 @@ export class CheckoutComponent {
     }
     this.CheckoutForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', Validators.email],
       phone_number: ['', [
         Validators.required,
         Validators.pattern('^[0-9]{10}$')

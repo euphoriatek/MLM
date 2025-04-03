@@ -47,7 +47,7 @@ class PurchaseController extends Controller
             'r_payment_id' => 'required|string',
             'method' => 'required|string',
             'currency' => 'required|string',
-            'user_email' => 'required|email',
+            'user_email' => 'nullable|email',
             'amount' => 'required|numeric',
             'json_response' => 'required|string',
         ]);
@@ -309,7 +309,7 @@ class PurchaseController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'phone_number' => 'required|string|size:10',
             'address' => 'required|string',
             'pin_code' => 'required|numeric'

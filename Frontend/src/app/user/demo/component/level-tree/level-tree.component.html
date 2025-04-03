@@ -43,9 +43,8 @@
 <div class="d-block d-sm-flex align-items-center mt-4 mb-5 gap-5 px-1">
   <div class="tree_search d-flex align-items-center mb-sm-0 mb-4">
     <form method="post" (ngSubmit)="Search()" [formGroup]="SearchForm" class="d-flex align-items-center w-100">
-      <input type="text" class="form-control me-2" formControlName="search">
-      <button type="submit" mat-raised-button color="warn" class="me-2">Search</button>
-      <!-- Full Screen Toggle Buttons -->
+      <!-- <input type="text" class="form-control me-2" formControlName="search">
+      <button type="submit" mat-raised-button color="warn" class="me-2">Search</button> -->
       <a *ngIf="!fullScreenVisible" (click)="openFullScreen()" class="text-primary fw-bold"
         style="cursor: pointer;">Full Screen</a>
       <a *ngIf="fullScreenVisible" (click)="removeFullScreen()" class="text-primary fw-bold"

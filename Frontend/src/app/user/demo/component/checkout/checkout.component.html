@@ -22,9 +22,6 @@
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" id="email" formControlName="email" class="form-control" />
-                                            <div *ngIf="CheckoutForm.get('email').hasError('required') && CheckoutForm.get('email').touched">
-                                                <span class="error-message">Email is required</span>
-                                            </div>
                                             <div *ngIf="CheckoutForm.get('email').hasError('email') && CheckoutForm.get('email').touched">
                                                 <span class="error-message">Please enter a valid email</span>
                                             </div>

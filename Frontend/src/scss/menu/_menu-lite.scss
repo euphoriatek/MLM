@@ -249,10 +249,10 @@
             li {
               > a {
                 text-align: left;
-                padding: 13px 16px 13px 52px;
-                margin: 0;
+                padding: 15px 20px 15px 53px;
                 display: block;
-                // font-size: 13px;
+                margin: 2px 0px;
+                border-left: solid 3px transparent;
 
                 &:before {
                   content: '';
@@ -497,6 +497,7 @@
           > a {
             background: transparentize($primary, 0.9);
             color: #fff;
+            border-left: solid 3px #fff;
             &:before {
               background: $primary;
             }
@@ -775,25 +776,19 @@
         position: relative;
 
         .coded-submenu {
-          opacity: 0;
-          visibility: hidden;
-          // transform-origin: 50% 50%;
-          transition:
-            transform 0.3s,
-            opacity 0.3s;
-          // transform-style: preserve-3d;
-          // transform: rotateX(-90deg);
-          position: absolute;
+          transition: transform 0.5s, max-height 0.5s;
           display: block;
+          width: 100%;
+          max-height: 0px;
+          overflow: hidden;
+          display: block;
+          width: 100%;
         }
 
         &.coded-trigger {
           > .coded-submenu {
-            position: relative;
-            opacity: 1;
-            visibility: visible;
-            transform: rotateX(0deg);
             margin: 0px 0px;
+            max-height: 200px;
           }
         }
       }
@@ -929,4 +924,15 @@
 }
 .coded-navbar.navbar-collapsed .logout-Left{
   width: 67%;
+}
+
+@media(max-width:767px){
+  .coded-inner-navbar {
+  li {     
+    > a {
+      padding: 10px 20px !important;
+      font-size: 13px !important;
+      }
+    }
+  }
 }

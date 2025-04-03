@@ -34,6 +34,8 @@ export class RegisterComponent implements OnInit {
   is_send:boolean=false;
   passwordFieldType: string = 'password';
   passwordType: string = 'password';
+  cities:any;
+  otpTimeDisplay:any;
   @ViewChild('otpInput') otpInputRef: ElementRef | undefined;
   constructor(private fb: FormBuilder, private route: ActivatedRoute,private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
 
@@ -42,16 +44,13 @@ export class RegisterComponent implements OnInit {
       {
         parent_sponsor_id: ['', [ Validators.maxLength(10),Validators.required]],
         full_name: ['', Validators.required],
-        // country_id: ['98', Validators.required],
         state_id: ['', Validators.required],
-        // email: ['', [Validators.required, Validators.email]],
+        city_id: ['', Validators.required],
         email: ['', Validators.email],
         password: [
           '',
           [
-            Validators.required,
-            // Validators.minLength(6),
-            // Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$')
+            Validators.required
           ]
         ],
         mobile_no: ['', [Validators.maxLength(10),Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -64,6 +63,7 @@ export class RegisterComponent implements OnInit {
       { validators: passwordMatchValidator() }
     );
     this. fetchStates(); 
+  
       this.currentRoute.paramMap.subscribe(params => {
         this.Sponserid = params.get('id');
         if (this.Sponserid) {
@@ -128,42 +128,80 @@ export class RegisterComponent implements OnInit {
   }
 
 
-  sendOtp(){
+  // sendOtp(){
+  //   this.is_send = true;
+  //   const data = {"mobile_number":this.signupForm.value.mobile_no};
+  //   this.api.GenerateOTP(data).subscribe({
+  //     next: (response: any) => {
+  //       this.is_send = false;
+  //       if (response.status) {
+  //         this.otpSent = true;
+  //           this.otpTimer = 60;
+  //           this.signupForm.controls['mobile_no'].disable();
+  //           this.timerInterval = setInterval(() => {
+  //             if (this.otpTimer > 0) {
+  //               this.otpTimer--;
+  //               if(this.otpTimer === 0){
+  //                 this.firstSend = true;
+  //                 this.signupForm.controls['mobile_no'].enable();
+  //               }
+  //             } else {
+  //               this.signupForm.controls['mobile_no'].enable();
+  //               clearInterval(this.timerInterval);
+  //             }
+  //           }, 1000);
+  //           setTimeout(() => {
+  //             this.otpInputRef?.nativeElement.focus();
+  //           }, 100);
+  //       }else{
+  //         this.toaster.error( "Try again!", 'Signup');
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //       this.toaster.error( "Try again!", 'Signup');
+  //     }
+  //   });
+  // }
+  sendOtp() {
     this.is_send = true;
-    const data = {"mobile_number":this.signupForm.value.mobile_no};
+    const data = { "mobile_number": this.signupForm.value.mobile_no };
+  
     this.api.GenerateOTP(data).subscribe({
       next: (response: any) => {
         this.is_send = false;
         if (response.status) {
           this.otpSent = true;
-            this.otpTimer = 60;
-            this.signupForm.controls['mobile_no'].disable();
-            this.timerInterval = setInterval(() => {
-              if (this.otpTimer > 0) {
-                this.otpTimer--;
-                if(this.otpTimer === 0){
-                  this.firstSend = true;
-                  this.signupForm.controls['mobile_no'].enable();
-                }
-              } else {
-                this.signupForm.controls['mobile_no'].enable();
-                clearInterval(this.timerInterval);
-              }
-            }, 1000);
-            setTimeout(() => {
-              this.otpInputRef?.nativeElement.focus();
-            }, 100);
-        }else{
-          this.toaster.error( "Try again!", 'Signup');
+          this.otpTimer = 300; // 5 minutes = 300 seconds
+          this.signupForm.controls['mobile_no'].disable();
+          
+          this.timerInterval = setInterval(() => {
+            if (this.otpTimer > 0) {
+              this.otpTimer--;
+            } else {
+              this.signupForm.controls['mobile_no'].enable();
+              clearInterval(this.timerInterval);
+            }
+            // Format remaining time as mm:ss
+            const minutes = Math.floor(this.otpTimer / 60); // Get minutes
+            const seconds = this.otpTimer % 60; // Get seconds
+            this.otpTimeDisplay = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+          }, 1000); // 1 second interval
+          
+          setTimeout(() => {
+            this.otpInputRef?.nativeElement.focus();
+          }, 100);
+        } else {
+          this.toaster.error("Try again!", 'Signup');
         }
       },
       error: (err) => {
         console.error(err);
-        this.toaster.error( "Try again!", 'Signup');
+        this.toaster.error("Try again!", 'Signup');
       }
     });
   }
-  
+
   verifyOtp() {
     const enteredOtp = this.signupForm.get('otp')?.value;
     if(enteredOtp.length < 6){
@@ -187,27 +225,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  // fetchCountry(): void {
-  //   this.spinner.show();
-  //   this.api.getCountry().subscribe({
-  //     next: (response: any) => {
-  //       if (response?.status) {
-  //         this.countries = response.data;
-  //         this.selectedCountryLogo = 'assets/images/flags/IN.png';
-  //       }
-  //       this.spinner.hide();
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
   fetchStates(): void {
     this.api.getStates().subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.spinner.hide();
           this.states = response.data;
+          this.getCity(11);
         }
       },
       error: (err) => {
@@ -258,6 +282,19 @@ export class RegisterComponent implements OnInit {
   }
   passwordVisibility() {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
+  }
+  getCity(id:number): void {
+    this.api.getCities(id).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.spinner.hide();
+          this.cities = response.data;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 }
 // Password match validator

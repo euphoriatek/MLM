@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { DataShareService } from 'src/app/user/services/data-share.service';
+import { Subscription } from 'rxjs';
+import { NgxSpinnerService } from "ngx-spinner";
+import { ApiService } from 'src/app/user/services/api.service';
 @Component({
   selector: 'app-nav-right',
   templateUrl: './nav-right.component.html',
@@ -9,33 +14,30 @@ import { Router } from '@angular/router';
 })
 export class NavRightComponent {
   Username:any;
-  constructor(public toaster:ToasterService,public cookie:UserCookiesService,public route:Router){
-   
-    this.Username = this.cookie.getCookie('CurrentUser')?.full_name;
+  image:any;
+  User:any;
+  BaseUrl = environment.baseURL;
+  BaseUrlFile = environment.FilebasePath;
+  private subscription: Subscription;
+  constructor(public toaster:ToasterService,public cookie:UserCookiesService,public route:Router,private service: DataShareService, public spinner:NgxSpinnerService,
+    private api: ApiService
+  ){
+    this.User = this.cookie.getCookie('CurrentUser');
+    this.image = this.User.image ? `${this.BaseUrlFile}${this.User.image}` : null;
+    this.subscription = this.service.user$.subscribe((status) => {
+      if(status){
+        this.User = this.cookie.getCookie('CurrentUser');
+        this.image = this.User.image ? `${this.BaseUrlFile}${this.User.image}` : null;
+      }
+    });
   }
   // public method
   profile = [
     {
       icon: 'ti ti-edit-circle',
       title: 'Edit Profile',
-      url: '/profile',
+      url: 'profile',
     },
-    // {
-    //   icon: 'ti ti-user',
-    //   title: 'View Profile'
-    // },
-    // {
-    //   icon: 'ti ti-clipboard',
-    //   title: 'Social Profile'
-    // },
-    // {
-    //   icon: 'ti ti-edit-circle',
-    //   title: 'Billing'
-    // },
-    // {
-    //   icon: 'ti ti-power',
-    //   title: 'Logout'
-    // }
   ];
 
   setting = [

@@ -1,8 +1,5 @@
 <?php
 namespace App\Models;
-use App\Models\AssigendServer;
-use App\Models\Servers;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,8 +22,8 @@ class User extends Authenticatable
         'sponsor_id',
         'parent_sponsor_id',
         'wallet_balance',
-        // 'country_id',
         'state_id',
+        'city_id',
         'pin_code',
         'address',
         'title',
@@ -67,9 +64,9 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'parent_sponsor_id');
     }
 
-    public function country()
+    public function city()
     {
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(City::class, 'city_id');
     }
     public function states()
     {

@@ -44,7 +44,7 @@ class TransactionController extends Controller
                     'message' => 'User is not authenticated.',
                 ], 401);
             }
-            $members =User::where('role','user')->get();
+            $members =User::with('city')->where('role','user')->get();
             return response()->json([
                 'status' => true,
                 'data' => $members,

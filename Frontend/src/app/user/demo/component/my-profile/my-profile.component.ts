@@ -4,7 +4,8 @@ import { ToasterService } from 'src/app/services/toster.service';
 import { FormBuilder, FormGroup, Validators ,FormControl} from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { NgxSpinnerService } from "ngx-spinner";
-
+import { UserCookiesService } from 'src/app/user/services/usercookies.service';
+import { DataShareService } from 'src/app/user/services/data-share.service';
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
@@ -22,18 +23,22 @@ export class MyProfileComponent implements OnInit {
   imageFile: File | null = null;
   storedImageUrl: string | null = null;
   imageError:any;
-  constructor(private fb: FormBuilder,private api: ApiService,public toaster: ToasterService, public spinner: NgxSpinnerService) {}
+  cities:any;
+  constructor(private fb: FormBuilder,private api: ApiService,public toaster: ToasterService, public spinner: NgxSpinnerService,
+    public cookiesService: UserCookiesService,private service: DataShareService
+  ) {}
 
   ngOnInit(): void {
     this.getstates();
+    this.getCity(11);
     this.getUsers();
     this.editProfileForm = this.fb.group({
       full_name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', Validators.email],
       pin_code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
       address: ['', Validators.required],
-      // country_id: ['', Validators.required],
       state_id: ['', Validators.required],
+      city_id: ['', Validators.required],
       fatherandmothername: [''],
       gender: [''],
       title: ['', Validators.required],
@@ -132,10 +137,11 @@ export class MyProfileComponent implements OnInit {
   editSubmit(): void {
     if (this.editProfileForm.valid) {
       const formData = new FormData();
+      console.log(formData);
       Object.keys(this.editProfileForm.value).forEach(key => {
         let value = this.editProfileForm.get(key)?.value;
         if (value === null || value === undefined || value == '') {
-          return;  // Skip this iteration and do not append to formData
+          return;
         }
         if (key === 'dob' && value) {
           const formattedDob = new Date(value).toISOString().split('T')[0]; 
@@ -151,6 +157,8 @@ export class MyProfileComponent implements OnInit {
         next: (response: any) => {
           if (response.status) {
             this.imageError = '';
+            this.cookiesService.updateCookie('CurrentUser', 'image', response.data?.image);
+            this.service.updateProfileInfo(true);
             this.toaster.success('Profile updated successfully');
             this.getUsers();
           } else {
@@ -167,7 +175,19 @@ export class MyProfileComponent implements OnInit {
       this.editProfileForm.markAllAsTouched();
     }
   }
-  
+  getCity(id:number): void {
+    this.api.getCities(id).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.spinner.hide();
+          this.cities = response.data;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 
 }
 

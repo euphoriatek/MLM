@@ -51,29 +51,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-md-12">
-              <div class="form-group mb-3">
-                <label for="country_id" class="form-label">Country <span>*</span></label>
-                <div class="form-input">
-                  <img *ngIf="selectedCountryLogo" [src]="selectedCountryLogo ?? 'assets/images/flags/IN.png'"
-                    alt="country logo" />
-                  <select formControlName="country_id" class="form-select form-control"
-                    (change)="onCountryChange($event)">
-                    <option value="">Select Country</option>
-                    <option *ngFor="let country of countries" [value]="country.id">
-                      {{ country.name }}
-                    </option>
-                  </select>
-                </div>
-                <div *ngIf="
-                    signupForm.get('country_id')?.touched &&
-                    signupForm.get('country_id')?.invalid
-                  ">
-                  <small class="text-danger" *ngIf="signupForm.get('country_id')?.hasError('required')">Country is
-                    required.</small>
-                </div>
-              </div>
-            </div> -->
 
             <!-- Mobile Number Field -->
             <div class="col-md-12">
@@ -106,7 +83,7 @@
                 </div>
                 <div id="RegsistOtp" *ngIf="otpSent && !is_optVerify">
                   <div id="div_timer" class="timer-otp" *ngIf="otpTimer > 0">
-                    <span id="otp-count">{{ otpTimer }}</span>
+                    <span id="otp-count">{{ otpTimeDisplay }}</span>
                     Seconds Remaining
                   </div>
                   <label id="lblotpMsg" class="text-left" style="color: green">OTP Successfully Sent on This Mobile
@@ -157,10 +134,32 @@
                 </div>
               </div>
             </div>
+            <!-- Cities -->
+            <div class="col-md-12">
+              <div class="form-group mb-3">
+                <label for="city_id" class="form-label">City <span>*</span></label>
+                <div class="form-input">
+                  <img src="assets/images/admin_images/icons/country.png" alt="city" />
+                  <select formControlName="city_id" class="form-select form-control">
+                    <option value="">Select city</option>
+                    <option *ngFor="let city of cities" [value]="city.id">
+                      {{ city.city }}
+                    </option>
+                  </select>
+                </div>
+                <div *ngIf="
+          signupForm.get('city_id')?.touched &&
+          signupForm.get('city_id')?.invalid
+        ">
+                  <small class="text-danger" *ngIf="signupForm.get('city_id')?.hasError('required')">City is
+                    required.</small>
+                </div>
+              </div>
+            </div>
             <!-- Email Field -->
             <div class="col-md-12">
               <div class="form-group mb-3">
-                <label for="email" class="form-label">Email ID <span>*</span></label>
+                <label for="email" class="form-label">Email ID</label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/mail.svg" alt="email" />
                   <input formControlName="email" id="email" class="form-control" placeholder="" />
@@ -192,10 +191,6 @@
             " class="error">
                 <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('required')">Password is
                   required.</small>
-                <!-- <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('minlength')">Password must be
-              at least 6 characters.</small>
-            <small class="text-danger" *ngIf="signupForm.get('password')?.hasError('pattern')">Password must
-              include uppercase, lowercase, number.</small> -->
               </div>
             </div>
 
@@ -207,7 +202,6 @@
                 <input id="confirm_password" formControlName="confirm_password" [type]="passwordType"
                   class="form-control" />
                 <i class="fa-solid fa-eye toggle-password" (click)="passwordVisibility()"></i>
-                <!-- <input id="confirm_password" formControlName="confirm_password" type="password" class="form-control" /> -->
 
               </div>
               <div *ngIf="
