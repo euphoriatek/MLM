@@ -1,190 +1,187 @@
-<div class="card">
-    <div class="flex mb-3 gap-2 justify-content-end">
-        <p-button (click)="activeIndex = 0" [rounded]="true" label="Bank Info" styleClass="w-2rem h-2rem p-2"
-            [outlined]="activeIndex !== 0" />
-        <p-button (click)="openPanCardTab()" [rounded]="true" label="Pan Card" styleClass="w-2rem h-2rem p-2"
-            [outlined]="activeIndex !== 1" />
+<div class="card rounded-3">
+    <div class="card-body mb-5">
+
+            <!-- <div class="flex mb-8 gap-2 justify-end">
+                <p-button (click)="activeIndex = 0" [rounded]="true" label="1" styleClass="w-8 h-8 p-0" [outlined]="activeIndex !== 0" />
+                <p-button (click)="openPanCardTab()" [rounded]="true" label="2" styleClass="w-8 h-8 p-0" [outlined]="activeIndex !== 1" />
+              </div>
+               -->
+              <!-- Steps Component -->
+              <p-steps class="stepform" [model]="steps" [(activeIndex)]="activeIndex" (onChange)="onStepChange($event)"></p-steps>
+      
+
+        <p-accordion (activeIndexChange)="activeIndexChange($event)" [activeIndex]="activeIndex">
+            <p-accordionTab>
+                <ng-template pTemplate="header">
+                    <div class="w-100">
+                        <div *ngIf="is_bank_verif != 'verified'"
+                            class="bank-kyc-pending d-flex justify-content-between  align-items-center">
+                            <h6 class="title text-dark mb-0">Bank Info</h6>
+                            <h6 class="title mb-0"><i class="fa-solid fa-clock me-2"></i>Pending</h6>
+                        </div>
+                        <div *ngIf="is_bank_verif === 'verified'"
+                            class="bank-kyc-approved d-flex justify-content-between  align-items-center">
+                            <h6 class="title text-dark mb-0">Bank Info</h6>
+                            <h6 class="title mb-0"><i class="fa-solid fa-check me-2"></i>Approved</h6>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- Form Section for Bank Info -->
+                <div class="bank-main">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <form method="post" (ngSubmit)="CreateKyc()" [formGroup]="KycForm">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group">
+                                            <label class="form-label" for="account_holder_name">Account Holder Name
+                                                *</label>
+                                            <div class="form-input">
+                                                <input formControlName="account_holder_name" type="text"
+                                                    class="form-control" id="account_holder_name" placeholder="" />
+                                            </div>
+                                            <div
+                                                *ngIf="KycForm?.get('account_holder_name')?.hasError('required') && KycForm?.get('account_holder_name')?.touched">
+                                                <span class="error-message">Account Holder name is required</span>
+                                            </div>
+                                            <div
+                                                *ngIf="KycForm?.get('account_holder_name')?.hasError('pattern') && KycForm?.get('account_holder_name')?.touched">
+                                                <span class="error-message">Account Holder name should only contain
+                                                    letters and spaces</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ifsc_code">IFSC Code *</label>
+                                            <div class="form-input">
+                                                <input formControlName="ifsc_code" type="text" class="form-control"
+                                                    id="ifsc_code" placeholder="" (blur)="checkIfSc($event)" />
+                                            </div>
+                                            <div
+                                                *ngIf="KycForm?.get('ifsc_code')?.hasError('required') && KycForm?.get('ifsc_code')?.touched">
+                                                <span class="error-message">IFSC Code is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group">
+                                            <label class="form-label" for="account_no">Account No. *</label>
+                                            <div class="form-input">
+                                                <input formControlName="account_no" type="text" class="form-control"
+                                                    id="account_no" placeholder="" />
+                                            </div>
+                                            <div
+                                                *ngIf="KycForm?.get('account_no')?.hasError('required') && KycForm?.get('account_no')?.touched">
+                                                <span class="error-message">Account No is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="bank_name">Bank Name *</label>
+                                            <div class="form-input">
+                                                <input formControlName="bank_name" type="text" class="form-control"
+                                                    id="bank_name" placeholder="" />
+                                            </div>
+                                            <div
+                                                *ngIf="KycForm?.get('bank_name')?.hasError('required') && KycForm?.get('bank_name')?.touched">
+                                                <span class="error-message">Bank Name is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mb-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="branch_name">Branch Name *</label>
+                                            <div class="form-input">
+                                                <input formControlName="branch_name" type="text" class="form-control"
+                                                    id="branch_name" placeholder="" />
+                                            </div>
+                                            <div
+                                                *ngIf="KycForm?.get('branch_name')?.hasError('required') && KycForm?.get('branch_name')?.touched">
+                                                <span class="error-message">Branch name is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="d-flex gap-2 from-button">
+                                                <input *ngIf="!isReadonly" type="submit" class="btn orange-btn"
+                                                    value="Submit" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </p-accordionTab>
+
+            <p-accordionTab [disabled]="is_bank_verif !== 'verified'">
+                <ng-template pTemplate="header">
+                    <div class="w-100">
+                        <div *ngIf="!is_pan_verify"
+                            class="bank-kyc-pending d-flex justify-content-between align-items-center">
+                            <h6 class="title text-dark mb-0">Pan Card</h6>
+                            <h6 class="title mb-0"><i class="fa-solid fa-clock me-2"></i>Pending</h6>
+                        </div>
+                        <div *ngIf="is_pan_verify"
+                            class="bank-kyc-approved d-flex justify-content-between align-items-center">
+                            <h6 class="title text-dark mb-0">Pan Card</h6>
+                            <h6 class="title mb-0"><i class="fa-solid fa-check me-2"></i>Approved</h6>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <div class="bank-main">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form method="post" (ngSubmit)="CreatePanKyc()" [formGroup]="PanKycForm">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="tax_document">Taxation Document *</label>
+                                            <div class="form-input">
+                                                <select formControlName="tax_document" class="form-select form-control">
+                                                    <option value="pan">Pan Card</option>
+                                                </select>
+                                            </div>
+                                            <div
+                                                *ngIf="PanKycForm?.get('tax_document')?.hasError('required') && PanKycForm?.get('tax_document')?.touched">
+                                                <span class="error-message">Taxation Document is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label" for="id_number">Pan Card Number *</label>
+                                            <div class="form-input">
+                                                <input formControlName="id_number" type="text" class="form-control"
+                                                    id="id_number" />
+                                            </div>
+                                            <div
+                                                *ngIf="PanKycForm?.get('id_number')?.hasError('required') && PanKycForm?.get('id_number')?.touched">
+                                                <span class="error-message">Please Insert Taxation Document Id
+                                                    Number</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="d-flex gap-2 from-button">
+                                                <input type="submit" class="btn orange-btn" value="Submit"
+                                                    [disabled]="isFormReadonly" *ngIf="!isFormReadonly">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </p-accordionTab>
+        </p-accordion>
     </div>
-    <p-accordion (activeIndexChange)="activeIndexChange($event)" [activeIndex]="activeIndex">
-        <p-accordionTab>
-            <ng-template pTemplate="header">
-                <div class="w-100">
-                    <div *ngIf="is_bank_verif != 'verified'"
-                        class="bank-kyc-pending d-flex justify-content-between mb-2 align-items-center">
-                        <h6 class="title text-dark mb-0">Bank Info</h6>
-                        <h6 class="title mb-0"><i class="fa-solid fa-clock me-2"></i>Pending</h6>
-                    </div>
-                    <div *ngIf="is_bank_verif === 'verified'"
-                        class="bank-kyc-approved d-flex justify-content-between mb-2 align-items-center">
-                        <h6 class="title text-dark mb-0">Bank Info</h6>
-                        <h6 class="title mb-0"><i class="fa-solid fa-check me-2"></i>Approved</h6>
-                    </div>
-                </div>
-            </ng-template>
-
-            <!-- Form Section for Bank Info -->
-            <div class="bank-main">
-                <div class="card rounded-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <form method="post" (ngSubmit)="CreateKyc()" [formGroup]="KycForm">
-                                    <div class="row">
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="form-group">
-                                                <label class="form-label" for="account_holder_name">Account Holder Name
-                                                    *</label>
-                                                <div class="form-input">
-                                                    <input formControlName="account_holder_name" type="text"
-                                                        class="form-control" id="account_holder_name" placeholder="" />
-                                                </div>
-                                                <div
-                                                    *ngIf="KycForm?.get('account_holder_name')?.hasError('required') && KycForm?.get('account_holder_name')?.touched">
-                                                    <span class="error-message">Account Holder name is required</span>
-                                                </div>
-                                                <div
-                                                    *ngIf="KycForm?.get('account_holder_name')?.hasError('pattern') && KycForm?.get('account_holder_name')?.touched">
-                                                    <span class="error-message">Account Holder name should only contain
-                                                        letters and spaces</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="form-group">
-                                                <label class="form-label" for="ifsc_code">IFSC Code *</label>
-                                                <div class="form-input">
-                                                    <input formControlName="ifsc_code" type="text" class="form-control"
-                                                        id="ifsc_code" placeholder="" (blur)="checkIfSc($event)" />
-                                                </div>
-                                                <div
-                                                    *ngIf="KycForm?.get('ifsc_code')?.hasError('required') && KycForm?.get('ifsc_code')?.touched">
-                                                    <span class="error-message">IFSC Code is required</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="form-group">
-                                                <label class="form-label" for="account_no">Account No. *</label>
-                                                <div class="form-input">
-                                                    <input formControlName="account_no" type="text" class="form-control"
-                                                        id="account_no" placeholder="" />
-                                                </div>
-                                                <div
-                                                    *ngIf="KycForm?.get('account_no')?.hasError('required') && KycForm?.get('account_no')?.touched">
-                                                    <span class="error-message">Account No is required</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label" for="bank_name">Bank Name *</label>
-                                                <div class="form-input">
-                                                    <input formControlName="bank_name" type="text" class="form-control"
-                                                        id="bank_name" placeholder="" />
-                                                </div>
-                                                <div
-                                                    *ngIf="KycForm?.get('bank_name')?.hasError('required') && KycForm?.get('bank_name')?.touched">
-                                                    <span class="error-message">Bank Name is required</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 mb-4">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label" for="branch_name">Branch Name *</label>
-                                                <div class="form-input">
-                                                    <input formControlName="branch_name" type="text"
-                                                        class="form-control" id="branch_name" placeholder="" />
-                                                </div>
-                                                <div
-                                                    *ngIf="KycForm?.get('branch_name')?.hasError('required') && KycForm?.get('branch_name')?.touched">
-                                                    <span class="error-message">Branch name is required</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <div class="d-flex gap-2 from-button">
-                                                    <input *ngIf="!isReadonly" type="submit" class="btn orange-btn"
-                                                        value="Submit" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </p-accordionTab>
-
-        <p-accordionTab [disabled]="is_bank_verif !== 'verified'">
-            <ng-template pTemplate="header">
-                <div class="w-100">
-                    <div *ngIf="!is_pan_verify"
-                        class="bank-kyc-pending d-flex justify-content-between mb-2 align-items-center">
-                        <h6 class="title text-dark mb-0">Pan Card</h6>
-                        <h6 class="title mb-0"><i class="fa-solid fa-clock me-2"></i>Pending</h6>
-                    </div>
-                    <div *ngIf="is_pan_verify"
-                        class="bank-kyc-approved d-flex justify-content-between mb-2 align-items-center">
-                        <h6 class="title text-dark mb-0">Pan Card</h6>
-                        <h6 class="title mb-0"><i class="fa-solid fa-check me-2"></i>Approved</h6>
-                    </div>
-                </div>
-            </ng-template>
-
-            <div class="bank-main">
-                <div class="card rounded-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <form method="post" (ngSubmit)="CreatePanKyc()" [formGroup]="PanKycForm">
-                                    <div class="row">
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label" for="tax_document">Taxation Document *</label>
-                                                <div class="form-input">
-                                                    <select formControlName="tax_document"
-                                                        class="form-select form-control">
-                                                        <option value="pan">Pan Card</option>
-                                                    </select>
-                                                </div>
-                                                <div
-                                                    *ngIf="PanKycForm?.get('tax_document')?.hasError('required') && PanKycForm?.get('tax_document')?.touched">
-                                                    <span class="error-message">Taxation Document is required</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-4">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label" for="id_number">Pan Card Number *</label>
-                                                <div class="form-input">
-                                                    <input formControlName="id_number" type="text" class="form-control"
-                                                        id="id_number" />
-                                                </div>
-                                                <div
-                                                    *ngIf="PanKycForm?.get('id_number')?.hasError('required') && PanKycForm?.get('id_number')?.touched">
-                                                    <span class="error-message">Please Insert Taxation Document Id
-                                                        Number</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <div class="d-flex gap-2 from-button">
-                                                    <input type="submit" class="btn orange-btn" value="Submit"
-                                                        [disabled]="isFormReadonly" *ngIf="!isFormReadonly">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </p-accordionTab>
-    </p-accordion>
 </div>

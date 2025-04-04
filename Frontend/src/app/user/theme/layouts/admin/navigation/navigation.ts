@@ -173,7 +173,20 @@ const NavigationItems = [
       },
     ],
   },
-  
+  {
+    id: 'Profit Level',
+    title: 'Profit Level',
+    type: 'item',
+    url: '/profit-level',
+    icon: 'fa-solid fa-house',
+  },
+  {
+    id: 'order',
+    title: 'Track Your Order',
+    type: 'item',
+    icon: 'fa-solid fa-shipping-fast',
+    url: '/track-order'
+  },
   {
     id: 'help-desk',
     title: 'Help Desk',

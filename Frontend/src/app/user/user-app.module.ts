@@ -61,6 +61,11 @@ import { WalletStatementComponent } from './demo/component/wallet-statement/wall
 import { BankWithdrawalHistoryComponent } from './demo/component/bank-withdrawal-history/bank-withdrawal-history.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 import { InvoiceComponent } from './demo/component/invoice/invoice.component';
+import { ProfitLevelComponent } from './demo/component/profit-level/profit-level.component';
+import { StepsModule } from 'primeng/steps';
+import { ForgotPasswordComponent } from './demo/component/forgot-password/forgot-password.component';
+import { OrderComponent } from './demo/component/order/order.component';
+import { TimelineModule } from 'primeng/timeline';
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -90,9 +95,12 @@ import { InvoiceComponent } from './demo/component/invoice/invoice.component';
     WalletStatementComponent,
     BankWithdrawalHistoryComponent,
     LevelIncomeComponent,
-    InvoiceComponent
+    InvoiceComponent,
+    ProfitLevelComponent,
+    ForgotPasswordComponent,
+    OrderComponent
   ],
-  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule,AccordionModule],
+  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule,AccordionModule,StepsModule,TimelineModule],
   providers: [NavigationItem],
   bootstrap: [UserAppComponent]
 })

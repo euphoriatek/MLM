@@ -1,11 +1,8 @@
 .referral {
     background-image: linear-gradient(to right, #1759bb, #76a4e7);
-    padding: 15px 25px;
+    padding: 15px 55px 15px 15px;
     border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
     color: #fff;
-    align-items: center;
     position: relative;
   
     .referral-link {
@@ -19,7 +16,7 @@
   
     .copy-link {
       color: #3379e1;
-      width: 43px;
+      width: 45px;
       background: #ffffff;
       height: 43px;
       justify-content: center;
@@ -28,7 +25,8 @@
       border-radius: 10px;
       position: absolute;
       right: 6px;
-      font-size: 17px;
+      font-size: 18px;
+      top: 5px;
     }
   }
   

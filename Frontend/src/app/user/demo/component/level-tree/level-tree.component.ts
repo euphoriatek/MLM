@@ -7,7 +7,7 @@ import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { Renderer2 } from '@angular/core';
 import { NgxSpinnerService } from "ngx-spinner";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { ToasterService } from 'src/app/services/toster.service';
 @Component({
   selector: 'app-level-tree',
   templateUrl: './level-tree.component.html',
@@ -31,7 +31,8 @@ export class LevelTreeComponent implements OnInit {
     private renderer: Renderer2,
     public spinner:NgxSpinnerService,
     public fb:FormBuilder,
-    private el: ElementRef
+    private el: ElementRef,
+    public toaster: ToasterService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +40,16 @@ export class LevelTreeComponent implements OnInit {
     this.SearchForm = this.fb.group({
       search: ['', [Validators.required]]
     });
+  }
+
+  ngOnDestroy() {
+    console.log('Component destroyed');
+    this.removeTreeEvents();
+  }
+
+  removeTreeEvents() {
+    $(document).off("click", ".showchield");
+    $(document).off("click", ".username");
   }
   ngAfterViewInit(): void {
     $(document).ready(() => {
@@ -73,7 +84,10 @@ export class LevelTreeComponent implements OnInit {
             // Clear and append new rows for child nodes
             $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').find('tr.trcontainer').html('');
             $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').find('tr.trspace').html('');
-            $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').append("<tr><td colspan='" + ParentColSpan + "'><div class='line down'></div></td></tr>");
+            // $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').append("<tr><td colspan='" + ParentColSpan + "'><div class='line down'></div></td></tr>");
+            $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').append(
+              "<tr><td colspan='" + ParentColSpan + "'>" + (data.length > 0 ? "<div class='line down'></div>" : "") + "</td></tr>"
+            );
             $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').append("<tr class='trspace'></tr>");
             $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').append("<tr class='trcontainer'></tr>");
     
@@ -188,119 +202,28 @@ export class LevelTreeComponent implements OnInit {
       this.spinner.show();
       this.api.searchTreeUser(this.SearchForm.value.search.trim()).subscribe({
         next: (response: any) => {
-          this.spinner.hide();
-  
-          if (response && response.status) {
-            this.user = response.user;
-            const mobile_no = (this.user.mobile_no || "").trim();
-  
-            // Clear the tree div before adding the new search result
-            $('#tree_div').empty(); 
-  
-            // Append the main user node
-            const existingUserNode = $('#tree_div').find(`#userlink_${mobile_no}`);
-            if (existingUserNode.length === 0) {
-              let searchUserHtml = `
-                <tr class="node-cells">
-                  <td class="node-cell" colspan="2">
-                    <div class="node" style="cursor: default;">
-                      <a style="display:block" class="showchield" id="${this.user.id}">
-                        <img class="tree_icon" src="https://login.progressfashion.com/images/redimage.png" 
-                        alt="${mobile_no}" id="userlink_${mobile_no}" title="">
-                      </a>
-                      <div colspan="2" class="line down"></div>
-                      <div class="username" title="${mobile_no}" style="background: #454552 !important;cursor:pointer">
-                        <img src="https://login.progressfashion.com/images/info-tree.svg" class="info-icon-tree">
-                        <span>${mobile_no}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>`;
-  
-              // Append the search result (main user node)
-              $('#tree_div').append(searchUserHtml);
-            }
-  
-            // Process child nodes if available
-            if (response.data && response.data.length > 0) {
-              let ICount = 1;
-              $.each(response.data, (key, value) => {
-                const childMobileNo = (value.mobile_no || "").trim();
-                // Ensure the child node doesn't duplicate
-                const existingChildNode = $('#tree_div').find(`#userlink_${childMobileNo}`);
-                if (existingChildNode.length === 0) {
-                  let ForAppend = `<tr class="node-cells">
-                                    <td class="node-cell" colspan="2">
-                                      <div class="node" style="cursor: default;">
-                                        <a style="display:block" class="showchield" id="${value.id}">
-                                          <img style="pointer-events: none;" class="tree_icon" 
-                                          src="https://login.progressfashion.com/images/redimage.png" 
-                                          alt="${value.mobile_no}" id="userlink_${value.mobile_no}" title="">
-                                        </a>
-                                        <div colspan="2" class="line down"></div>
-                                        <div class="username" title="${value.mobile_no}" style="background: #454552 !important;cursor:pointer">
-                                          <img style="pointer-events: none;" 
-                                          src="https://login.progressfashion.com/images/info-tree.svg" 
-                                          class="info-icon-tree">
-                                          <span style="pointer-events: none;">${value.mobile_no}</span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                  </tr>`;
-                  // Append child nodes to the container
-                  $('#tree_div').find('tbody').append(ForAppend);
-                }
-  
-                // Now check if the current user has child nodes (nested records)
-                if (value.data && value.data.length > 0) {
-                  // Create a nested table for the child nodes
-                  let nestedTableHtml = `<tr><td colspan="2"><div class="line down addcolspan"></div></td></tr>
-                                         <tr class="trspace"><td class="line left">&nbsp;</td><td class="line right">&nbsp;</td></tr>
-                                         <tr class="trcontainer">
-                                           <td class="node-container" colspan="2">
-                                             <table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
-                                               <tbody></tbody>
-                                             </table>
-                                           </td>
-                                         </tr>`;
-  
-                  // Append nested table to the parent row
-                  $('#tree_div').find('.trcontainer').last().find('tbody').append(nestedTableHtml);
-  
-                  // Recursively append child nodes of this current node
-                  $.each(value.data, (childKey, childValue) => {
-                    const childMobileNo = (childValue.mobile_no || "").trim();
-                    const existingNestedChildNode = $('#tree_div').find(`#userlink_${childMobileNo}`);
-                    if (existingNestedChildNode.length === 0) {
-                      let nestedChildHtml = `<tr class="node-cells">
-                                              <td class="node-cell" colspan="2">
-                                                <div class="node" style="cursor: default;">
-                                                  <a style="display:block" class="showchield" id="${childValue.id}">
-                                                    <img style="pointer-events: none;" class="tree_icon" 
-                                                    src="https://login.progressfashion.com/images/redimage.png" 
-                                                    alt="${childValue.mobile_no}" id="userlink_${childValue.mobile_no}" title="">
-                                                  </a>
-                                                  <div colspan="2" class="line down"></div>
-                                                  <div class="username" title="${childValue.mobile_no}" 
-                                                   style="background: #454552 !important;cursor:pointer">
-                                                    <img style="pointer-events: none;" 
-                                                    src="https://login.progressfashion.com/images/info-tree.svg" 
-                                                    class="info-icon-tree">
-                                                    <span style="pointer-events: none;">${childValue.mobile_no}</span>
-                                                  </div>
-                                                </div>
-                                              </td>
-                                            </tr>`;
-                      // Append nested child node to the nested table
-                      $('#tree_div').find('.trcontainer').last().find('tbody').append(nestedChildHtml);
-                    }
-                  });
-                }
-  
-                ICount++;
-              });
-            }
+          if(response.status){
+          this.user = response.user;
+          $(document).off("click", ".showchield");
+          $(document).off("click", ".username");
+          let rows = document.querySelectorAll('#tree_div tr');
+          rows.forEach((row, index) => {
+              if (index > 0) {
+                  row.remove();
+              }
+          });
+          let existingAnchor = document.querySelector('#tree_div .openmainh');
+
+          if (existingAnchor) {
+              existingAnchor.classList.add('showchield');
           }
+          this.ngAfterViewInit();
+          }else{
+            this.user = null;
+            this.toaster.error(response.message);
+            window.location.reload();
+          }
+          this.spinner.hide();
         },
         error: (err) => {
           this.spinner.hide();
@@ -309,6 +232,14 @@ export class LevelTreeComponent implements OnInit {
       });
     }
   }
-
+  resetSearch() {
+    const searchValue = this.SearchForm.value.search;
+    if (searchValue && searchValue.trim() !== '') {
+      this.SearchForm.reset();
+      window.location.reload();
+    } else {
+      this.SearchForm.reset();
+    }
+  }
 
 }

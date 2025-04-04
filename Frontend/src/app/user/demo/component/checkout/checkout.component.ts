@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/user/services/api.service';
 import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { DataShareService } from 'src/app/user/services/data-share.service';
 declare var Razorpay: any;
 import { ChangeDetectorRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -29,7 +30,7 @@ export class CheckoutComponent {
     public fb: FormBuilder,
     public toaster: ToasterService,
     public spinner: NgxSpinnerService,
-    public cookiesService: UserCookiesService,public cdRef:ChangeDetectorRef) {
+    public cookiesService: UserCookiesService,public cdRef:ChangeDetectorRef,private service: DataShareService) {
     this.route.queryParams.subscribe(params => {
       this.product_data = params['access_token'];
     });
@@ -97,6 +98,7 @@ export class CheckoutComponent {
                     this.Activation_success = true;
                     this.cdRef.detectChanges();
                     this.cookiesService.updateCookie("CurrentUser", "is_active", true);
+                    this.service.updateProfileInfo(true);
                     this.timerInterval = setInterval(() => {
                       if (this.otpTimer > 0) {
                         this.otpTimer--;
@@ -124,6 +126,9 @@ export class CheckoutComponent {
               email: formData.email,
               contact: formData.phone_number,
             },
+            theme: {
+                "color": "#F37254"
+            }
           };
 
           const rzp1 = new Razorpay(options);

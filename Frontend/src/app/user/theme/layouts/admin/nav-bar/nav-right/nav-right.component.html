@@ -1,10 +1,8 @@
 <ul class="list-unstyled">
-
-
   <li class="header-button" *ngIf="User">
     <a href="#" [ngClass]="{'greenbtn': User.pan_verified && User.kyc_status === 'verified'}"
       [routerLink]="['/create-kyc']">1. KYC</a>
-    <a href="#" [ngClass]="{'greenbtn': User.is_active}" [routerLink]="['/activation']" class="greenbtn">2. Activation</a>
+    <a href="#" [ngClass]="{'greenbtn': User.is_active}" [routerLink]="['/activation']">2. Activation</a>
   </li>
 
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>

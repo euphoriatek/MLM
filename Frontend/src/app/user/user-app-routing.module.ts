@@ -21,6 +21,9 @@ import { WalletStatementComponent } from './demo/component/wallet-statement/wall
 import { BankWithdrawalHistoryComponent } from './demo/component/bank-withdrawal-history/bank-withdrawal-history.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 import { InvoiceComponent } from './demo/component/invoice/invoice.component';
+import { ProfitLevelComponent } from './demo/component/profit-level/profit-level.component';
+import { ForgotPasswordComponent } from './demo/component/forgot-password/forgot-password.component';
+import { OrderComponent } from './demo/component/order/order.component';
 const routes: Routes = [
   {
     path: '',
@@ -119,6 +122,16 @@ const routes: Routes = [
         path: 'checkout',
         component: CheckoutComponent,
       },
+      {
+        path: 'profit-level',
+        component: ProfitLevelComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'track-order',
+        component: OrderComponent,
+        canActivate:[authGuard]
+      }
     ]
   },
   {
@@ -141,7 +154,11 @@ const routes: Routes = [
         loadComponent: () => import('./demo/authentication/register/register.component')
           .then(m => m.RegisterComponent),
         // canActivate: [unAuthGuard]
-      }
+      },
+      { 
+        path: 'forgot-password',
+         component: ForgotPasswordComponent
+      },
     ]
   }
 ];

@@ -33,12 +33,7 @@
                         <small class="text-danger"
                           *ngIf=" changePasswordform.get('new_password')?.hasError('required') ">New Password is
                           Required. </small>
-                        <!-- <small class="text-danger"
-                          *ngIf="changePasswordform.get('new_password')?.hasError('minlength')">Password must be at
-                          least 6 characters.</small>
-                        <small class="text-danger"
-                          *ngIf="changePasswordform.get('new_password')?.hasError('pattern')">Password must Include
-                          uppercase, lowercase, number.</small> -->
+              
                       </div>
                       </div>
                       
@@ -76,14 +71,13 @@
 
               <ng-template pTemplate="caption">
                 <div class="table-header d-block mb-4">
-                  <h3>Login History</h3>
-                  <div class="row align-items-end">
+                  <div class="row">
                     <div class="col-lg-9">
                       <form [formGroup]="form">
-                        <div class="row align-items-end">
-                          <div class="col-md-3">
-                            <div class="form-group mb-2">
-                              <label class="form-label">From Date</label>
+                        <div class="row mb-3 mb-md-0">
+                          <div class="col-lg-3 col-md-5 col-sm-5 mb-2">
+                            <div class="form-group">
+                              <label>From Date</label>
                               <mat-form-field appearance="fill" class="full-width">
                                 <!-- <mat-label>From Date</mat-label> -->
                                 <input matInput [matDatepicker]="fromPicker" formControlName="fromDate"
@@ -92,9 +86,9 @@
                               </mat-form-field>
                             </div>
                           </div>
-                          <div class="col-md-3">
-                            <div class="form-group mb-2">
-                              <label class="form-label">To Date</label>
+                          <div class="col-lg-3 col-md-5 col-sm-5 mb-2">
+                            <div class="form-group">
+                              <label>To Date</label>
                               <mat-form-field appearance="fill" class="full-width">
                                 <!-- <mat-label>To Date</mat-label> -->
                                 <input matInput [matDatepicker]="toPicker" formControlName="toDate"
@@ -103,7 +97,7 @@
                               </mat-form-field>
                             </div>
                           </div>
-                          <div class="col-md-3 mb-2">
+                          <div class="col-lg-3 col-md-2 col-sm-2 ">
                            
                             <!-- <button mat-raised-button color="primary" (click)="filterByDate()">Filter</button> -->
                             <button mat-raised-button color="warn" (click)="resetForm()" >Reset</button>
@@ -115,7 +109,7 @@
 
                     <div class="col-lg-3 col-md-12 text-end">
                   <!-- Search Input -->
-                  <div class="mb-2">
+                  <div class="mb-2 loginhistory">
                     <span class="p-input-icon-left w-100">
                       <i class="ti ti-search"></i>
                       <input class="form-control" InputText type="text" (input)="applyFilterGlobal($event, 'contains')"
@@ -133,9 +127,9 @@
               <ng-template pTemplate="header">
                 <tr>
                   <!-- <th style="width: 80px;" pSortableColumn="s_no">S.No <p-sortIcon field="s_no"></p-sortIcon></th> -->
-                  <th style="min-width: 200px;">Email</th>
-                  <th style="min-width: 150px;">Date</th>
+                  <th style="min-width: 200px;">Name</th>
                   <th style="min-width: 150px;">Mobile No</th>
+                  <th style="min-width: 150px;">Date</th>
                   <th style="min-width: 100px;">Login Status</th>
                 </tr>
               </ng-template>
@@ -146,17 +140,18 @@
                     {{ data['s_no'] }}
                   </td> -->
                   <td>
-                    <span class="p-column-title">Email</span>
-                    {{ data.email }}
-                  </td>
-                  <td>
-                    <span class="p-column-title">Date</span>
-                    {{ data.date }}
+                    <span class="p-column-title">Name</span>
+                    {{ data.full_name }}
                   </td>
                   <td>
                     <span class="p-column-title">Mobile No</span>
                     {{ data.mobile_no }}
                   </td>
+                  <td>
+                    <span class="p-column-title">Date</span>
+                    {{ data.date }}
+                  </td>
+                
                   <td>
                     <span class="p-column-title">Login Status</span>
                     <div class="status_success">{{ data.login_status }}</div>   

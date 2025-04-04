@@ -143,5 +143,19 @@ export class ApiService {
   SaveWithdrawal(data: any) {
     return this.http.post(this.BaseUrl + 'save-withdrawal', data);
   }
-
+  //mlmLevels
+  getProfitLevel() {
+    return this.http.get(this.BaseUrl + 'mlm-levels');
+  }
+  // Forgot Password
+  sendOtp(data: any) {
+    return this.http.post(this.BaseUrl + 'send-otp', data);
+  }
+  updatePassword(data:any){
+    return this.http.post(this.BaseUrl + 'update-password',data);
+  }
+  // Track-Your-Order
+  getOrder(){
+    return this.http.get(this.BaseUrl + 'get-order');
+  }
 }

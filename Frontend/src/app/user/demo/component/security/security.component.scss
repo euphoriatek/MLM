@@ -92,6 +92,9 @@
     .mdc-button{
         height: 40px;
         font-size: 13px;
+        margin-top: 25px;
+        display: block;
+        width: 100%;
     }
     
     .status_success{
@@ -118,7 +121,16 @@
             }
         }
     
+        .mdc-button{
+            margin-top: 0px;
+        }
     
     
-    
+    }
+
+    .mb-2.loginhistory .p-input-icon-left input {
+        min-height: 42px;
+    }
+    .mb-2.loginhistory .p-input-icon-left {
+        margin-top: 25px;
     }

@@ -1,0 +1,191 @@
+// :host ::ng-deep .p-steps-item {
+//     padding-bottom: 15px;
+//   }
+  
+//   :host ::ng-deep .p-steps ul {
+//     display: block;
+//   }
+  
+//   :host ::ng-deep .p-steps .p-steps-item:before {
+//     content: none;
+//   }
+
+  body .ui-steps.stepsVertical:before{
+    border-top: none;
+    border-left: 1px solid var(--surface-border);
+    height: 100%;
+    left: 50%;
+    top: 0;
+    }
+    
+    body .ui-steps.stepsVertical ul{
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    height: 100%;
+    }
+
+    :host::ng-deep {
+        .ui-steps.ui-steps-readonly .ui-steps-item {
+            background-image: url('../../../../../assets/images/coin.png'); //my img file 
+            background-repeat: no-repeat;
+            background-size: 30px, 30px, contain;
+            background-position: center 80px;
+        }
+        .ui-steps .ui-steps-item .ui-menuitem-link {
+            padding-bottom: 55px; //to display properly. Adjust it if needed 
+        }
+        body .ui-steps:before {
+            top: 31%;  // to display the line properly 
+        }
+
+
+       
+    // Timeline
+    .p-timeline-event-opposite{
+        display: none;
+    } 
+    .p-timeline-event-separator span {
+        height: 40px;
+        width: 40px;
+        border-radius: 50px;
+        display: flex;
+        border: solid 2px #3d445c4f;
+        background-color: transparent;
+        color: #3d445c4f !important;
+    }
+    .p-timeline-event-separator .reached{
+        border: solid 2px #5b80f7;
+        background-color: transparent;
+        color: #5b80f7 !important;
+
+    }
+
+    .shipment-tracker h5 {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        padding-bottom: 14px;
+        border-bottom: solid 1px #c8dbeb;
+        margin-bottom: 22px;
+        font-weight: 400;
+        color: #4c4c4c;
+    }
+    .p-timeline-event-content b {
+        font-size: 13px;
+        line-height: 17px;
+        display: block;
+        margin-top: 4px;
+        color: #4c4c4c;
+    }
+    .p-timeline-event-content span {
+        font-size: 12px;
+        color: #848484;
+    }
+    .p-timeline-event-connector {
+        height: 40px;
+    }
+    .reached ~ .p-timeline-event-connector {
+        background: #5b80f7;
+    }
+
+    .print-shipping {
+        background: #fef2f2;
+        padding: 32px 18px;
+        margin: 20px 0px;
+        font-size: 12px;
+        color: #3d445c;
+        border-radius: 6px;
+    }
+    
+    .print-shipping i {
+        display: block;
+        font-size: 41px;
+        margin-bottom: 15px;
+        color: #fdbfbf;
+    }
+    .print-shipping .print-btn {
+        background: #fff;
+        padding: 10px;
+        display: block;
+        width: 100%;
+        margin-top: 17px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 500;
+        border: solid 1px #254470;
+        color: #254470;
+    }    
+    }
+
+    .order-package h5 {
+        font-size: 14px;
+        color: #000;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+    }
+    
+    .order-package h5 i {
+        font-size: 28px;
+        margin-right: 24px;
+        color: #dcdcdc;
+    }
+
+    .delivery-address {
+        display: flex;
+        gap: 25px;
+    }
+    
+    .leftpoint {
+        width: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    span.location {
+        width: 13px;
+        height: 13px;
+        display: block;
+        border-radius: 50px;
+        border: solid 2px #d97706;
+    }
+    
+    .line {
+        width: 1px;
+        margin: 2px;
+        border-style: dashed;
+        border: none;
+        border-left: dashed 2px #cecece;
+        flex-grow: 1;
+        height: 100%;
+    }
+    .location-green{
+        width: 13px;
+        height: 13px;
+        display: block;
+        border: solid 2px green;
+    }
+    .address-title {
+        font-size: 13px;
+        color: #464646;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    .delivery-address .address h6 {
+        font-size: 14px;
+        margin-bottom: 3px;
+        font-weight: normal;
+    }
+    .delivery-address h6,
+    .delivery-address p{
+        color: #818181;
+        font-size: 13px;
+    }
+
+    .delivery-address .address {
+        margin-bottom: 30px;
+        max-width: 510px;
+    }

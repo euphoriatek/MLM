@@ -231,6 +231,8 @@
 
       .user-avtar {
         width: 42px;
+        height: 42px;
+        object-fit: cover;
         border:solid 3px #2544701f;
       }
 
@@ -535,7 +537,7 @@
   display: flex;
   align-items: center;
 a{
-  background-color: #345d99;
+  background-color: #fa4f31;
   padding: 6px 16px;
   margin: 2px;
   border-radius: 39px;

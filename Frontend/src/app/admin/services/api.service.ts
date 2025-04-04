@@ -129,17 +129,6 @@ export class ApiService {
   deleteProduct(id: number) {
     return this.http.delete(this.AdminBaseUrl + 'delete-product/' + id);
   }
-  // User Register
-  // addUsers(data: any) {
-  //   return this.http.post(this.BaseUrl + 'signup', data);
-  // }
-  // getStates(id:number) {
-  //   return this.http.get(this.BaseUrl + 'get-state/' + id);
-  // }
-  // getCountry() {
-  //   return this.http.get(this.BaseUrl + 'get-countries');
-  // }
-
   // commission
   getCommissions() {
     return this.http.get(this.AdminBaseUrl + 'get-commissions');
@@ -191,5 +180,8 @@ export class ApiService {
   }
   walletStatement() {
     return this.http.get(this.AdminBaseUrl + 'wallet-statement');
+  }
+  searchTreeUser(data:any){
+    return this.http.post(this.AdminBaseUrl + 'search-tree-usr', {data: data});
   }
 }

@@ -7,10 +7,10 @@
           <td>Name</td>
           <td><span>{{ node_data?.full_name || 'No Name Available' }}</span></td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Email</td>
           <td><span>{{ node_data?.email || 'No Email Available' }}</span></td>
-        </tr>
+        </tr> -->
         <tr>
           <td>Username</td>
           <td><span>{{ node_data?.sponsor_id || 'No sponsor_id Available' }}</span></td>
@@ -43,8 +43,11 @@
 <div class="d-block d-sm-flex align-items-center mt-4 mb-5 gap-5 px-1">
   <div class="tree_search d-flex align-items-center mb-sm-0 mb-4">
     <form method="post" (ngSubmit)="Search()" [formGroup]="SearchForm" class="d-flex align-items-center w-100">
-      <!-- <input type="text" class="form-control me-2" formControlName="search">
-      <button type="submit" mat-raised-button color="warn" class="me-2">Search</button> -->
+      <input type="text" class="form-control me-2" formControlName="search">
+      <button type="submit" mat-raised-button color="warn" class="me-2">Search</button>
+      <!-- Reset Button -->
+      <button type="button" mat-raised-button color="accent" (click)="resetSearch()" class="me-2">Reset</button>
+
       <a *ngIf="!fullScreenVisible" (click)="openFullScreen()" class="text-primary fw-bold"
         style="cursor: pointer;">Full Screen</a>
       <a *ngIf="fullScreenVisible" (click)="removeFullScreen()" class="text-primary fw-bold"
@@ -66,7 +69,7 @@
     </div>
   </div>
 </div>
-<table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">
+<table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center" *ngIf="user">
   <tbody>
     <tr class="node-cells">
       <td class="node-cell" colspan="2">

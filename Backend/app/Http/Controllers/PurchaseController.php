@@ -286,7 +286,9 @@ class PurchaseController extends Controller
                 $fileName = "invoice_{$orderId}.pdf";
                 Storage::disk('public')->put('invoices/' . $fileName, $pdf->output());
                 $invoice->update(["file" => 'invoices/' . $fileName]);
+                if($email){
                 Mail::to($email)->send(new InvoiceMail($purchase->name, $fileName));
+                }
                 return true;
             }else{
                 return false;
@@ -393,4 +395,34 @@ class PurchaseController extends Controller
             ], 500);
         }
      }
+     public function getOrder(Request $request){
+        try {
+            $user = auth()->user();
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not authenticated.',
+                ], 401);
+            }
+            // $Purchase = Purchase::where('user_id', $user->id)->first();
+            $settings = Setting::where('key', 'DELHIVERY_API_KEY')->get()->pluck('value', 'key');
+            $response = Http::withHeaders([
+                'Authorization' => $settings['DELHIVERY_API_KEY'],
+            ])->get('https://track.delhivery.com/api/v1/packages/json/', [
+                'waybill' => '37555410000991',
+            ]);
+            $data = $response->json();
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+                'message' => 'Success'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while fetching orders.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }

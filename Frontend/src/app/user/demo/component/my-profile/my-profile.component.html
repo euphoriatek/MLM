@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-8 col-md-8 col-sm-12">
         <div class="card">
         <div class="card-body">
             <form [formGroup]="editProfileForm" (ngSubmit)="editSubmit()">
@@ -38,8 +38,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label for="full_name" class="form-label">Full Name <span
-                                    class="display-none text-danger">*</span></label>
+                            <label for="full_name" class="form-label">Full Name <span class="display-none text-danger">*</span></label>
                             <div class="form-input">
                                 <input formControlName="full_name" id="full_name" class="form-control">
                             </div>
@@ -139,11 +138,11 @@
                             <label for="gender" class="form-label">Gender</label>
                             <div class="profile-gender">
                             <div class="row">
-                                <div class="col-sm-6 col-md-6 col-xs-6 pd-0">
+                                <div class="col-sm-6 col-md-6 col-6 pd-0">
                                     <input type="radio" formControlName="gender" value="male" title="Male" class="has-content me-2">
                                     <span>Male</span>
                                 </div>
-                                <div class="col-sm-6 col-md-6 col-xs-6 pd-0">
+                                <div class="col-sm-6 col-md-6 col-6 pd-0">
                                     <input type="radio" formControlName="gender" value="female" title="Female" class="me-2">
                                     <span>Female</span>
                                 </div>
@@ -171,7 +170,7 @@
                     <!-- Pin Code Field -->
                     <div class="col-md-12">
                         <div class="form-group mb-3">
-                            <label for="pin_code" class="form-label">Pin Code</label>
+                            <label for="pin_code" class="form-label">Pin Code<span class="display-none text-danger">*</span></label>
                             <div class="form-input">
                                 <input formControlName="pin_code" id="pin_code" class="form-control">
                             </div>
@@ -188,7 +187,7 @@
                         <label for="image">Upload Profile Picture</label>
 
                         <div class="row align-items-center">
-                            <div class="col-lg-9">
+                            <div class="col-lg-9 col-sm-9 mb-3">
                                 <div class="upload-img">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-cloud-arrow-up" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z"/>
@@ -198,7 +197,7 @@
                                 <input type="file" class="form-control" (change)="onFileChange($event)" #fileInput /></span>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-sm-3 mb-3">
                                 <div *ngIf="imageUrl || storedImageUrl" class="">
                                     <img [src]="imageUrl || storedImageUrl" style="max-width: 150px; max-height: 150px;"
                                         alt="Profile Image" class="img-thumbnail" />
@@ -214,7 +213,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3"><button type="submit" class="btn orange-btn w-100">Update</button></div>
+                <div class="col-lg-3 col-sm-3"><button type="submit" class="btn orange-btn w-100">Update</button></div>
                 
             </div>
                 
@@ -222,7 +221,7 @@
         </div>
     </div>  
 </div>  
-<div class="col-lg-4">
+<div class="col-lg-4 col-md-4 col-sm-12">
     <div class="card">
     <div class="card-body">
         <div class="panel-heading d-flex align-items-center  justify-content-between">
@@ -235,14 +234,14 @@
                 <div class="row" *ngIf="users">
                     <div class="col-lg-12">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="contactNumber">Contact Number</label>
                                     <input type="text" id="contactNumber" class="form-control"
                                         [(ngModel)]="users.mobile_no" name="mobile_no" readonly>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
                                     <input type="email" id="email" class="form-control" [(ngModel)]="users.email"

@@ -42,6 +42,10 @@ Route::post('/validate-sponsor', [UserController::class, 'validateSponsor']);
 Route::post('/generate-otp', [UserController::class, 'generateOtp']);
 Route::post('/verify-otp', [UserController::class, 'verifyOtp']);
 Route::post('/validate-mobile', [UserController::class, 'validateMobile']);
+
+// Forgot
+Route::post('/send-otp', [UserController::class, 'sendOtp']);
+Route::post('/update-password', [UserController::class, 'updatePassword']);
 // Route::post('/create-kyc', [KycController::class, 'store']);
 // Route::post('/create-kyc-pan', [KycController::class, 'createPanKyc']);
 
@@ -68,6 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-orders-list', [PurchaseController::class, 'getOrders'])->middleware('role:admin');
     Route::post('/admin/get-tree-usr', [UserController::class, 'getUsersTree'])->middleware('role:admin');
     Route::post('/admin/user-details', [UserController::class, 'getUserDetails'])->middleware('role:admin');
+    Route::post('/admin/search-tree-usr', [UserController::class, 'getUsersTreeSearch'])->middleware('role:admin');
 
     // Commissions
     Route::get('/admin/get-commissions', [CommissionController::class, 'GetCommission'])->middleware('role:admin');
@@ -117,5 +122,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/withdrawals-history', [BankWithdrawalController::class, 'withdrawalsHistory'])->middleware('role:user');
     // / Bank Withdrawal
     Route::post('/save-withdrawal', [BankWithdrawalController::class, 'SaveWithdrawal'])->middleware('role:user');
+        // / Order
+     Route::get('/get-order', [PurchaseController::class, 'getOrder'])->middleware('role:user');
 });
-Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);
+    Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);
+    //Mlm Profit Level
+    Route::get('/mlm-levels',[UserController::class,'getMlmLevel']);

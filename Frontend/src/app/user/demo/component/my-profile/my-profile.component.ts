@@ -134,47 +134,47 @@ export class MyProfileComponent implements OnInit {
       this.imageError = '';
     }
   }
-  editSubmit(): void {
-    if (this.editProfileForm.valid) {
-      const formData = new FormData();
-      console.log(formData);
-      Object.keys(this.editProfileForm.value).forEach(key => {
-        let value = this.editProfileForm.get(key)?.value;
-        if (value === null || value === undefined || value == '') {
-          return;
-        }
-        if (key === 'dob' && value) {
-          const formattedDob = new Date(value).toISOString().split('T')[0]; 
-          formData.append(key, formattedDob);
-        } else if (key === 'image' && this.imageFile) {
-          formData.append('image', this.imageFile, this.imageFile.name);
-        } else {
-          formData.append(key, value);
-        }
-      });
-      this.spinner.show();
-      this.api.updateProfile(formData).subscribe({
-        next: (response: any) => {
-          if (response.status) {
-            this.imageError = '';
-            this.cookiesService.updateCookie('CurrentUser', 'image', response.data?.image);
-            this.service.updateProfileInfo(true);
-            this.toaster.success('Profile updated successfully');
-            this.getUsers();
-          } else {
-            this.toaster.error('Failed to update profile');
-          }
-          this.spinner.hide();
-        },
-        error: (error) => {
-          console.error('Error updating profile:', error);
-          this.toaster.error('An error occurred while updating your profile');
-        }
-      });
-    } else {
-      this.editProfileForm.markAllAsTouched();
-    }
-  }
+  // editSubmit(): void {
+  //   if (this.editProfileForm.valid) {
+  //     const formData = new FormData();
+  //     console.log(formData);
+  //     Object.keys(this.editProfileForm.value).forEach(key => {
+  //       let value = this.editProfileForm.get(key)?.value;
+  //       if (value === null || value === undefined || value == '') {
+  //         return;
+  //       }
+  //       if (key === 'dob' && value) {
+  //         const formattedDob = new Date(value).toISOString().split('T')[0]; 
+  //         formData.append(key, formattedDob);
+  //       } else if (key === 'image' && this.imageFile) {
+  //         formData.append('image', this.imageFile, this.imageFile.name);
+  //       } else {
+  //         formData.append(key, value);
+  //       }
+  //     });
+  //     this.spinner.show();
+  //     this.api.updateProfile(formData).subscribe({
+  //       next: (response: any) => {
+  //         if (response.status) {
+  //           this.imageError = '';
+  //           this.cookiesService.updateCookie('CurrentUser', 'image', response.data?.image);
+  //           this.service.updateProfileInfo(true);
+  //           this.toaster.success('Profile updated successfully');
+  //           this.getUsers();
+  //         } else {
+  //           this.toaster.error('Failed to update profile');
+  //         }
+  //         this.spinner.hide();
+  //       },
+  //       error: (error) => {
+  //         console.error('Error updating profile:', error);
+  //         this.toaster.error('An error occurred while updating your profile');
+  //       }
+  //     });
+  //   } else {
+  //     this.editProfileForm.markAllAsTouched();
+  //   }
+  // }
   getCity(id:number): void {
     this.api.getCities(id).subscribe({
       next: (response: any) => {
@@ -188,6 +188,49 @@ export class MyProfileComponent implements OnInit {
       }
     });
   }
+  editSubmit(): void {
+    if (this.editProfileForm.valid || this.editProfileForm.dirty) {
+        const formData = new FormData();
+        Object.keys(this.editProfileForm.value).forEach(key => {
+            let value = this.editProfileForm.get(key)?.value;
+            if (key === 'dob' && value) {
+                const formattedDob = new Date(value).toISOString().split('T')[0];
+                formData.append(key, formattedDob);
+            } 
+            else if (key === 'image' && this.imageFile) {
+                formData.append('image', this.imageFile, this.imageFile.name);
+            } 
+            else {
+
+                formData.append(key, value ?? '');
+            }
+        });
+        
+        this.spinner.show();
+
+        this.api.updateProfile(formData).subscribe({
+            next: (response: any) => {
+                if (response.status) {
+                    this.imageError = '';
+                    this.cookiesService.updateCookie('CurrentUser', 'image', response.data?.image);
+                    this.service.updateProfileInfo(true);
+                    this.toaster.success('Profile updated successfully');
+                    this.getUsers();
+                } else {
+                    this.toaster.error('Failed to update profile');
+                }
+                this.spinner.hide();
+            },
+            error: (error) => {
+                console.error('Error updating profile:', error);
+                this.toaster.error('An error occurred while updating your profile');
+                this.spinner.hide();
+            }
+        });
+    } else {
+        this.editProfileForm.markAllAsTouched();
+    }
+}
 
 }
 

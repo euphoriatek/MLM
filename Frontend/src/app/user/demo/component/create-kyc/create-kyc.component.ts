@@ -20,7 +20,9 @@ export class CreateKycComponent {
   user:any;
   is_bank_verif:string='pending';
   is_pan_verify:boolean=false;
+  is_active:boolean=false;
   activeIndex: number = 0;
+  active: number = 0;
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService,
     public api: ApiService, public toaster: ToasterService,private router: Router,private service: DataShareService
   ) {
@@ -30,6 +32,7 @@ export class CreateKycComponent {
     this.user = this.cookiesService.getCookie('CurrentUser');
     this.is_bank_verif = this.user.kyc_status;
     this.is_pan_verify = this.user.pan_verified;
+    this.is_active = this.user.is_active;
     this.KycForm = this.fb.group({
       account_holder_name: ['', [Validators.required, Validators.pattern('^[A-Za-z ]*$')]],
       ifsc_code: ['', [Validators.required]],
@@ -224,5 +227,32 @@ openPanCardTab() {
   } else {
     this.toaster.error("Please verify your Bank Info before accessing the Pan Card section.");
   }
+}
+// steps = [
+//   { label: 'Bank Info', command: () => { this.activeIndex = 0; }, styleClass: this.is_bank_verif == "verified" ? 'p-highlights' : '' },
+//   { label: 'PanCard', command: () => { this.activeIndex = 1; }, styleClass: this.is_bank_verif == "verified" ? 'p-highlights' : '' },
+//   { label: 'Activation', command: () => { this.activeIndex = 2; }, styleClass: this.is_active ? 'p-highlights' : '' }
+// ];
+onStepChange(event: any) {
+  this.activeIndex = event.index;
+}
+get steps() {
+  return [
+    {
+      label: 'Bank Info',
+      command: () => { this.activeIndex = 0; },
+      styleClass: this.is_bank_verif === 'verified' ? 'p-highlights' : ''
+    },
+    {
+      label: 'Pan Card',
+      command: () => { this.activeIndex = 1; },
+      styleClass: this.is_pan_verify ? 'p-highlights' : ''
+    },
+    {
+      label: 'Activation',
+      command: () => { this.activeIndex = 2; },
+      styleClass: this.is_active ? 'p-highlights' : ''
+    }
+  ];
 }
 }

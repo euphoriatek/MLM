@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\City;
+use App\Models\MlmLevel;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\State;
@@ -460,12 +461,11 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'No Matched',
-            ], 400);
+            ], 200);
         }
     
         $rootSponsorId = $User->sponsor_id;
-    
-        // Fetch users where parent_sponsor_id matches the rootSponsorId and exclude the current user.
+
         $users = User::where('parent_sponsor_id', $rootSponsorId)
             ->where('id', '!=', $User->id)
             ->distinct() 
@@ -613,7 +613,7 @@ class UserController extends Controller
             ->map(function ($record, $index) use ($user) {
                 return [
                     's_no' => $index + 1,
-                    'email' => $user->email,
+                    'full_name' => $user->full_name,
                     'date' => $record->created_at->format('Y-m-d H:i:s'),
                     'mobile_no' => $user->mobile_no ?? 'N/A',
                     'login_status' => $record->last_used_at ? 'Success' : 'Failed',
@@ -720,6 +720,100 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while updating data.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function getMlmLevel(Request $request){
+        $malLevel=MlmLevel::get();
+        return response()->json([
+            'status' => true,
+            'data' => $malLevel,
+        ], 200);
+    }
+    public function sendOtp(Request $request)
+    {
+        $mobile_number = $request->input('mobile_number');
+
+        if (!$mobile_number) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Mobile Number is required'
+            ], 400);
+        }
+        $find = User::where('mobile_no', $mobile_number)->first();
+        if(!$find){
+            return response()->json([
+                'message' => 'Invalid User',
+                'status' => false
+            ], 404);
+        }
+
+        $apiKey = 'owpFdOkPuUm1pOX1npCVqg';
+        $senderId = 'SKLIFE';
+        $number = $mobile_number;
+        $otp = mt_rand(100000, 999999);
+        $message = "Dear customer, the one-time password (OTP) to reset your password at SKLIFE is {$otp}. This OTP will expire in 1 minute.";
+
+        $url = "https://www.smsgatewayhub.com/api/mt/SendSMS?APIKey={$apiKey}&senderid={$senderId}&channel=OTP&DCS=0&flashsms=0&number={$number}&text=" . urlencode($message) . "&route=1&EntityId=1701174140886417267&dlttemplateid=1707174221782943778";
+
+        // Send GET request
+        $response = Http::get($url);
+        $data = $response->json();
+        $otp_expiry = Carbon::now()->addMinutes(5);
+        if ($data['ErrorCode'] == 000) {
+            Otp::create([
+                'mobile_number' => $mobile_number,
+                'otp' => $otp,
+                'otp_expiry' => $otp_expiry,
+                'is_verified' => false,
+            ]);
+            return response()->json([
+                'message' => 'OTP sent successfully',
+                'status' => true
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Try Again',
+                'status' => false
+            ], 401);
+        }
+    }
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'mobile_number' =>'required|exists:users,mobile_no',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        try {
+            $findUser=User::where('mobile_no',$request->input('mobile_number'))->first();
+            if($findUser){
+                $findUser->update(['password' => Hash::make($request->input('password'))]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Password Change Successfully!',
+                ], 200);
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User Not Found',
+                ], 400);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error during user registration: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while registering the user.',
                 'error' => $e->getMessage(),
             ], 500);
         }
