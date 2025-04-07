@@ -24,6 +24,7 @@ import { InvoiceComponent } from './demo/component/invoice/invoice.component';
 import { ProfitLevelComponent } from './demo/component/profit-level/profit-level.component';
 import { ForgotPasswordComponent } from './demo/component/forgot-password/forgot-password.component';
 import { OrderComponent } from './demo/component/order/order.component';
+import { HelpDeskComponent } from './demo/component/help-desk/help-desk.component';
 const routes: Routes = [
   {
     path: '',
@@ -130,6 +131,11 @@ const routes: Routes = [
       {
         path: 'track-order',
         component: OrderComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'help-desk',
+        component: HelpDeskComponent,
         canActivate:[authGuard]
       }
     ]

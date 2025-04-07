@@ -188,9 +188,11 @@ p-accordiontab{
         width: 50px;
         box-shadow: 0px 0px 0px 4px #fbfbfb;
     }
-    .p-steps .p-steps-item.p-highlight .p-steps-title,
-    .p-steps .p-steps-item.p-highlights .p-steps-title{
+    .p-steps .p-steps-item.p-highlight .p-steps-title{
         font-weight: 400;
+        color: #254470 !important;
+    }
+    .p-steps .p-steps-item.p-highlights .p-steps-title{
         color: #43ba5d !important;
     }
     .p-steps .p-steps-item .p-menuitem-link .p-steps-title{

@@ -192,25 +192,15 @@ const NavigationItems = [
     title: 'Help Desk',
     type: 'collapse',
     icon: 'fa-solid fa-circle-info',
-    // children: [
-    //   {
-    //     id: 'create-ticket',
-    //     title: 'Create Ticket',
-    //     type: 'item',
-    //     url: '/auth/create-ticket',
-    //     target: true,
-    //     breadcrumbs: false,
-    //   },
-
-    //   {
-    //     id: 'ticket-list',
-    //     title: 'Ticket List',
-    //     type: 'item',
-    //     url: '/auth/ticket-list',
-    //     target: true,
-    //     breadcrumbs: false,
-    //   },
-    // ],
+    children: [
+      {
+        id: 'help-desk',
+        title: 'Help',
+        type: 'item',
+        url: '/help-desk',
+        breadcrumbs:true,
+      },
+    ],
   },
 ];
 

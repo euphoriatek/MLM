@@ -129,6 +129,6 @@ export class BreadcrumbComponent {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title + ' Multi-Level Marketing');
+    this.titleService.setTitle(title + 'SKLIFE');
   }
 }

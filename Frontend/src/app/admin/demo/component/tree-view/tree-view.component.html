@@ -45,7 +45,7 @@
       <input type="text" class="form-control me-2" formControlName="search">
       <button type="submit" mat-raised-button color="warn" class="me-2">Search</button>
       <!-- Reset Button -->
-      <button type="button" mat-raised-button color="accent" (click)="resetSearch()" class="me-2">Reset</button>
+      <button type="button" mat-raised-button color="warn" (click)="resetSearch()" class="me-2">Reset</button>
 
       <a *ngIf="!fullScreenVisible" (click)="openFullScreen()" class="text-primary fw-bold"
         style="cursor: pointer;">Full Screen</a>
@@ -75,7 +75,7 @@
         <td class="node-cell" colspan="2">
           <div class="node" style="cursor: default;">
             <a href="javascript:void(0)" class="showchield" id="{{user?.id}}">
-              <img class="tree_icon" src="./assets/images/redimage.png" alt="{{user?.mobile_no}}"
+              <img class="tree_icon"  [class.activeImage]="user?.is_active" [class.inactiveImage]="!user?.is_active"  src="./assets/images/levels/level-1.png" alt="{{user?.mobile_no}}"
                 id="userlink_{{user?.mobile_no}}" title="">
             </a>
             <div colspan="2" class="line down addcolspan"></div>

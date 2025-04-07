@@ -212,6 +212,12 @@ ul.list-inline.indicate-color-cls li.grey-cls figure {
     }
 
   }
+  .activeImage{
+    border: solid 3px #18bc18;
+  }
+  .inactiveImage{
+    border: solid 3px red;
+  }
   }
 
   .highlight {

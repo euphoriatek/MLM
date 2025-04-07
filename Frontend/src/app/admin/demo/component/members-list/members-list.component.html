@@ -17,7 +17,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="full_name">Name<p-sortIcon field="full_name"></p-sortIcon></th>
-            <th pSortableColumn="city">city<p-sortIcon field="city"></p-sortIcon></th>
+            <th pSortableColumn="city">City<p-sortIcon field="city"></p-sortIcon></th>
             <th pSortableColumn="sponsor_id">Sponsor ID<p-sortIcon field="sponsor_id"></p-sortIcon></th>
             <th pSortableColumn="parent_sponsor_id">Parent Sponsor ID<p-sortIcon field="parent_sponsor_id"></p-sortIcon></th>
             <th pSortableColumn="created_at">Created At <p-sortIcon field="created_at"></p-sortIcon></th>
@@ -32,7 +32,7 @@
                 <span class="image-text">{{data.full_name}}</span>
             </td>
             <td>
-                <span class="p-column-title">city</span>
+                <span class="p-column-title">City</span>
                 <span class="image-text">{{ data.city ? data.city.city : '' }}</span>
             </td>
             

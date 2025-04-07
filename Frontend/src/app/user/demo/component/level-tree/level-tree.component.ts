@@ -23,6 +23,19 @@ export class LevelTreeComponent implements OnInit {
   user:any;
   SearchForm!: FormGroup;
   fullScreenVisible: boolean;
+  levelImages: any = [
+    "./assets/images/levels/level-1.png",
+    "./assets/images/levels/level-2.png",
+    "./assets/images/levels/level-3.png",
+    "./assets/images/levels/level-4.png",
+    "./assets/images/levels/level-5.png",
+    "./assets/images/levels/level-6.png",
+    "./assets/images/levels/level-7.png",
+    "./assets/images/levels/level-8.png",
+    "./assets/images/levels/level-9.png",
+    "./assets/images/levels/level-10.png"
+  ];
+  currentImage: number = 1;
   constructor(
     private messageService: MessageService,
     public api: ApiService,
@@ -96,14 +109,23 @@ export class LevelTreeComponent implements OnInit {
               var ForAppend = '<td class="node-container" colspan="2"><table id="tree_div" cellpadding="0" cellspacing="0" border="0" align="center">';
               
               var ImageName = "./assets/images/redimage.png";
-              var color = "green";
+              var color = "red";
+              var nodeClass = "";
+              var currentImage = component.levelImages[component.currentImage];
+              if (value.is_active == 1) {
+                color = "green";
+                ImageName = "./assets/images/greenimage.png";
+                nodeClass = "activeImage";
+              } else {
+                nodeClass = "inactiveImage";
+              }
     
               if (value.Downlinecount > 0) {
                 ForAppend += '<tr class="node-cells">' +
                   '<td class="node-cell" colspan="2">' +
                   '<div class="node" style="cursor: default;">' +
                   '<a style="display:block" class="showchield" id="' + value.id + '">' +
-                  '<img style="pointer-events: none;" class="tree_icon" style="border: 2px solid ' + color + ' !important;" src="' + ImageName + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
+                  '<img style="pointer-events: none;" class="tree_icon ' + nodeClass +'" style="border: 2px solid ' + color + ' !important;" src="' + currentImage + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
                   '<span style="pointer-events: none;" class="imgdowns" title="View Downline"><img src="./assets/images/down_arrowtree.svg"></span>' +
                   '</a>' +
                   '<div colspan="2" class="line down"></div>' +
@@ -117,7 +139,7 @@ export class LevelTreeComponent implements OnInit {
                   '<td class="node-cell" colspan="2">' +
                   '<div class="node" style="cursor: default;">' +
                   '<a style="display:block" class="showchield" id="' + value.id + '">' +
-                  '<img style="pointer-events: none;" class="tree_icon" style="border: 2px solid ' + color + ' !important;" src="' + ImageName + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
+                  '<img style="pointer-events: none;" class="tree_icon ' + nodeClass +'" style="border: 2px solid ' + color + ' !important;" src="' + currentImage + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
                   '</a>' +
                   '<div colspan="2" class="line down"></div>' +
                   '<div class="username" title="' + value.mobile_no + '" style="background: #454552 !important;cursor:pointer"><img style="pointer-events: none;" src="./assets/images/info-tree.svg" class="info-icon-tree"><span style="pointer-events: none;">' + value.mobile_no + '</span></div>' +
@@ -144,7 +166,7 @@ export class LevelTreeComponent implements OnInit {
               $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').find('tr.trspace').append(SpaceAddContent);
               ICount = ICount + 1;
             });
-
+            component.currentImage++;
             component.cdRef.detectChanges();
             this.spinner.hide();
           },
