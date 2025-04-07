@@ -1,1 +1,79 @@
-<p>invoice works!</p>
+<div class="invoice-main" *ngIf="invoice" style="width: 900px; margin:auto;">
+
+
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="border-bottom: none; font-size: 27px; font-weight: bold; padding: 20px 10px 0px 10px;">Invoice</td></tr>
+    <tr>
+      <td style="padding: 10px 10px; border-top:none">
+        <img src="assets/images/sklife-logo.svg" style="width:170px;">
+        <table style="width: 100%; border-collapse: collapse; border-bottom: solid 3px #000; margin-bottom: 20px;">
+          <tr>
+            <td style="border:none;">
+              <p><strong>Registered Office:</strong> Block B 08 Flat 906 Gulmarg Parisar, Indore 452016</p>
+              <p><strong>Email:</strong> shyampatidar2986@gmail.com</p>
+              <p><strong>Website:</strong> https://sklife.in</p>
+              <p><strong>GST:</strong> 23DBTPP9710D2ZE</p>
+            </td>
+            <td style="border:none; text-align:center;">
+              <strong>DELHIVERY</strong><br>
+              <div>{{ invoice.waybill }}</div>
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; margin-bottom:30px;">
+          <tr>
+            <td style="width:300px; border: none; padding: 0 10px;">
+              <strong>Invoice To: {{ order.name }}</strong><br>
+              <strong>Address:</strong> {{ order.address }}<br>
+              <strong>Contact No:</strong> {{ order.phone_number }}
+            </td>
+            <td style="text-align: right; border: none; padding: 0 10px;">
+              <strong>Invoice No:</strong> {{ invoice.invoice_number }}<br>
+              <strong>Invoice Date:</strong> {{ invoice.invoice_date | date: 'dd-MM-yyyy' }}
+            </td>
+          </tr>
+        </table>
+
+        <table style="width: 100%; margin-bottom: 50px;" border="1">
+          <thead>
+            <tr>
+              <th>S No.</th>
+              <th>Description of Work</th>
+              <th style="text-align:right;">₹</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                <strong>Activation Package</strong><br>
+                <div style="padding-left:5px">T-Shirt Size: {{ order.size }}</div>
+              </td>
+              <td style="text-align:right;">{{ order.price }}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>Thank you for giving us the opportunity to provide you the services</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:right;"><strong>Subtotal</strong></td>
+              <td style="text-align:right;">{{ invoice.subtotal }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:right;">GST ({{ invoice.gst_rate }}%)</td>
+              <td style="text-align:right;">{{ invoice.gst_amount }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="text-align:right;"><strong>Total</strong></td>
+              <td style="text-align:right;"><strong><strong>{{ order.price }}</strong></strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>"This is computer generated invoice and does not require any stamp or signature"</p>
+      </td>
+    </tr>
+  </table>
+</div>

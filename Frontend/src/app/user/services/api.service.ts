@@ -158,4 +158,7 @@ export class ApiService {
   getOrder(){
     return this.http.get(this.BaseUrl + 'get-order');
   }
+  getInvoice(id: any) {
+    return this.http.post(this.BaseUrl + 'get-invoice', {invoice_number:id});
+  }
 }

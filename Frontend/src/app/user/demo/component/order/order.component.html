@@ -6,17 +6,19 @@
                     <h4 class="title">Package Details</h4>
                     <div class="order-package mt-4">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                                <h5><i class="fa-solid fa-box"></i>Activation Package T-Shirt</h5></div>
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-12">
-                                <div class="order-price text-center">₹{{order?.InvoiceAmount}}</div>
+                            <div class="col-lg-6">
+                                <h5><i class="fa-solid fa-box"></i>Activation Package T-Shirt</h5>
                             </div>
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-12">
-                                <div class="order quantity text-center">{{order?.Quantity}}</div>
+                            <div class="col-lg-2">
+                                <div class="order-price">₹{{order?.price}}</div>
                             </div>
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-12">
-                                <div class="price-weight text-center">₹{{order?.InvoiceAmount}}
-                                    <br> 0gm</div>
+                            <div class="col-lg-2">
+                                <div class="order quantity">1</div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="price-weight text-center">₹{{order?.price}}
+                                    <br> 0gm
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -26,38 +28,37 @@
                 <div class="card-body">
                     <h4 class="title">Delivery Details</h4>
 
-                <div class="delivery-address-main mt-5">    
-                    <div class="delivery-address">
-                        <div class="leftpoint">
-                            <span class="location"></span>
-                            <div class="line"></div>
-                        </div>
-                        <div class="address">
-                            <h4 class="address-title">Pickup Address</h4>
-                            <h6>{{order?.PickupLocation}}</h6>
-                            <!-- Indore, Madhya Pradesh, IN, 452016 -->
-                            <p>{{order?.Origin}}</p>
+                    <div class="delivery-address-main mt-5">
+                        <div class="delivery-address">
+                            <div class="leftpoint">
+                                <span class="location"></span>
+                                <div class="line"></div>
+                            </div>
+                            <div class="address">
+                                <h4 class="address-title">Pickup Address</h4>
+                                <h6>SK LIFE</h6>
+                                <p>Block B 08 Flat 906 Gulmarg parisar Badiya kima, bicholi mardana, indore 452016</p>
 
-                            <h4 class="address-title">Seller Details</h4>
-                            <h6><i class="fa-solid fa-book me-1"></i> GST : null</h6>
+                                <h4 class="address-title">Seller Details</h4>
+                                <h6><i class="fa-solid fa-book me-1"></i> GST : null</h6>
+                            </div>
+                        </div>
+
+                        <div class="delivery-address">
+                            <div class="leftpoint">
+                                <span class="location-green"></span>
+                                <!-- <div class="line"></div> -->
+                            </div>
+                            <div class="address mb-0">
+                                <h4 class="address-title">Delivery Address</h4>
+                                <h6>{{order?.name}}</h6>
+                                <p class="mb-0">{{order?.address}}</p>
+                                <p><i
+                                        class="fa-solid fa-phone me-1"></i>{{order?.phone_number}}
+                                </p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="delivery-address">
-                        <div class="leftpoint">
-                            <span class="location-green"></span>
-                            <!-- <div class="line"></div> -->
-                        </div>
-                        <div class="address mb-0">
-                            <h4 class="address-title">Delivery Address</h4>
-                            <h6>{{order?.Consignee.Name}}</h6>
-                            <p class="mb-0">{{order?.Consignee.Address1}} {{order?.Consignee.Address2}} {{order?.Consignee.State}} {{order?.Consignee.PinCode}} {{order?.Consignee.City}} {{order?.Consignee.Country}}
-                                <!-- Block B 08 Flat 906 Gulmarg parisar Badiya kima, bicholi mardana, indore 452016, Indore, Madhya pradesh, IN, 452016 -->
-                            </p>
-                            <p><i class="fa-solid fa-phone me-1"></i>{{order?.Consignee.Telephone1}},{{order?.Consignee.Telephone2}}+91XXXXXX9319</p>
-                        </div>
-                    </div>
-                </div>
                 </div>
             </div>
 
@@ -71,26 +72,27 @@
 
                         <div class="address">
                             <h4 class="address-title">Payment Mode</h4>
-                            <p><i class="fa-solid fa-file-invoice me-1"></i>{{order?.OrderType}}</p>
+                            <p><i class="fa-solid fa-file-invoice me-1"></i>{{order?.payment_type}}</p>
                         </div>
 
 
 
                         <div class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-                                <h5>Grand Total</h5></div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                            <div class="col-lg-4">
+                                <h5>Grand Total</h5>
+                            </div>
+                            <div class="col-lg-4">
                                 <div class="order quantity text-center">1 Item(s)</div>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-                                <div class="price-weight text-end">₹{{order?.InvoiceAmount}}</div>
+                            <div class="col-lg-4">
+                                <div class="price-weight text-end">₹{{order?.price}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>        
+        </div>
     </div>
 
     <div class="col-lg-4">
@@ -105,23 +107,14 @@
 
                         <div class="print-shipping text-center">
                             <i class="fa-solid fa-file-invoice"></i>
-                            <button type="button" class="print-btn">Activation Invoice</button>
-                            <button type="button" class="print-btn">Order Invoice</button>
+                            <button type="button" class="print-btn" (click)="openInvoice(order.invoice.invoice_number)">Activation
+                                Invoice</button>
+                            <button type="button" class="print-btn" (click)="downloadInvoice()">Order Invoice</button>
                         </div>
-                        <h5>AWB No<span>{{order?.AWB}}</span></h5>
+                        <h5>AWB No<span>{{order?.invoice.waybill}}</span></h5>
+                        <button type="button" class="print-btn" (click)="trackUrl()">Track Your Order</button>
                     </div>
-                    <p-timeline [value]="events" align="left" styleClass="customized-timeline">
-                        <ng-template pTemplate="marker" let-event>
-                            <span class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1" [class]="event.styleClass">
-                            <i [class]="event.icon"></i>
-                    </span>
-                            <!-- <div class="p-timeline-event-connector" [style.backgroundColor]="!event.reached ? event.color : 'red'"></div> -->
-                        </ng-template>
-                        <ng-template pTemplate="content" let-event>
-                            <b>{{event.label}}</b>
-                            <span>{{ event.date | date: 'd MMM yyyy, h:mm a' }}</span>
-                        </ng-template>
-                    </p-timeline>
+
                 </div>
             </div>
         </div>

@@ -57,12 +57,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Admin API
 
     // Dashboard  Data
-    
+
     // Product
     Route::post('/admin/add-product', [ProductController::class, 'store'])->middleware('role:admin');
     Route::get('/admin/get-product', [ProductController::class, 'getProduct'])->middleware('role:admin');
     Route::post('/admin/update-product', [ProductController::class, 'updateProduct'])->middleware('role:admin');
-    Route::delete('/admin/delete-product/{id}',  [ProductController::class, 'deleteProduct'])->middleware('role:admin');
+    Route::delete('/admin/delete-product/{id}', [ProductController::class, 'deleteProduct'])->middleware('role:admin');
 
     //Members List
     Route::get('/admin/get-members-list', [TransactionController::class, 'getMembersList'])->middleware('role:admin');
@@ -83,15 +83,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/admin/get-withdrawals', [BankWithdrawalController::class, 'getWithdrawals'])->middleware('role:admin');
     Route::post('/admin/update-approved-staus', [BankWithdrawalController::class, 'approvedStatus'])->middleware('role:admin');
     Route::post('/admin/update-rejected-staus', [BankWithdrawalController::class, 'rejectStatus'])->middleware('role:admin');
- // Earning Wallet
+    // Earning Wallet
     // Level Income
     Route::get('/admin/level-income', [CommissionController::class, 'getLevelIncomeAdmin'])->middleware('role:admin');
     Route::get('/admin/wallet-statement', [CommissionController::class, 'walletStatementAdmin'])->middleware('role:admin');
     // User API
     Route::get('/auth', [UserController::class, 'getAuthDetails'])->middleware('role:user');
     Route::post('/validate-Ifsc', [KycController::class, 'bankifscCodeValidate'])->middleware('role:user');
-   
-    
+
+
     Route::post('/create-delievery-address', [PurchaseController::class, 'CreateDeliveryAddress'])->middleware('role:user');
     // My-Account
     Route::get('/get-user', [UserController::class, 'getUser'])->middleware('role:user');
@@ -102,7 +102,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/verify-old-password', [UserController::class, 'verifyOldPassword'])->middleware('role:user');
     Route::get('/get-login-history', [UserController::class, 'loginHistory'])->middleware('role:user');
     // Kyc
-    Route::get('/user-kyc-info', [KycController::class, 'getKyc'])->middleware('role:user');;
+    Route::get('/user-kyc-info', [KycController::class, 'getKyc'])->middleware('role:user');
+    ;
     // Activation
     Route::get('/get-product', [ProductController::class, 'getProduct'])->middleware('role:user');
     Route::get('/check-activation', [PurchaseController::class, 'checkActivation'])->middleware('role:user');
@@ -114,7 +115,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Direct-referral-list
     Route::get('/get-referral', [UserController::class, 'getReferralUsers'])->middleware('role:user');
     Route::get('/get-downline', [UserController::class, 'getDownlineUsers'])->middleware('role:user');
-    
+
     // Earning Wallet
     // Level Income
     Route::get('/level-income', [CommissionController::class, 'getLevelIncome'])->middleware('role:user');
@@ -122,9 +123,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/withdrawals-history', [BankWithdrawalController::class, 'withdrawalsHistory'])->middleware('role:user');
     // / Bank Withdrawal
     Route::post('/save-withdrawal', [BankWithdrawalController::class, 'SaveWithdrawal'])->middleware('role:user');
-        // / Order
-     Route::get('/get-order', [PurchaseController::class, 'getOrder'])->middleware('role:user');
+    // Order
+    Route::get('/get-order', [PurchaseController::class, 'getOrder'])->middleware('role:user');
+    Route::post('/get-invoice', [PurchaseController::class, 'getInvoice'])->middleware('role:user');
 });
-    Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);
-    //Mlm Profit Level
-    Route::get('/mlm-levels',[UserController::class,'getMlmLevel']);
+Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);
+//Mlm Profit Level
+Route::get('/mlm-levels', [UserController::class, 'getMlmLevel']);

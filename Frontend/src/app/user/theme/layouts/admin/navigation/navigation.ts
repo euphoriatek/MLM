@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserCookiesService } from 'src/app/user/services/usercookies.service';
 
 export interface NavigationItem {
   id: string;
@@ -206,7 +207,14 @@ const NavigationItems = [
 
 @Injectable()
 export class NavigationItem {
+  is_active: boolean;
+  constructor(public cookiesService:UserCookiesService){
+    this.is_active = this.cookiesService.getCookie('CurrentUser')?.is_active;
+  }
   get() {
+    if(!this.is_active){
+      return NavigationItems.filter(item => item.id !== 'order');
+    }
     return NavigationItems;
   }
 }

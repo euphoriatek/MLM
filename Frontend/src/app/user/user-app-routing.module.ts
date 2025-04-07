@@ -105,11 +105,6 @@ const routes: Routes = [
         canActivate:[authGuard]
       },
       {
-        path: 'invoice/:id',
-        component: InvoiceComponent,
-        canActivate:[authGuard]
-      },
-      {
         path: 'package-history',
         component: PackageHistoryComponent,
         // canActivate:[authGuard]
@@ -165,6 +160,11 @@ const routes: Routes = [
         path: 'forgot-password',
          component: ForgotPasswordComponent
       },
+      {
+        path: 'invoice/:id',
+        component: InvoiceComponent,
+        canActivate:[authGuard]
+      }
     ]
   }
 ];

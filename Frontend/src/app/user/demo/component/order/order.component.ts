@@ -1,53 +1,31 @@
 import { Component } from '@angular/core';
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
-import { FormBuilder, FormGroup, Validators ,FormControl} from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { NgxSpinnerService } from "ngx-spinner";
-import { UserCookiesService } from 'src/app/user/services/usercookies.service';
-import { Timeline } from 'primeng/timeline';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent {
-  order:any;
-  events: EventItem[];
-  constructor(private api: ApiService,public toaster: ToasterService, public spinner: NgxSpinnerService){
-    
+  order: any;
+  invoice_file: any;
+  constructor(private api: ApiService, public route: Router, public toaster: ToasterService, public spinner: NgxSpinnerService) {
+
   }
   ngOnInit() {
     this.getOrder();
   }
- 
+
   getOrder() {
     this.spinner.show();
     this.api.getOrder().subscribe({
       next: (response: any) => {
         if (response && response.data) {
-          this.order = response.data?.ShipmentData[0].Shipment;
-          console.log(this.order);
-          if(this.order.Status?.Status === "Manifested" && this.order.Status?.StatusCode === "X-UCI"){
-            var date = this.order.Scans[0].ScanDetail.ScanDateTime;
-            this.events = [
-              { label:'Ready To Ship',status: 'Ordered', date: date, icon: 'fa-solid fa-dolly', color: '#9C27B0', image: 'game-controller.jpg', styleClass:"reached" },
-              { label:'Scheduled for Pickup',status: 'ScheduledforPickup', date: '', icon: 'fa-solid fa-truck-pickup', color: '#673AB7', styleClass:""  },
-              { label:'In-transit',status: 'Shipped', date: '', icon: 'fa-solid fa-truck-fast', color: '#FF9800' , styleClass:"" },
-              { label:'Out for delivery',status: 'Outfordelivery', date: '', icon: 'fa-solid fa-truck', color: '#607D8B' , styleClass:"" },
-              { label:'Delivered',status: 'Delivered', date: '', icon: 'fa-solid fa-check-to-slot', color: '#607D8B', styleClass:""  }
-          ];
-          }else if(this.order.Status?.Status === "Manifested" && this.order.Status?.StatusCode === "DTUP-203"){
-var date = this.order.Scans[0].ScanDetail.ScanDateTime;
-            this.events = [
-              { label:'Ready To Ship',status: 'Ordered', date: date, icon: 'fa-solid fa-dolly', color: '#9C27B0', image: 'game-controller.jpg', styleClass:"reached" },
-              { label:'Scheduled for Pickup',status: 'ScheduledforPickup', date: '', icon: 'fa-solid fa-truck-pickup', color: '#673AB7', styleClass:""  },
-              { label:'In-transit',status: 'Shipped', date: '', icon: 'fa-solid fa-truck-fast', color: '#FF9800' , styleClass:"" },
-              { label:'Out for delivery',status: 'Outfordelivery', date: '', icon: 'fa-solid fa-truck', color: '#607D8B' , styleClass:"" },
-              { label:'Delivered',status: 'Delivered', date: '', icon: 'fa-solid fa-check-to-slot', color: '#607D8B', styleClass:""  }
-          ];
-          }
-          
+          this.order = response.data;
+          this.invoice_file = response.data?.invoice.file;
         }
         this.spinner.hide();
       },
@@ -56,13 +34,44 @@ var date = this.order.Scans[0].ScanDetail.ScanDateTime;
       }
     });
   }
-}
-interface EventItem {
-  label:string;
-  status?: string;
-  date?: string;
-  icon?: string;
-  color?: string;
-  image?: string;
-  styleClass:any;
+
+  openInvoice(id: number) {
+    const url = this.route.createUrlTree(['/invoice', id]).toString();
+    window.open(url, '_blank');
+  }
+
+  downloadInvoice() {
+    if (this.invoice_file) {
+      const invoiceUrl = `${environment.FilebasePath}/${this.invoice_file}`;
+      fetch(invoiceUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = this.invoice_file.split('/').pop();
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+          this.toaster.error('File not found', 'Invoice');
+        });
+    } else {
+      this.toaster.error('File not found', 'Invoice');
+    }
+  }
+
+  trackUrl(){
+    const url = "https://www.delhivery.com/track-v2/package/"+ this.order.invoice.waybill;
+    window.open(url, '_blank');
+  }
+
 }

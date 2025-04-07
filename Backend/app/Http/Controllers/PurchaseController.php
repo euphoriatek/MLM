@@ -404,23 +404,48 @@ class PurchaseController extends Controller
                     'message' => 'User is not authenticated.',
                 ], 401);
             }
-            // $Purchase = Purchase::where('user_id', $user->id)->first();
-            $settings = Setting::where('key', 'DELHIVERY_API_KEY')->get()->pluck('value', 'key');
-            $response = Http::withHeaders([
-                'Authorization' => $settings['DELHIVERY_API_KEY'],
-            ])->get('https://track.delhivery.com/api/v1/packages/json/', [
-                'waybill' => '37555410000991',
-            ]);
-            $data = $response->json();
+            $Purchase = Purchase::with('invoice')->where('user_id', $user->id)->first();
             return response()->json([
-                'status' => true,
-                'data' => $data,
-                'message' => 'Success'
-            ], 200);
+                 'status' => true,
+                 'data' => $Purchase,
+                 'message' => 'Success'
+             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while fetching orders.',
                 'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function getInvoice(Request $request)
+    {
+        try {
+            $invoice_number  = $request->input('invoice_number');
+            if(!$invoice_number){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invoice number is required'
+                ], 400);
+            }
+            $invoice = Invoice::where('invoice_number',operator: $invoice_number)->first();
+            if ($invoice) {
+                $purchase = Purchase::find($invoice->purchase_id);
+                return response()->json([
+                    'status' => true,
+                    'data' => $invoice,
+                    'order' => $purchase,
+                    'message' => 'Invoice fetched successfully.'
+                ], 200);
+            }
+            return response()->json([
+                'status' => false,
+                'message' => 'Invoice not found.'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred while fetching invoice.',
+                'error' => $e->getMessage()
             ], 500);
         }
     }

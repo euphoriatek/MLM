@@ -27,11 +27,8 @@ export class ProductListComponent {
       id: ['', Validators.required],
       name: ['', Validators.required],
       price: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
-      // dp: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
-      // pv: ['', [Validators.required, Validators.pattern('^[0-9]*\.?[0-9]+$')]],
-      // category: ['1', Validators.required],
       description: [''],
-      // image:['', Validators.required],
+      image: ['', Validators.required],
     });
     this.getProduct();
   }
@@ -46,7 +43,7 @@ export class ProductListComponent {
         if (response && response.status) {
           this.products = [response.data];
           this.spinner.hide();
-        }else{
+        } else {
           this.spinner.hide();
         }
       },
@@ -69,7 +66,6 @@ export class ProductListComponent {
   //   }
   // }
 
-  // Method to preview the file (image)
   // previewFile(file: File): void {
   //   const reader = new FileReader();
   //   reader.onload = () => {
@@ -83,12 +79,55 @@ export class ProductListComponent {
       id: data.id,
       name: data.name,
       price: parseInt(data.price),
-      // dp: parseInt(data.dp),
-      // pv: parseInt(data.pv),
       description: data.description,
     });
     this.visible = true;
 
+  }
+
+  // EditProduct(): void {
+  //   console.log(this.UserEditForm.value);
+  //   if (this.UserEditForm.invalid) {
+  //     this.UserEditForm.markAllAsTouched();
+  //     return;
+  //   }
+  //   if (this.UserEditForm.valid) {
+  //     this.spinner.show();
+  //     const data = this.UserEditForm.value;
+  //     console.log(data);
+  //     this.api.updateProduct(data).subscribe({
+  //       next: (response: any) => {
+  //         if (response.status === true) {
+  //           this.visible = false;
+  //           this.UserEditForm.reset();
+  //           this.getProduct();
+  //           this.toaster.success("Successfully updated product");
+  //         }
+  //         this.spinner.hide();
+  //       },
+  //       error: (err) => {
+  //         this.spinner.hide();
+  //         console.error(err);
+  //       }
+  //     });
+  //   }
+  // }
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.UserEditForm.patchValue({
+        image: file
+      });
+      this.previewFile(file);
+    }
+  }
+
+  previewFile(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   EditProduct(): void {
@@ -97,26 +136,35 @@ export class ProductListComponent {
       this.UserEditForm.markAllAsTouched();
       return;
     }
-    if (this.UserEditForm.valid) {
-      this.spinner.show();
-      const data = this.UserEditForm.value;
-      console.log(data);
-      this.api.updateProduct(data).subscribe({
-        next: (response: any) => {
-          if (response.status === true) {
-            this.visible = false;
-            this.UserEditForm.reset();
-            this.getProduct();
-            this.toaster.success("Successfully updated product");
-          }
-          this.spinner.hide();
-        },
-        error: (err) => {
-          this.spinner.hide();
-          console.error(err);
-        }
-      });
+
+    // Create FormData and append the form fields
+    const formData = new FormData();
+    formData.append('id', this.UserEditForm.value.id);
+    formData.append('name', this.UserEditForm.value.name);
+    formData.append('price', this.UserEditForm.value.price);
+    formData.append('description', this.UserEditForm.value.description);
+
+    // Append image if it exists
+    if (this.UserEditForm.value.image) {
+      formData.append('image', this.UserEditForm.value.image);
     }
+
+    this.spinner.show();
+    this.api.updateProduct(formData).subscribe({
+      next: (response: any) => {
+        if (response.status === true) {
+          this.visible = false;
+          this.UserEditForm.reset();
+          this.getProduct();
+          this.toaster.success("Successfully updated product");
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
   }
 
   // Delete user

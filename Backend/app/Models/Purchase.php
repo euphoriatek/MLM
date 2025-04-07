@@ -11,4 +11,7 @@ class Purchase extends Model
     public $timestamps = false;
     protected $table = 'purchase';
     protected $fillable = ['name', 'user_id', 'product_id', 'price', 'size','email', 'phone_number', 'address', 'pin_code','status','order_id'];
+    public function invoice(){
+        return $this->belongsTo(Invoice::class, 'id', 'purchase_id');
+    }
 }

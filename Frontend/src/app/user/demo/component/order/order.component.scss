@@ -62,6 +62,24 @@
 
     }
 
+    .p-timeline-event-separator .orderd{
+        border: solid 2px #5b80f7;
+        background-color: transparent;
+        color: #5b80f7 !important;
+    }
+    .p-timeline-event-separator .in-transit{
+        border: solid 2px #5b80f7;
+        background-color: transparent;
+        color: #5b80f7 !important;
+    }
+    .p-timeline-event-separator .out-for-delivery{
+        border: solid 2px #5b80f7;
+        background-color: transparent;
+        color: #5b80f7 !important;
+    }
+    
+    
+
     .shipment-tracker h5 {
         display: flex;
         justify-content: space-between;
