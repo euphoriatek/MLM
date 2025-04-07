@@ -132,7 +132,6 @@ class UserController extends Controller
             } else {
                 $cities = City::all();
             }
-            $cities = City::get();
             return response()->json([
                 'status' => true,
                 'data' => $cities,

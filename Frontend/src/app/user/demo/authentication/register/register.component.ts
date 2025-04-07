@@ -284,11 +284,31 @@ export class RegisterComponent implements OnInit {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
   }
   getCity(id:number): void {
+    this.spinner.show();
     this.api.getCities(id).subscribe({
       next: (response: any) => {
         if (response?.status) {
-          this.spinner.hide();
           this.cities = response.data;
+          this.spinner.hide();
+        }
+        else{
+          this.spinner.hide();
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+  loadCity(event:any){
+    this.spinner.show();
+    this.api.getCities(event.target.value).subscribe({
+      next: (response: any) => {
+        if (response?.status) {
+          this.cities = response.data;
+          this.spinner.hide();
+        }else{
+          this.spinner.hide();
         }
       },
       error: (err) => {

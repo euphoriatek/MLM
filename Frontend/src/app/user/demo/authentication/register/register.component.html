@@ -118,7 +118,7 @@
                 <label for="state_id" class="form-label">State <span>*</span></label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/country.png" alt="email" />
-                  <select formControlName="state_id" class="form-select form-control">
+                  <select formControlName="state_id" class="form-select form-control" (change)="loadCity($event)">
                     <option value="">Select State</option>
                     <option *ngFor="let state of states" [value]="state.id">
                       {{ state.name }}
