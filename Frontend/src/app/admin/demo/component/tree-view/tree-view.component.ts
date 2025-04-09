@@ -38,6 +38,7 @@ export class TreeViewComponent implements OnInit {
     "./assets/images/levels/level-10.png"
   ];
   currentImage: number = 1;
+  level = 1;
   constructor(
     public api: ApiService,
     private cdRef: ChangeDetectorRef,
@@ -112,7 +113,13 @@ export class TreeViewComponent implements OnInit {
               var ImageName = "./assets/images/redimage.png";
               var color = "red";
               var nodeClass = "";
-              var currentImage = component.levelImages[component.currentImage];
+              if($clickedElement.attr('level')){
+                var number = parseInt($clickedElement.attr('level'));
+                number = number + 1;
+                var currentImage = `./assets/images/levels/level-${number}.png`;
+              }else{
+                // var currentImage = component.levelImages[component.currentImage];
+              }
               if (value.is_active == 1) {
                 color = "green";
                 ImageName = "./assets/images/greenimage.png";
@@ -125,7 +132,7 @@ export class TreeViewComponent implements OnInit {
                 ForAppend += '<tr class="node-cells">' +
                   '<td class="node-cell" colspan="2">' +
                   '<div class="node" style="cursor: default;">' +
-                  '<a style="display:block" class="showchield" id="' + value.id + '">' +
+                  '<a style="display:block" class="showchield" level="' + component.level + '" id="' + value.id + '">' +
                   '<img style="pointer-events: none;" class="tree_icon ' + nodeClass + '" style="border: 2px solid ' + color + ' !important;" src="' + currentImage + '" alt="' + value.mobile_no + '" id="userlink_' + value.mobile_no + '" style="background-color: white;border: 2px solid #454552 !important;" title="">' +
                   '<span style="pointer-events: none;" class="imgdowns" title="View Downline"><img src="./assets/images/down_arrowtree.svg"></span>' +
                   '</a>' +
@@ -168,6 +175,7 @@ export class TreeViewComponent implements OnInit {
               ICount = ICount + 1;
             });
             component.currentImage++;
+            component.level++;
             component.cdRef.detectChanges();
             this.spinner.hide();
           },

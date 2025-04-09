@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class OrderComponent {
   order: any;
   invoice_file: any;
+  baseURL = environment.baseURL;
   constructor(private api: ApiService, public route: Router, public toaster: ToasterService, public spinner: NgxSpinnerService) {
 
   }
@@ -36,7 +37,8 @@ export class OrderComponent {
   }
 
   openInvoice(id: number) {
-    const url = this.route.createUrlTree(['/invoice', id]).toString();
+    const url = `${this.baseURL}/invoice/${id}`; 
+    // const url = this.route.createUrlTree(['/invoice', id]).toString();
     window.open(url, '_blank');
   }
 

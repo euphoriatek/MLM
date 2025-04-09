@@ -8,5 +8,7 @@ export const environment = {
   AdminbasePath:"http://localhost:8000/api/admin/",
   FilebasePath:"http://localhost:8000/storage/",
   TdsPercentage:2,
-  RazorpayApiKey:'rzp_test_er0Zna0Q1TQrgL'
+  // RazorpayApiKey:'rzp_test_er0Zna0Q1TQrgL'
+    RazorpayApiKey:'rzp_live_Pt38ixYPqDBK5p'
+  
 };

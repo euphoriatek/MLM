@@ -1,7 +1,7 @@
 <div class="auth-main">
   <div class="auth-wrapper v3">
     <div class="auth-form">
-   
+
       <div class="card">
         <div class="auth-header text-center mb-4">
           <img src="assets/images/sklife-logo-black.svg" alt="logo" />
@@ -15,9 +15,10 @@
               <label class="form-label" for="mobile_no">Mobile No</label>
               <div class="form-input">
                 <img src="assets/images/admin_images/icons/phone.png" alt="mobile_no" />
-                <input formControlName="mobile_no" type="text" class="form-control" id="mobile_no" placeholder="Mobile No" />
+                <input formControlName="mobile_no" type="text" class="form-control" id="mobile_no"
+                  placeholder="Mobile No" />
               </div>
-             
+
               <div *ngIf="
                 LoginForm?.get('mobile_no')?.hasError('required') &&
                 LoginForm?.get('mobile_no')?.touched">
@@ -28,10 +29,18 @@
               <label class="form-label" for="password">Password</label>
               <div class="form-input">
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
-      
+
                 <input formControlName="password" [type]="passwordFieldType" class="form-control" id="password"
                   placeholder="Password" />
-                   <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+
+                <!-- Eye Slash Icon (When password is hidden) -->
+                <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye-slash toggle-password"
+                  (click)="togglePasswordVisibility()" aria-hidden="true"></i>
+
+                <!-- Eye Icon (When password is visible) -->
+                <i *ngIf="passwordFieldType === 'text'" class="fa-solid fa-eye toggle-password"
+                  (click)="togglePasswordVisibility()"></i>
+
               </div>
               <div *ngIf="
               LoginForm?.get('password')?.hasError('required') &&
@@ -44,7 +53,7 @@
                 <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
                 <label class="form-check-label text-muted" for="customCheckc1">Remeber Me</label>
               </div>
-              <h5 class="text-secondary f-w-400">  <a [routerLink]="['/forgot-password']">Forgot Password?</a></h5>
+              <h5 class="text-secondary f-w-400"> <a [routerLink]="['/forgot-password']">Forgot Password?</a></h5>
             </div>
             <div class="d-grid mt-4">
               <button type="submit" class="btn btn-dark">Login</button>
@@ -55,7 +64,7 @@
           </div>
         </div>
       </div>
-  
+
     </div>
   </div>
 </div>

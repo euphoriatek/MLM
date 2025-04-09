@@ -55,10 +55,10 @@
     </form>
   </div>
   <div class="d-flex align-items-start gap-3">
-    <div class="d-flex align-items-center">
+    <!-- <div class="d-flex align-items-center">
       <div class="bg-black me-2" style="width: 15px; height: 15px;"></div>
       <span><b>Block</b></span>
-    </div>
+    </div> -->
     <div class="d-flex align-items-center">
       <div class="bg-success me-2" style="width: 15px; height: 15px;"></div>
       <span><b>Active</b></span>
@@ -66,6 +66,11 @@
     <div class="d-flex align-items-center">
       <div class="bg-danger me-2" style="width: 15px; height: 15px;"></div>
       <span><b>Inactive</b></span>
+    </div>
+    <div class="d-flex align-items-center">
+      <!-- <div class="bg-black me-2" style="width: 15px; height: 15px;"></div> -->
+      <span><b>Current Level: {{ currentLevel }}</b></span>
+
     </div>
   </div>
 </div>

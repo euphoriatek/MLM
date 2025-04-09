@@ -161,4 +161,8 @@ export class ApiService {
   getInvoice(id: any) {
     return this.http.post(this.BaseUrl + 'get-invoice', {invoice_number:id});
   }
+   //Current Level count 
+   currentLevelCount(){
+    return this.http.get(this.BaseUrl + 'get-current-level');
+  }
 }

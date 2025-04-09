@@ -17,12 +17,12 @@ import { environment } from 'src/environments/environment';
 })
 
 export class CheckoutComponent {
-  product_data:any;
+  product_data: any;
   CheckoutForm: any;
-  Activation_success:boolean=false;
-  otpTimer:number = 3;
-  user:any;
-  timerInterval: any; 
+  Activation_success: boolean = false;
+  otpTimer: number = 3;
+  user: any;
+  timerInterval: any;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -30,7 +30,7 @@ export class CheckoutComponent {
     public fb: FormBuilder,
     public toaster: ToasterService,
     public spinner: NgxSpinnerService,
-    public cookiesService: UserCookiesService,public cdRef:ChangeDetectorRef,private service: DataShareService) {
+    public cookiesService: UserCookiesService, public cdRef: ChangeDetectorRef, private service: DataShareService) {
     this.route.queryParams.subscribe(params => {
       this.product_data = params['access_token'];
     });
@@ -39,7 +39,7 @@ export class CheckoutComponent {
     var decrypt = this.cookiesService.decrypt(this.product_data);
     this.product_data = JSON.parse(decrypt);
     this.user = this.cookiesService.getCookie("CurrentUser");
-    if(this.user.is_active){
+    if (this.user.is_active) {
       this.router.navigate(['/activation']);
     }
     this.CheckoutForm = this.fb.group({
@@ -56,11 +56,11 @@ export class CheckoutComponent {
     this.CheckoutForm.patchValue({
       name: this.user.full_name,
       email: this.user.email,
-      phone_number: this.user.mobile_no ,
+      phone_number: this.user.mobile_no,
       address: this.user.address,
       pin_code: this.user.pin_code,
     });
-    
+
   }
 
   Checkout(): void {
@@ -69,70 +69,75 @@ export class CheckoutComponent {
       return;
     } else if (this.CheckoutForm.valid) {
       const formData = this.CheckoutForm.value;
-          const options = {
-            key:environment.RazorpayApiKey,
-            amount: this.product_data.price * 100,
-            currency: 'INR',
+      const options = {
+        key: environment.RazorpayApiKey,
+        amount: 1 * 100,
+        currency: 'INR',
+        name: this.product_data.name,
+        description: `Checkout for ${this.product_data.name}`,
+        handler: (paymentResponse: any) => {
+          if(paymentResponse.razorpay_payment_id){
+          this.spinner.show();
+          const orderData = {
+            product_id: this.product_data.product_id,
+            size: this.product_data.size,
+            // price: this.product_data.price,
+            price: 1,
             name: this.product_data.name,
-            description: `Checkout for ${this.product_data.name}`,
-            handler: (paymentResponse: any) => {
-              console.log(paymentResponse);
-              this.spinner.show();
-              const orderData = {
-                product_id: this.product_data.product_id,
-                size: this.product_data.size,
-                price: this.product_data.price,
-                name: this.product_data.name,
-                delivery_address: this.CheckoutForm.value,
-                r_payment_id: paymentResponse.razorpay_payment_id,
-                method: 'razorpay',
-                currency: options.currency,
-                user_email: formData.email,
-                amount: options.amount / 100,
-                json_response: JSON.stringify(paymentResponse),
-              };
-              this.api.checkOutActivation(orderData).subscribe(
-                (response: any) => {
-                  this.spinner.hide();
-                  if(response.status){
-                    this.Activation_success = true;
-                    this.cdRef.detectChanges();
-                    this.cookiesService.updateCookie("CurrentUser", "is_active", true);
-                    this.service.updateProfileInfo(true);
-                    this.timerInterval = setInterval(() => {
-                      if (this.otpTimer > 0) {
-                        this.otpTimer--;
-                        this.cdRef.detectChanges();
-                        if(this.otpTimer === 0){
-                          this.router.navigate(['/activation']);
-                        }
+            delivery_address: this.CheckoutForm.value,
+            r_payment_id: paymentResponse.razorpay_payment_id,
+            method: 'razorpay',
+            currency: options.currency,
+            user_email: formData.email,
+            amount: options.amount / 100,
+            json_response: JSON.stringify(paymentResponse),
+          };
+            this.api.checkOutActivation(orderData).subscribe(
+              (response: any) => {
+                this.spinner.hide();
+                if (response.status) {
+                  this.Activation_success = true;
+                  this.cdRef.detectChanges();
+                  this.cookiesService.updateCookie("CurrentUser", "is_active", true);
+                  this.service.updateProfileInfo(true);
+                  this.timerInterval = setInterval(() => {
+                    if (this.otpTimer > 0) {
+                      this.otpTimer--;
+                      this.cdRef.detectChanges();
+                      if (this.otpTimer === 0) {
+                        this.router.navigate(['/activation']);
                       }
-                    }, 1000);
-                  }else{
-                    this.toaster.error(response.message);
-                    this.router.navigate(['/activation']);
-                  }
-                  // this.spinner.hide();
-                },
-                (error) => {
-                  console.error('Error processing purchase and payment:', error);
-                  this.spinner.hide();
+                    }
+                  }, 1000);
+                } else {
+                  this.toaster.error(response.message);
                   this.router.navigate(['/activation']);
                 }
-              );
-            },
-            prefill: {
-              name: formData.name,
-              email: formData.email,
-              contact: formData.phone_number,
-            },
-            theme: {
-                "color": "#F37254"
-            }
-          };
+                // this.spinner.hide();
+              },
+              (error) => {
+                console.error('Error processing purchase and payment:', error);
+                this.spinner.hide();
+                this.router.navigate(['/activation']);
+              }
+            );
+          }
+        },
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone_number,
+        },
+        theme: {
+          "color": "#F37254"
+        },
+        method: {
+          paylater: false
+        }
+      };
 
-          const rzp1 = new Razorpay(options);
-          rzp1.open();
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
     } else {
       console.log('Form is invalid');
     }

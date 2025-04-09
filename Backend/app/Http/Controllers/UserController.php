@@ -123,7 +123,7 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function getCities(Request $request,$id)
+    public function getCities(Request $request, $id)
     {
         try {
             $state_id = $id;
@@ -284,8 +284,8 @@ class UserController extends Controller
                 'message' => 'User is not authenticated.',
             ], 401);
         }
-        $Invoice = Invoice::where('customer_id',$user->id)->first();
-        if($Invoice){
+        $Invoice = Invoice::where('customer_id', $user->id)->first();
+        if ($Invoice) {
             $user->invoice_id = $Invoice->invoice_number;
         }
         return response()->json([
@@ -452,35 +452,35 @@ class UserController extends Controller
                 'message' => 'User is not authenticated.',
             ], 401);
         }
-    
+
         $input = $request->all();
         $User = User::where('mobile_no', trim($input['data']))->first();
-    
+
         if (!$User) {
             return response()->json([
                 'status' => false,
                 'message' => 'No Matched',
             ], 200);
         }
-    
+
         $rootSponsorId = $User->sponsor_id;
 
         $users = User::where('parent_sponsor_id', $rootSponsorId)
             ->where('id', '!=', $User->id)
-            ->distinct() 
+            ->distinct()
             ->get();
         $usersWithCount = $users->map(function ($user) {
             $user->Downlinecount = User::where('parent_sponsor_id', $user->sponsor_id)->count();
             return $user;
         });
-    
+
         return response()->json([
             'status' => true,
             'data' => $usersWithCount,
             'user' => $User
         ], 200);
     }
-    
+
     public function getUser(Request $request)
     {
         $userId = auth()->id();
@@ -723,8 +723,9 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function getMlmLevel(Request $request){
-        $malLevel=MlmLevel::get();
+    public function getMlmLevel(Request $request)
+    {
+        $malLevel = MlmLevel::get();
         return response()->json([
             'status' => true,
             'data' => $malLevel,
@@ -741,7 +742,7 @@ class UserController extends Controller
             ], 400);
         }
         $find = User::where('mobile_no', $mobile_number)->first();
-        if(!$find){
+        if (!$find) {
             return response()->json([
                 'message' => 'Invalid User',
                 'status' => false
@@ -781,7 +782,7 @@ class UserController extends Controller
     public function updatePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'mobile_number' =>'required|exists:users,mobile_no',
+            'mobile_number' => 'required|exists:users,mobile_no',
             'password' => 'required'
         ]);
 
@@ -794,14 +795,14 @@ class UserController extends Controller
         }
 
         try {
-            $findUser=User::where('mobile_no',$request->input('mobile_number'))->first();
-            if($findUser){
+            $findUser = User::where('mobile_no', $request->input('mobile_number'))->first();
+            if ($findUser) {
                 $findUser->update(['password' => Hash::make($request->input('password'))]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Password Change Successfully!',
                 ], 200);
-            }else{
+            } else {
                 return response()->json([
                     'status' => false,
                     'message' => 'User Not Found',
@@ -817,5 +818,35 @@ class UserController extends Controller
             ], 500);
         }
     }
+    public function getCurrentLevel(Request $request)
+    {
+        $user = auth()->user();
+     
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+        $currentUserId = $user->id;
+        $level = 0;
+        $currentUser = User::find($currentUserId);
+        while ($currentUser && $currentUser->sponsor_id) {
+            $parentUser = User::where('parent_sponsor_id', $currentUser->sponsor_id)->first();
+            if ($parentUser && $parentUser->parent_sponsor_id == $currentUser->sponsor_id) {
+                $level++;
+                $currentUser = $parentUser;
+            } else {
+                break;
+            }
+        }
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'current_level' => $level
+            ],
+        ], 200);
+    }
+
 
 }

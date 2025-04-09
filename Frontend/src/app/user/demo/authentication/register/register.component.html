@@ -182,8 +182,14 @@
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
                 <input formControlName="password" [type]="passwordFieldType" class="form-control" id="password"
                   placeholder="" />
-                <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+                <!-- <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i> -->
+                <!-- Eye Slash Icon (When password is hidden) -->
+                <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye-slash toggle-password"
+                  (click)="togglePasswordVisibility()" aria-hidden="true"></i>
 
+                <!-- Eye Icon (When password is visible) -->
+                <i *ngIf="passwordFieldType === 'text'" class="fa-solid fa-eye toggle-password"
+                  (click)="togglePasswordVisibility()"></i>
               </div>
               <div *ngIf="
               signupForm.get('password')?.touched &&
@@ -201,8 +207,14 @@
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
                 <input id="confirm_password" formControlName="confirm_password" [type]="passwordType"
                   class="form-control" />
-                <i class="fa-solid fa-eye toggle-password" (click)="passwordVisibility()"></i>
+                <!-- <i class="fa-solid fa-eye toggle-password" (click)="passwordVisibility()"></i> -->
+                <!-- Eye Slash Icon (When password is hidden) -->
+                <i *ngIf="passwordType === 'password'" class="fa fa-eye-slash toggle-password"
+                  (click)="passwordVisibility()" aria-hidden="true"></i>
 
+                <!-- Eye Icon (When password is visible) -->
+                <i *ngIf="passwordType === 'text'" class="fa-solid fa-eye toggle-password"
+                  (click)="passwordVisibility()"></i>
               </div>
               <div *ngIf="
               signupForm.get('confirm_password')?.touched &&

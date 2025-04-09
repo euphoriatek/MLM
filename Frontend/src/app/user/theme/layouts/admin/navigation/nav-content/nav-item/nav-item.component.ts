@@ -1,6 +1,6 @@
 // Angular import
 import { Component, Input } from '@angular/core';
-
+import { Router } from '@angular/router';
 // Project import
 import { NavigationItem } from '../../navigation';
 
@@ -12,8 +12,17 @@ import { NavigationItem } from '../../navigation';
 export class NavItemComponent {
   // public props
   @Input() item!: NavigationItem;
-
-  // public method
+  constructor(public router:Router){
+  }
+  ngAfterViewInit(): void {
+    const route = document.querySelector(`[href="${this.router.url}"]`);
+    if (route) {
+      if(route.parentElement.parentElement.parentElement.parentElement){
+        route.parentElement.parentElement.parentElement.parentElement.classList.add('coded-trigger');
+      }
+    }
+  }
+  // public method 
   closeOtherMenu(event) {
     const ele = event.target;
     if (ele !== null && ele !== undefined) {

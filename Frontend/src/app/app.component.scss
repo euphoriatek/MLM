@@ -1,0 +1,46 @@
+.loader {
+    width: 70px;
+    aspect-ratio: 1;
+    color: #ffffff;
+    background: rgb(255 255 255);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loader:before {
+  content: "";
+  position: absolute;
+  background:
+    radial-gradient(farthest-side at bottom right,#0000 94%,currentColor 96%) 0    0   ,
+    radial-gradient(farthest-side at bottom left ,#0000 94%,currentColor 96%) 100% 0   ,
+    radial-gradient(farthest-side at top    left ,#0000 94%,currentColor 96%) 100% 100%,
+    radial-gradient(farthest-side at top    right,#0000 94%,currentColor 96%) 0    100%;
+  background-size:20px 20px;
+  background-repeat: no-repeat;
+  animation: 
+    l39-1 1s infinite,
+    l39-2 1s infinite;
+}
+@keyframes l39-1 {
+  0%,10%,90%,100% {inset:0}
+  40%,60% {inset:-10px}
+}
+
+@keyframes l39-2 {
+  0%,40%  {transform: rotate(0)}
+  60%,100%{transform: rotate(90deg)}
+}
+.loader img {
+    width: 40px;
+}
+
+
+
+::ng-deep{
+.loading-text{
+    top:50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+}

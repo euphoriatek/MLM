@@ -8,7 +8,7 @@
         </div>
         <div class="card-body p-0">
           <div class="d-flex justify-content-center align-items-end mb-4">
-            <h3 class="mb-0">Login</h3>
+            <h3 class="mb-0">Admin Login</h3>
           </div>
           <form method="post" (ngSubmit)="Login()" [formGroup]="LoginForm">
             <div class="form-group mb-3">
@@ -32,7 +32,15 @@
                 placeholder="password" value="" /> -->
                 <input formControlName="password" [type]="passwordFieldType" class="form-control" id="password"
                 placeholder="password" />
-                 <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+                <!-- Eye Slash Icon (When password is hidden) -->
+                <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye-slash toggle-password"
+                  (click)="togglePasswordVisibility()" aria-hidden="true"></i>
+
+                <!-- Eye Icon (When password is visible) -->
+                <i *ngIf="passwordFieldType === 'text'" class="fa-solid fa-eye toggle-password"
+                  (click)="togglePasswordVisibility()"></i>
+
+                 <!-- <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i> -->
               </div>
               <div *ngIf="
               LoginForm?.get('password')?.hasError('required') &&

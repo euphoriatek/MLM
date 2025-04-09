@@ -129,7 +129,7 @@
       justify-content: space-between;
     }
     .auth-header img {
-      max-width: 202px;
+      max-width: 200px; 
   }
   .auth-form h3 {
     font-size: 1.5rem;
@@ -138,3 +138,21 @@
   }
 }
 /**====== Authentication css end ======**/
+
+
+
+
+@media(max-width:991px){
+  .auth-main {
+    .auth-form {
+      padding: 5px !important;
+      background:#fff !important;
+      .card{  
+        padding: 0px 15px !important;
+        border-radius: 6px !important;
+        border:none !important; 
+        max-width: 100% !important; 
+      }
+    }
+  }
+}

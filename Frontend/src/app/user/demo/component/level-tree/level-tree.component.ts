@@ -21,6 +21,7 @@ export class LevelTreeComponent implements OnInit {
   data:any;
   users:any;
   user:any;
+  currentLevel: number = 0;
   SearchForm!: FormGroup;
   fullScreenVisible: boolean;
   levelImages: any = [
@@ -53,6 +54,7 @@ export class LevelTreeComponent implements OnInit {
     this.SearchForm = this.fb.group({
       search: ['', [Validators.required]]
     });
+    this.currentLevelCount();
   }
 
   ngOnDestroy() {
@@ -262,6 +264,24 @@ export class LevelTreeComponent implements OnInit {
     } else {
       this.SearchForm.reset();
     }
+  }
+  currentLevelCount() {
+    this.spinner.show();
+    this.api.currentLevelCount().subscribe({
+      next: (response: any) => {
+        if (response && response.status) {
+          this.users = response.data;
+          this.currentLevel = this.users.current_level;
+        } else {
+          this.spinner.hide();
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        console.error(err);
+        this.spinner.hide();
+      }
+    });
   }
 
 }

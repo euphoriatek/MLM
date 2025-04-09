@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Commissions
     Route::get('/admin/get-commissions', [CommissionController::class, 'GetCommission'])->middleware('role:admin');
     // Transactions
-    Route::get('/admin/get-transactions', [TransactionController::class, 'GetTransaction'])->middleware('role:admin');
+    Route::get('/admin/get-transactions', [TransactionController::class, 'getTransaction'])->middleware('role:admin');
     // payments
     Route::get('/admin/get-payments', [PaymentController::class, 'getPayment'])->middleware('role:admin');
     Route::get('/admin/get-withdrawals', [BankWithdrawalController::class, 'getWithdrawals'])->middleware('role:admin');
@@ -126,6 +126,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Order
     Route::get('/get-order', [PurchaseController::class, 'getOrder'])->middleware('role:user');
     Route::post('/get-invoice', [PurchaseController::class, 'getInvoice'])->middleware('role:user');
+    // level count
+    Route::get('/get-current-level', [UserController::class, 'getCurrentLevel'])->middleware('role:user');
+
 });
 Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);
 //Mlm Profit Level

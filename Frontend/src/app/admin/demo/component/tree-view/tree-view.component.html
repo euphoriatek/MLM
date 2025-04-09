@@ -1,5 +1,5 @@
 <p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible"
-  [style]="{ width: '32vw' }" [modal]="true">
+[style]="{ width: '500px', 'max-width': '100vw' }" [modal]="true">
   <div class="container">
     <table class="table table-open-cls dataTable">
       <tbody>
@@ -54,10 +54,10 @@
     </form>
   </div>
   <div class="d-flex align-items-start gap-3">
-    <div class="d-flex align-items-center">
+    <!-- <div class="d-flex align-items-center">
       <div class="bg-black me-2" style="width: 15px; height: 15px;"></div>
       <span><b>Block</b></span>
-    </div>
+    </div> -->
     <div class="d-flex align-items-center">
       <div class="bg-success me-2" style="width: 15px; height: 15px;"></div>
       <span><b>Active</b></span>
@@ -74,7 +74,7 @@
       <tr class="node-cells">
         <td class="node-cell" colspan="2">
           <div class="node" style="cursor: default;">
-            <a href="javascript:void(0)" class="showchield" id="{{user?.id}}">
+            <a href="javascript:void(0)" class="showchield" level="1" id="{{user?.id}}">
               <img class="tree_icon"  [class.activeImage]="user?.is_active" [class.inactiveImage]="!user?.is_active"  src="./assets/images/levels/level-1.png" alt="{{user?.mobile_no}}"
                 id="userlink_{{user?.mobile_no}}" title="">
             </a>
