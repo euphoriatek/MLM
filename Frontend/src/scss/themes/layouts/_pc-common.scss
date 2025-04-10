@@ -220,3 +220,10 @@
     }
   }
 }
+
+
+@media(max-width:480px){
+    .breadcrumb a {
+      font-size: 12px !important;
+    }
+  }

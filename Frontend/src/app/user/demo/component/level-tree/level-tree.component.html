@@ -1,5 +1,5 @@
-<p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible"
-  [style]="{ width: '32vw' }" [modal]="true">
+  <p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible"
+  [style]="{ width: '500px', 'max-width': '100%' }" [modal]="true">
   <div class="container">
     <table class="table table-open-cls dataTable">
       <tbody>
@@ -40,21 +40,22 @@
   </p-footer>
 </p-dialog>
 
-<div class="d-block d-sm-flex align-items-center mt-4 mb-5 gap-5 px-1">
+<div class="d-block d-sm-flex flex-column align-items-center mb-5 gap-3">
   <div class="tree_search d-flex align-items-center mb-sm-0 mb-4">
-    <form method="post" (ngSubmit)="Search()" [formGroup]="SearchForm" class="d-flex align-items-center w-100">
-      <input type="text" class="form-control me-2" formControlName="search">
-      <button type="submit" mat-raised-button color="warn" class="me-2">Search</button>
+    <form method="post" (ngSubmit)="Search()" [formGroup]="SearchForm" class="gap-2 flex-sm-row flex-column d-flex align-items-center w-100">
+      <input type="text" class="form-control" formControlName="search">
+      <div class="button-search d-flex gap-2 my-1 my-md-0">
+      <button type="submit" mat-raised-button color="warn">Search</button>
       <!-- Reset Button -->
-      <button type="button" mat-raised-button color="accent" (click)="resetSearch()" class="me-2">Reset</button>
-
+      <button type="button" mat-raised-button color="accent" (click)="resetSearch()" class="resetbtn">Reset</button>
+    </div>
       <a *ngIf="!fullScreenVisible" (click)="openFullScreen()" class="text-primary fw-bold"
         style="cursor: pointer;">Full Screen</a>
       <a *ngIf="fullScreenVisible" (click)="removeFullScreen()" class="text-primary fw-bold"
         style="cursor: pointer;">Remove Full Screen</a>
     </form>
   </div>
-  <div class="d-flex align-items-start gap-3">
+  <div class="d-flex align-items-center justify-content-center gap-3 peoplestatus">
     <!-- <div class="d-flex align-items-center">
       <div class="bg-black me-2" style="width: 15px; height: 15px;"></div>
       <span><b>Block</b></span>

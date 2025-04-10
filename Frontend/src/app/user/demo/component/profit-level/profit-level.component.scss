@@ -1,0 +1,91 @@
+.levelname{
+    font-weight: 500;
+    color: #ffffff;
+}
+
+::ng-deep {
+    .level-color-table .p-datatable-table{
+        border-spacing: 0px 5px;
+        border-collapse: separate;
+    }
+
+
+
+    
+    .level-color-table .p-datatable-wrapper table tbody tr {
+        color: #fff;
+        // odd even css
+
+        &:nth-child(odd) {
+            background: rgb(44 64 93);
+          }
+      
+          // Style for even rows
+          &:nth-child(even) {
+            background: rgb(51 91 148);
+        }
+     &:hover{
+  background-color: #1a2d3d !important;
+}
+
+// odd even css
+
+
+// multi Color css
+
+
+// &:hover{
+//     background-color: #1a2d3d !important;
+// }
+
+// &:nth-child(1) {
+//     background: #1c3b5b; 
+// }
+
+// &:nth-child(2) {
+//     background: #1f4463; 
+// }
+
+// &:nth-child(3) {
+//     background: #224d6b; 
+// }
+
+// &:nth-child(4) {
+//     background: #25576f;
+// }
+
+// &:nth-child(5) {
+//     background: #2a6187; 
+// }
+
+// &:nth-child(6) {
+//     background: #2f6b8f; 
+// }
+
+// &:nth-child(7) {
+//     background: #357f99;
+// }
+
+// &:nth-child(8) {
+//     background: #3c8ba3;
+// }
+
+// &:nth-child(9) {
+//     background: #4295ad; 
+// }
+
+// &:nth-child(10) {
+//     background: #48a0b7; 
+// }
+
+// &:nth-child(11) {
+//     background: #4faabf;
+// }
+
+// multi Color css
+
+
+    }
+    
+  }
+

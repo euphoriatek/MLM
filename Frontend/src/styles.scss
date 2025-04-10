@@ -81,6 +81,9 @@ $pc-secondary: map-get($preset-colors, 'preset-1', 'secondary');
   --color-theme:#1E3160;
 
 }
+html{
+  overflow-x:hidden ;
+}
 img{
   width: 100%;
 }
@@ -98,6 +101,7 @@ html, body {
 body { 
   margin: 0; 
   font-family: "Poppins", serif;
+  overflow-x: hidden;
  }
 
 //  FORM CSS
@@ -453,6 +457,7 @@ app-breadcrumb{
 .page-header{
   padding: 0;
   min-height: auto;
+  z-index: 1;
 }
 }
 

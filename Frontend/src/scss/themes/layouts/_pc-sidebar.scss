@@ -301,4 +301,25 @@
   }
 }
 
+@media(max-width:576px){
+  .mob-open ~  .pc-container{
+    margin-left: 0px;
+    position: relative;
+  }
+  .mob-open ~  .pc-container:after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgb(0 0 0 / 85%);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(1px);
+  }
+  .pc-header{
+    box-shadow: none;
+  }
+}
+
 // Sidebar css end

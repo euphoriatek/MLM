@@ -1,4 +1,4 @@
-<p-table #dt [value]="mlmLevel" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="15"
+<p-table class="level-color-table" #dt [value]="mlmLevel" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="15"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" currentPageReportTemplate=""
     [filterDelay]="0" [globalFilterFields]="['id','level_name','chain_creation','total_members','commission_by_level','total_earnings']">
     <ng-template pTemplate="caption">
@@ -16,7 +16,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="id">S.No.</th>
-            <th>Level</th>
+            <th style="min-width:150px;">Level</th>
             <th>People Creation</th>
             <th>Total Members</th>
             <th>Commision by level</th>
@@ -31,7 +31,7 @@
             </td>
             <td>
                 <span class="p-column-title">Level</span>
-                <span class="image-text">{{data.level_name}}</span>
+                <span class="image-text levelname">{{data.level_name}}</span>
             </td>
             <td>
                 <span class="p-column-title">People Creation</span>
