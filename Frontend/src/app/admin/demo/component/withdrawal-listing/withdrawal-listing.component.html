@@ -57,12 +57,10 @@
             </td>
             <td>
                 <div class="d-flex">
-                    <!-- <button class="btn editbtn" (click)="approved(data)"><i class="fa-solid fa-check"></i></button>
-                    <button class="btn deletebtn" (click)="reject(data)"><i class="fa-solid fa-xmark"></i></button> -->
-                    <button class="btn editbtn" (click)="approved(data)" [disabled]="data.status === 'rejected'">
+                    <button class="btn editbtn" (click)="approved(data)" [disabled]="data.status === 'approved' || data.status === 'rejected'">
                         <i class="fa-solid fa-check"></i>
                     </button>
-                    <button class="btn deletebtn" (click)="reject(data)" [disabled]="data.status === 'rejected'">
+                    <button class="btn deletebtn" (click)="reject(data)" [disabled]="data.status === 'approved' || data.status === 'rejected'">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>

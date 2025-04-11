@@ -31,7 +31,7 @@ class UserController extends Controller
             'state_id' => 'required|string|max:255',
             'city_id' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string',
             'pin_code' => 'required|string|regex:/^[0-9]{5,6}$/|max:6',
             'address' => 'required|string|max:500',
         ]);
@@ -560,7 +560,7 @@ class UserController extends Controller
         // Validate request
         $validator = Validator::make($request->all(), [
             'password' => 'required|string',
-            'new_password' => 'required|string|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/',
+            'new_password' => 'required|string',
             'confirm_password' => 'required|same:new_password',
         ]);
 

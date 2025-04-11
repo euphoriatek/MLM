@@ -67,6 +67,7 @@ import { ForgotPasswordComponent } from './demo/component/forgot-password/forgot
 import { OrderComponent } from './demo/component/order/order.component';
 import { TimelineModule } from 'primeng/timeline';
 import { HelpDeskComponent } from './demo/component/help-desk/help-desk.component';
+import { NgFireworksModule } from '@fireworks-js/angular'
 @NgModule({
   declarations: [
     UserAppComponent,
@@ -102,7 +103,7 @@ import { HelpDeskComponent } from './demo/component/help-desk/help-desk.componen
     OrderComponent,
     HelpDeskComponent
   ],
-  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule,AccordionModule,StepsModule,TimelineModule],
+  imports: [UserAppRoutingModule,PanelModule,TreeModule, MatTreeModule,MatIconModule, MatButtonModule,SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,InputTextModule, TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ConfirmDialogModule,ProgressBarModule,DropdownModule,DialogModule,DialogModule,MatDialogModule,MatSelectModule,MatOptionModule,OrganizationChartModule,MatTabsModule,AccordionModule,StepsModule,TimelineModule,NgFireworksModule],
   providers: [NavigationItem],
   bootstrap: [UserAppComponent]
 })

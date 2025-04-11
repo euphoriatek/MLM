@@ -4,7 +4,6 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ApiService } from 'src/app/user/services/api.service';
 import { ToasterService } from 'src/app/services/toster.service';
 import { environment } from 'src/environments/environment';
-import { error } from 'console';
 @Component({
   selector: 'app-bank-withdrawal',
   templateUrl: './bank-withdrawal.component.html',

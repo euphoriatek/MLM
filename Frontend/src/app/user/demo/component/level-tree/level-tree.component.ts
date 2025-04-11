@@ -24,19 +24,7 @@ export class LevelTreeComponent implements OnInit {
   currentLevel: number = 0;
   SearchForm!: FormGroup;
   fullScreenVisible: boolean;
-  levelImages: any = [
-    "./assets/images/levels/level-1.png",
-    "./assets/images/levels/level-2.png",
-    "./assets/images/levels/level-3.png",
-    "./assets/images/levels/level-4.png",
-    "./assets/images/levels/level-5.png",
-    "./assets/images/levels/level-6.png",
-    "./assets/images/levels/level-7.png",
-    "./assets/images/levels/level-8.png",
-    "./assets/images/levels/level-9.png",
-    "./assets/images/levels/level-10.png"
-  ];
-  currentImage: number = 1;
+  level = 1;
   constructor(
     private messageService: MessageService,
     public api: ApiService,
@@ -113,7 +101,11 @@ export class LevelTreeComponent implements OnInit {
               var ImageName = "./assets/images/redimage.png";
               var color = "red";
               var nodeClass = "";
-              var currentImage = component.levelImages[component.currentImage];
+              if($clickedElement.attr('level')){
+                var number = parseInt($clickedElement.attr('level'));
+                number = number + 1;
+                var currentImage = `./assets/images/levels/level-${number}.png`;
+              }
               if (value.is_active == 1) {
                 color = "green";
                 ImageName = "./assets/images/greenimage.png";
@@ -168,7 +160,7 @@ export class LevelTreeComponent implements OnInit {
               $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').find('tr.trspace').append(SpaceAddContent);
               ICount = ICount + 1;
             });
-            component.currentImage++;
+            component.level++;
             component.cdRef.detectChanges();
             this.spinner.hide();
           },

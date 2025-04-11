@@ -25,19 +25,6 @@ export class TreeViewComponent implements OnInit {
   user: any;
   SearchForm!: FormGroup;
   fullScreenVisible: boolean = false;
-  levelImages: any = [
-    "./assets/images/levels/level-1.png",
-    "./assets/images/levels/level-2.png",
-    "./assets/images/levels/level-3.png",
-    "./assets/images/levels/level-4.png",
-    "./assets/images/levels/level-5.png",
-    "./assets/images/levels/level-6.png",
-    "./assets/images/levels/level-7.png",
-    "./assets/images/levels/level-8.png",
-    "./assets/images/levels/level-9.png",
-    "./assets/images/levels/level-10.png"
-  ];
-  currentImage: number = 1;
   level = 1;
   constructor(
     public api: ApiService,
@@ -117,8 +104,6 @@ export class TreeViewComponent implements OnInit {
                 var number = parseInt($clickedElement.attr('level'));
                 number = number + 1;
                 var currentImage = `./assets/images/levels/level-${number}.png`;
-              }else{
-                // var currentImage = component.levelImages[component.currentImage];
               }
               if (value.is_active == 1) {
                 color = "green";
@@ -174,7 +159,6 @@ export class TreeViewComponent implements OnInit {
               $(crntclk).parent('div').parent('td').parent('tr').parent('tbody').find('tr.trspace').append(SpaceAddContent);
               ICount = ICount + 1;
             });
-            component.currentImage++;
             component.level++;
             component.cdRef.detectChanges();
             this.spinner.hide();

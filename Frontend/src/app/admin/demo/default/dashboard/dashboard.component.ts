@@ -24,7 +24,7 @@ export default class DashboardComponent {
   ngOnInit(): void {
     this.role = this.adminCookieService.getCookie('AdminUser')?.role;
     this.sponserId = this.adminCookieService.getCookie('AdminUser')?.sponsor_id;
-    this.ReferralUrl = this.BaseUrl + 'Register/' + this.sponserId;
+    this.ReferralUrl = this.BaseUrl + 'register/' + this.sponserId;
     this.getInfo();
   }
 

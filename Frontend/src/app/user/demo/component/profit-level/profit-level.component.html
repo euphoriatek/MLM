@@ -23,11 +23,11 @@
             <th>TotalEarnings(2% TDS Deduction)</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-data>
+    <ng-template pTemplate="body" let-data let-i="rowIndex">
         <tr class="p-selectable-row">
             <td>
                 <span class="p-column-title">S.No</span>
-                <span class="image-text">{{data.id}}</span>
+                <span class="image-text">{{i}}</span>
             </td>
             <td>
                 <span class="p-column-title">Level</span>

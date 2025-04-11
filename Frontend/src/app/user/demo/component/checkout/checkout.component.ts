@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -10,6 +10,10 @@ import { DataShareService } from 'src/app/user/services/data-share.service';
 declare var Razorpay: any;
 import { ChangeDetectorRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import type {
+  FireworksDirective,
+  FireworksOptions
+} from '@fireworks-js/angular';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -23,6 +27,20 @@ export class CheckoutComponent {
   otpTimer: number = 3;
   user: any;
   timerInterval: any;
+  enabled = false;
+  options: FireworksOptions = {
+    opacity: 0.5,
+    sound: {
+      enabled:true,
+      files: ['assets/images/activation.mp3'],
+      volume: {
+        min: 4,
+        max: 8
+      }
+    }
+  }
+
+  @ViewChild('fireworks') fireworks?: FireworksDirective
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -71,7 +89,7 @@ export class CheckoutComponent {
       const formData = this.CheckoutForm.value;
       const options = {
         key: environment.RazorpayApiKey,
-        amount: 1 * 100,
+        amount: this.product_data.price * 100,
         currency: 'INR',
         name: this.product_data.name,
         description: `Checkout for ${this.product_data.name}`,
@@ -81,8 +99,7 @@ export class CheckoutComponent {
           const orderData = {
             product_id: this.product_data.product_id,
             size: this.product_data.size,
-            // price: this.product_data.price,
-            price: 1,
+            price: this.product_data.price,
             name: this.product_data.name,
             delivery_address: this.CheckoutForm.value,
             r_payment_id: paymentResponse.razorpay_payment_id,
@@ -97,18 +114,19 @@ export class CheckoutComponent {
                 this.spinner.hide();
                 if (response.status) {
                   this.Activation_success = true;
+                  this.enabled =true;
                   this.cdRef.detectChanges();
                   this.cookiesService.updateCookie("CurrentUser", "is_active", true);
                   this.service.updateProfileInfo(true);
-                  this.timerInterval = setInterval(() => {
-                    if (this.otpTimer > 0) {
-                      this.otpTimer--;
-                      this.cdRef.detectChanges();
-                      if (this.otpTimer === 0) {
-                        this.router.navigate(['/activation']);
-                      }
-                    }
-                  }, 1000);
+                  // this.timerInterval = setInterval(() => {
+                  //   if (this.otpTimer > 0) {
+                  //     this.otpTimer--;
+                  //     this.cdRef.detectChanges();
+                  //     if (this.otpTimer === 0) {
+                  //       this.router.navigate(['/activation']);
+                  //     }
+                  //   }
+                  // }, 1000);
                 } else {
                   this.toaster.error(response.message);
                   this.router.navigate(['/activation']);
@@ -146,5 +164,9 @@ export class CheckoutComponent {
   resetForm() {
 
   }
-
+  loadTractOrder() {
+    this.router.navigate(['/activation']).then(() => {
+      window.location.reload();
+    });
+  }
 }

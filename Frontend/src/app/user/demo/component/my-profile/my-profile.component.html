@@ -84,15 +84,11 @@
                     <div class="col-md-4">
                         <div class="form-group mb-3">
                             <label for="dob" class="form-label">Date Of Birth</label>
-                            <div class="form-input">
-    
                                 <mat-form-field appearance="fill" class="full-width form-control">
                                     <input matInput [matDatepicker]="picker" formControlName="dob" id="dob"
                                         (focus)="picker.open()">
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
-    
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-4">
