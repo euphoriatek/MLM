@@ -51,7 +51,7 @@ export default class LoginComponent {
           }
         },
         error: (err) => {
-          this.toaster.error('Invalid mobile number and Password!', 'Login');
+          this.toaster.error('Invalid mobile Number and Password!', 'Login');
           this.spinner.hide();
           console.error(err); 
         }

@@ -51,9 +51,9 @@ export class MembersListComponent {
         next: (response: any) => {
           if (response && response.status) {
             if (response.is_block == 0) {
-              this.toaster.success('User Inactive successfully');
+              this.toaster.success('User Inactive Successfully');
             } else if (response.is_block ==1) {
-              this.toaster.success('User Active successfully');
+              this.toaster.success('User Active Successfully');
             }
           } else {
             this.toaster.error('Try Again');

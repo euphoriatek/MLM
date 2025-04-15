@@ -1,4 +1,4 @@
-import { Component, OnInit,  ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -21,28 +21,28 @@ export class RegisterComponent implements OnInit {
   states: any[] = [];
   countries: any[] = [];
   selectedCountryLogo: string | null = null;
-  spnDetails:string;
+  spnDetails: string;
   otpSent = false;
   otp: number;
-  spnsrId:any;
-  is_optVerify:boolean=false;
+  spnsrId: any;
+  is_optVerify: boolean = false;
   otpTimer = 0;
-  timerInterval: any; 
-  firstSend:boolean=false;
-  NumberIsValid:boolean=false;
+  timerInterval: any;
+  firstSend: boolean = false;
+  NumberIsValid: boolean = false;
   Sponserid: string | null = null;
-  is_send:boolean=false;
+  is_send: boolean = false;
   passwordFieldType: string = 'password';
   passwordType: string = 'password';
-  cities:any;
-  otpTimeDisplay:any;
+  cities: any;
+  otpTimeDisplay: any;
   @ViewChild('otpInput') otpInputRef: ElementRef | undefined;
-  constructor(private fb: FormBuilder, private route: ActivatedRoute,private router: Router, private api: ApiService, private toaster: ToasterService, public spinner:NgxSpinnerService,public currentRoute:ActivatedRoute) { }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private api: ApiService, private toaster: ToasterService, public spinner: NgxSpinnerService, public currentRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.signupForm = this.fb.group(
       {
-        parent_sponsor_id: ['', [ Validators.maxLength(10),Validators.required]],
+        parent_sponsor_id: ['', [Validators.maxLength(10), Validators.required]],
         full_name: ['', Validators.required],
         state_id: ['', Validators.required],
         city_id: ['', Validators.required],
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
             Validators.required
           ]
         ],
-        mobile_no: ['', [Validators.maxLength(10),Validators.required, Validators.pattern(/^\d{10}$/)]],
+        mobile_no: ['', [Validators.maxLength(10), Validators.required, Validators.pattern(/^\d{10}$/)]],
         otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
         confirm_password: ['', Validators.required],
         pin_code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
@@ -62,43 +62,43 @@ export class RegisterComponent implements OnInit {
       },
       { validators: passwordMatchValidator() }
     );
-    this. fetchStates(); 
-  
-      this.currentRoute.paramMap.subscribe(params => {
-        this.Sponserid = params.get('id');
-        if (this.Sponserid) {
-          this.signupForm.get('parent_sponsor_id').setValue(this.Sponserid);
-        }
-      });
+    this.fetchStates();
 
-      this.spnsrId = this.route.snapshot.queryParams;
-      if (this.spnsrId?.['referral']) { 
-        this.signupForm.patchValue({
-          parent_sponsor_id: this.spnsrId['referral']
-        });
+    this.currentRoute.paramMap.subscribe(params => {
+      this.Sponserid = params.get('id');
+      if (this.Sponserid) {
+        this.signupForm.get('parent_sponsor_id').setValue(this.Sponserid);
       }
-          
+    });
+
+    this.spnsrId = this.route.snapshot.queryParams;
+    if (this.spnsrId?.['referral']) {
+      this.signupForm.patchValue({
+        parent_sponsor_id: this.spnsrId['referral']
+      });
+    }
+
   }
 
-  checkSPSid(event:any){
-    if(event){
+  checkSPSid(event: any) {
+    if (event) {
       const sponsorId = event.target.value;
-      if(sponsorId.length < 10){
-        this.spnDetails='';
+      if (sponsorId.length < 10) {
+        this.spnDetails = '';
         return;
       }
       this.api.validateWithSponsor(sponsorId).subscribe({
         next: (response: any) => {
           if (response.status) {
             this.spnDetails = response.data;
-          }else{
+          } else {
             this.toaster.error(response.message, 'Signup');
-            this.spnDetails='';
+            this.spnDetails = '';
           }
         },
         error: (err) => {
           console.error(err);
-          this.toaster.error( "Sponser Id does't Match!", 'Signup');
+          this.toaster.error("Sponser Id does't Match!", 'Signup');
         }
       });
     }
@@ -107,7 +107,7 @@ export class RegisterComponent implements OnInit {
   checkMobile(event: any) {
     if (event) {
       const mobile_number = event.target.value;
-      if(mobile_number.length < 10){
+      if (mobile_number.length < 10) {
         return;
       }
       this.api.checkMobile(mobile_number).subscribe({
@@ -126,47 +126,10 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
-
-
-  // sendOtp(){
-  //   this.is_send = true;
-  //   const data = {"mobile_number":this.signupForm.value.mobile_no};
-  //   this.api.GenerateOTP(data).subscribe({
-  //     next: (response: any) => {
-  //       this.is_send = false;
-  //       if (response.status) {
-  //         this.otpSent = true;
-  //           this.otpTimer = 60;
-  //           this.signupForm.controls['mobile_no'].disable();
-  //           this.timerInterval = setInterval(() => {
-  //             if (this.otpTimer > 0) {
-  //               this.otpTimer--;
-  //               if(this.otpTimer === 0){
-  //                 this.firstSend = true;
-  //                 this.signupForm.controls['mobile_no'].enable();
-  //               }
-  //             } else {
-  //               this.signupForm.controls['mobile_no'].enable();
-  //               clearInterval(this.timerInterval);
-  //             }
-  //           }, 1000);
-  //           setTimeout(() => {
-  //             this.otpInputRef?.nativeElement.focus();
-  //           }, 100);
-  //       }else{
-  //         this.toaster.error( "Try again!", 'Signup');
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //       this.toaster.error( "Try again!", 'Signup');
-  //     }
-  //   });
-  // }
   sendOtp() {
     this.is_send = true;
     const data = { "mobile_number": this.signupForm.value.mobile_no };
-  
+
     this.api.GenerateOTP(data).subscribe({
       next: (response: any) => {
         this.is_send = false;
@@ -174,7 +137,7 @@ export class RegisterComponent implements OnInit {
           this.otpSent = true;
           this.otpTimer = 300; // 5 minutes = 300 seconds
           this.signupForm.controls['mobile_no'].disable();
-          
+
           this.timerInterval = setInterval(() => {
             if (this.otpTimer > 0) {
               this.otpTimer--;
@@ -187,7 +150,7 @@ export class RegisterComponent implements OnInit {
             const seconds = this.otpTimer % 60; // Get seconds
             this.otpTimeDisplay = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
           }, 1000); // 1 second interval
-          
+
           setTimeout(() => {
             this.otpInputRef?.nativeElement.focus();
           }, 100);
@@ -204,7 +167,7 @@ export class RegisterComponent implements OnInit {
 
   verifyOtp() {
     const enteredOtp = this.signupForm.get('otp')?.value;
-    if(enteredOtp.length < 6){
+    if (enteredOtp.length < 6) {
       return;
     }
     this.api.verifyOTP(enteredOtp).subscribe({
@@ -214,7 +177,7 @@ export class RegisterComponent implements OnInit {
           this.signupForm.controls['otp'].disable();
           this.toaster.success('Mobile No. OTP Verified Successfully Done');
           this.is_optVerify = true;
-        }else{
+        } else {
           this.toaster.error(response.message);
         }
       },
@@ -240,17 +203,26 @@ export class RegisterComponent implements OnInit {
     });
   }
   addUser(): void {
+    // if (!this.is_optVerify) {
+    //   this.toaster.error("Please verify OTP");
+    //   return; 
+    // }
+    const mobileNoControl = this.signupForm.get('mobile_no');
+    if (mobileNoControl?.value && !this.otpSent &&!this.is_optVerify) {
+      this.toaster.error("Please verify OTP");
+      return;
+    }
     if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched();
       return;
-    }else if(this.signupForm.valid && this.is_optVerify){
+    } else if (this.signupForm.valid && this.is_optVerify) {
       this.spinner.show();
       this.signupForm.controls['mobile_no'].enable();
       this.signupForm.controls['otp'].enable();
-      const { confirm_password,otp, agree, ...data } = this.signupForm.value;
+      const { confirm_password, otp, agree, ...data } = this.signupForm.value;
       this.api.addUsers(data).subscribe({
         next: (response: any) => {
-          if (response.status) { 
+          if (response.status) {
             this.signupForm.reset();
             this.router.navigate(['/login']);
             this.toaster.success('Registration successful.'), 'Signup';
@@ -265,6 +237,8 @@ export class RegisterComponent implements OnInit {
           this.toaster.error('An error occurred while saving the user.', 'Signup');
         }
       });
+    } else if (!this.is_optVerify) {
+      this.toaster.error("Please verify Otp")
     }
   }
 
@@ -283,7 +257,7 @@ export class RegisterComponent implements OnInit {
   passwordVisibility() {
     this.passwordType = this.passwordType === 'password' ? 'text' : 'password';
   }
-  getCity(id:number): void {
+  getCity(id: number): void {
     this.spinner.show();
     this.api.getCities(id).subscribe({
       next: (response: any) => {
@@ -291,7 +265,7 @@ export class RegisterComponent implements OnInit {
           this.cities = response.data;
           this.spinner.hide();
         }
-        else{
+        else {
           this.spinner.hide();
         }
       },
@@ -300,14 +274,14 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
-  loadCity(event:any){
+  loadCity(event: any) {
     this.spinner.show();
     this.api.getCities(event.target.value).subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.cities = response.data;
           this.spinner.hide();
-        }else{
+        } else {
           this.spinner.hide();
         }
       },
@@ -324,5 +298,5 @@ function passwordMatchValidator() {
     const confirmPassword = control.get('confirm_password')?.value;
     return password && confirmPassword && password !== confirmPassword ? { passwordMismatch: true } : null;
   };
-  
+
 }

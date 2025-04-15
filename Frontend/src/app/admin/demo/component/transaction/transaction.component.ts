@@ -27,8 +27,6 @@ export class TransactionComponent {
         next: (response: any) => {
           if (response && response.status) {
             this.transactions = response.data;
-            console.log(this.transactions);
-            
           }
           else{
             this.spinner.hide();

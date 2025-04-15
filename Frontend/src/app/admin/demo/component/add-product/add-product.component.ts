@@ -106,7 +106,6 @@ export class AddProductComponent {
       next: (response: any) => {
         if (response && response.status) {
           this.products = response.data;
-          console.log(response);
         }
       },
       error: (err) => {

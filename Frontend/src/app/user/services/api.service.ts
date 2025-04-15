@@ -107,8 +107,16 @@ export class ApiService {
     return this.http.get(this.BaseUrl + 'check-activation');
   }
 
-  checkOutActivation(data: any) {
-    return this.http.post(this.BaseUrl + 'checkout-activation', data);
+  checkPlanIsActive() {
+    return this.http.get(this.BaseUrl + 'check-plan-isactive');
+  }
+
+  createOrder(data:any){
+    return this.http.post(this.BaseUrl + 'create-order', data);
+  }
+
+  checkServiceability(pincode:number){
+    return this.http.get(this.BaseUrl + 'service-ability?pincode='+pincode);
   }
   // My Community
   // Tree View

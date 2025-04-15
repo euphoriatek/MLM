@@ -35,9 +35,28 @@ export class ActivationComponent {
    }
 
   ngOnInit(): void {
+    this.getInfo();
     this.getProduct();
-    this.userInfo = this.cookiesService.getCookie('CurrentUser');
-    this.is_activated = this.userInfo.is_active;
+    // this.userInfo = this.cookiesService.getCookie('CurrentUser');
+    // this.is_activated = this.userInfo.is_active;
+  }
+
+  getInfo(){
+    this.spinner.show();
+    this.api.getAuth().subscribe({
+      next: (response: any) => {
+        if (response.status) {
+          this.userInfo = response.data;
+          this.is_activated = this.userInfo.is_active;
+          this.cookiesService.updateCookie('CurrentUser', 'is_active', this.userInfo.is_active);
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+      }
+    });
   }
 
   getProduct() {
@@ -46,7 +65,6 @@ export class ActivationComponent {
       next: (response: any) => {
         if (response && response.status) {
           this.product = response.data;
-          console.log(this.product);
         }
         this.spinner.hide();
       },
@@ -63,18 +81,18 @@ export class ActivationComponent {
       return;
     } else if (this.ActivationForm.valid) {
       if(!this.userInfo.pan_verified){
-        this.toaster.error('Please update PAN in kyc before purchasing package');
+        this.toaster.error('Please update PAN in KYC Before Purchasing Package');
         return;
       }
       if(this.userInfo.kyc_status != "verified"){
-        this.toaster.error('Please update Bank Details in kyc before purchasing package');
+        this.toaster.error('Please Update Bank Details in KYC Before Purchasing Package');
         return;
       }
       this.spinner.show();
       this.api.checkActivation().subscribe({
         next: (response: any) => {
           if (response.status === false) {
-            this.toaster.success("You have already purchased this product.");
+            this.toaster.success("You Have Already Purchased This Product.");
             this.spinner.hide();
             return;
           }
@@ -83,7 +101,7 @@ export class ActivationComponent {
             width: '340px',
             data: {
               title: "Activation",
-              message: "Are you sure you want to purchase this Product?",
+              message: "Are you sure you want to Purchase this Product?",
               btn: "Yes"
             },
           });
@@ -99,12 +117,12 @@ export class ActivationComponent {
               var encrypt = this.cookiesService.encrypt(purchaseData);
               this.router.navigate(['/checkout'], { queryParams: { access_token: encrypt } });
             } else {
-              console.log('Purchase canceled');
+              console.log('Purchase Canceled');
             }
           });
         },
         error: (err) => {
-          console.error('Error checking purchase', err);
+          console.error('Error Checking Purchase', err);
         }
       });
     }

@@ -47,7 +47,7 @@ export class WithdrawalListingComponent {
     this.api.updateWithdrawalsStatus(data).subscribe({
       next: (response: any) => {
         if(response.status){
-          this.toaster.success("Status updated to approved successfully!");
+          this.toaster.success("Status Updated to Approved Successfully!");
           this.getWithdrawals();
           this.spinner.hide();
         }
@@ -67,7 +67,7 @@ export class WithdrawalListingComponent {
     this.api.updateWithdrawals(data).subscribe({
       next: (response: any) => {
         if (response.status) {
-        this.toaster.success("Status updated to Rejected successfully!");
+        this.toaster.success("Status Updated to Rejected Successfully!");
         this.getWithdrawals();
         this.spinner.hide();
         }else{

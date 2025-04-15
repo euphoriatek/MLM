@@ -1,7 +1,7 @@
 <p-table #dt [value]="membersList" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="10"
     [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
     currentPageReportTemplate="" [filterDelay]="0"
-    [globalFilterFields]="['full_name', 'email', 'city.city', 'sponsor_id','parent_sponsor_id', 'created_at']">
+    [globalFilterFields]="['full_name', 'city.city', 'sponsor_id','parent_sponsor_id', 'created_at']">
     <ng-template pTemplate="caption">
         <div class="table-header mb-4">
             <h3>Members List</h3>

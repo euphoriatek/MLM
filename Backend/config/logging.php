@@ -117,6 +117,11 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'razorpay_webhook' => [
+        'driver' => 'single',
+        'path' => storage_path('logs/razorpay_webhook.log'),
+        'level' => 'debug', // You can adjust the level based on your needs (e.g., 'info', 'debug', 'error')
+        ],
     ],
 
 ];

@@ -14,7 +14,7 @@
                                             <input type="text" id="name" formControlName="name" class="form-control" />
                                             <div
                                                 *ngIf="CheckoutForm.get('name').hasError('required') && CheckoutForm.get('name').touched">
-                                                <span class="error-message">Name is required</span>
+                                                <span class="error-message">Name is Required</span>
                                             </div>
                                         </div>
                                     </div>
@@ -38,11 +38,11 @@
                                                 formControlName="phone_number" class="form-control" />
                                             <div
                                                 *ngIf="CheckoutForm.get('phone_number').hasError('required') && CheckoutForm.get('phone_number').touched">
-                                                <span class="error-message">Phone Number is required</span>
+                                                <span class="error-message">Phone Number is Required</span>
                                             </div>
                                             <div
                                                 *ngIf="CheckoutForm.get('phone_number').hasError('pattern') && CheckoutForm.get('phone_number').touched">
-                                                <span class="error-message">Phone number must be 10 digits</span>
+                                                <span class="error-message">Phone Number must be 10 Digits</span>
                                             </div>
                                         </div>
                                     </div>
@@ -54,7 +54,7 @@
                                                 class="form-control" />
                                             <div
                                                 *ngIf="CheckoutForm.get('address').hasError('required') && CheckoutForm.get('address').touched">
-                                                <span class="error-message">Address is required</span>
+                                                <span class="error-message">Address is Required</span>
                                             </div>
                                         </div>
                                     </div>
@@ -62,12 +62,18 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="pin_code">Pin Code</label>
-                                            <input type="text" id="pin_code" formControlName="pin_code"
-                                                class="form-control" />
+                                            <input (input)="checkServiceability()" formControlName="pin_code" id="pin_code" class="form-control" placeholder="" maxlength="6" />
                                             <div
                                                 *ngIf="CheckoutForm.get('pin_code').hasError('required') && CheckoutForm.get('pin_code').touched">
-                                                <span class="error-message">Pin Code is required</span>
+                                                <span class="error-message">Pin Code is Required</span>
                                             </div>
+                                            <small class="text-danger" *ngIf="CheckoutForm.get('pin_code')?.hasError('pattern')">
+                                                Pin code must be 6 digits.
+                                            </small>
+                                            <small class="text-danger"
+                                            *ngIf="CheckoutForm.get('pin_code')?.hasError('minlength') || CheckoutForm.get('pin_code')?.hasError('maxlength')">
+                                            Pin code must be exactly 6 digits long.
+                                            </small>
                                         </div>
                                     </div>
 
@@ -91,7 +97,7 @@
                         <div class="col-lg-12">
                             <div class="payment-section">
                                 <h4 class="title">Payment</h4>
-                                <p>All transactions are secure and encrypted.</p>
+                                <p>All Transactions are Secure and Encrypted.</p>
 
                                 <div class="payment-razorpay">
                                     <h6>Razorpay Secure</h6>
@@ -121,11 +127,11 @@
             <img src="assets/images/calebration.png">
             <div class="celebration-left">
                 <h5>Congratulations!</h5>
-                <p>Your activation package has been successfully purchased.</p>
+                <p>Your Activation Package Has Been Successfully Purchased.</p>
 
             </div>
         </div>
     </div>
-    <a (click)="loadTractOrder()" class="keep-going"> Let's keep going ></a>
+    <a (click)="loadTractOrder()" class="keep-going"> Let's Keep Going ></a>
     <!-- <a [routerLink]="['/activation']" class="keep-going"> Let's keep going ></a> -->
 </p-dialog>

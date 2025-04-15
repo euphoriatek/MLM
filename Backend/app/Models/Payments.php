@@ -18,7 +18,8 @@ class Payments extends Model
         'amount',
         'json_response',
         'purchase_id',
-        'user_id'
+        'user_id',
+        'status'
     ];
     public function user()
     {

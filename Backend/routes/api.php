@@ -107,7 +107,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Activation
     Route::get('/get-product', [ProductController::class, 'getProduct'])->middleware('role:user');
     Route::get('/check-activation', [PurchaseController::class, 'checkActivation'])->middleware('role:user');
-    Route::post('/checkout-activation', [PurchaseController::class, 'store'])->middleware('role:user');
+    Route::post('/create-order', [PurchaseController::class, 'createOrder'])->middleware('role:user');
+    Route::get('/check-plan-isactive', [PurchaseController::class, 'checkPlanIsActive'])->middleware('role:user');
+    Route::get('/service-ability', [PurchaseController::class, 'checkPincodeDelhivery'])->middleware('role:user');
     // Tree view
     Route::post('/get-tree-usr', [UserController::class, 'getUsersTree'])->middleware('role:user');
     Route::post('/search-tree-usr', [UserController::class, 'getUsersTreeSearch'])->middleware('role:user');
@@ -133,3 +135,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferToBulkpe']);
 //Mlm Profit Level
 Route::get('/mlm-levels', [UserController::class, 'getMlmLevel']);
+Route::post('/razorpay/webhook', [PurchaseController::class, 'handleWebhook']);

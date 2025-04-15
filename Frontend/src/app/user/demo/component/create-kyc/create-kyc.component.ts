@@ -92,7 +92,7 @@ export class CreateKycComponent {
             this.activeIndex = 1;
             this.is_bank_verif = "verified";
             this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'verified');
-            this.toaster.success('Kyc Details Created Successfully!');
+            this.toaster.success('KYC Details Created Successfully!');
             this.getKycInfo();
           }else{
             this.toaster.error(response.message);
@@ -129,7 +129,7 @@ CreatePanKyc(): void {
                         this.cookiesService.updateCookie('CurrentUser', 'pan_verified', true);
                         this.isFormReadonly = true;
                         this.getKycInfo();
-                        this.toaster.success('PAN KYC Created successfully!');
+                        this.toaster.success('PAN KYC Created Successfully!');
                         this.router.navigate(['/activation']);
                         this.service.updateProfileInfo(true);
                     } else {
@@ -225,7 +225,7 @@ openPanCardTab() {
   if (this.is_bank_verif === 'verified') {
     this.activeIndex = 1;
   } else {
-    this.toaster.error("Please verify your Bank Info before accessing the Pan Card section.");
+    this.toaster.error("Please Verify Your Bank Info Before Accessing the Pan Card Section.");
   }
 }
 // steps = [

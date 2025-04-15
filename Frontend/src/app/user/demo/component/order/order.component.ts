@@ -26,7 +26,8 @@ export class OrderComponent {
       next: (response: any) => {
         if (response && response.data) {
           this.order = response.data;
-          this.invoice_file = response.data?.invoice.file;
+          // this.invoice_file = response.data?.invoice.file;
+          this.invoice_file = response.data.invoice ? response.data.invoice.file : null;
         }
         this.spinner.hide();
       },

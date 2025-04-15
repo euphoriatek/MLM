@@ -94,27 +94,21 @@
 
         </div>
     </div>
-
     <div class="col-lg-4">
         <div class="order-timeline">
             <div class="card">
                 <div class="card-body">
                     <div class="shipment-tracker">
-
-
-
                         <h4 class="title"><i class="fa-solid fa-list me-2"></i> Shipment Tracker</h4>
-
                         <div class="print-shipping text-center">
                             <i class="fa-solid fa-file-invoice"></i>
                             <button type="button" class="print-btn" (click)="openInvoice(order.invoice.invoice_number)">Activation
                                 Invoice</button>
                             <button type="button" class="print-btn" (click)="downloadInvoice()">Order Invoice</button>
                         </div>
-                        <h5>AWB No<span>{{order?.invoice.waybill}}</span></h5>
+                        <h5>AWB No<span>{{order?.invoice?.waybill}}</span></h5>
                         <button type="button" class="btn orange-btn" (click)="trackUrl()">Track Your Order</button>
                     </div>
-
                 </div>
             </div>
         </div>

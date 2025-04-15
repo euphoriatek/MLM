@@ -156,7 +156,7 @@ export class ProductListComponent {
           this.visible = false;
           this.UserEditForm.reset();
           this.getProduct();
-          this.toaster.success("Successfully updated product");
+          this.toaster.success("Successfully Updated Product");
         }
         this.spinner.hide();
       },
@@ -173,7 +173,7 @@ export class ProductListComponent {
       width: '400px',
       data: {
         title: 'Delete Confirmation',
-        message: 'Are you sure you want to delete?'
+        message: 'Are you sure you want to Delete?'
       },
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
@@ -183,15 +183,15 @@ export class ProductListComponent {
           next: (response: any) => {
             if (response.status) {
               this.getProduct();
-              this.toaster.success("Successfully delete product");
+              this.toaster.success("Successfully Delete Product");
             } else {
-              this.toaster.success("Successfully delete product");
+              this.toaster.success("Successfully Delete Product");
             }
             this.spinner.hide();
           },
           error: (err) => {
             this.spinner.hide();
-            this.toaster.success("Successfully delete product");
+            this.toaster.success("Successfully Delete Product");
             console.error(err);
           }
         });

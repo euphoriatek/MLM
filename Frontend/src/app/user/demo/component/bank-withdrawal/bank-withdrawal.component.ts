@@ -118,13 +118,13 @@ export class BankWithdrawalComponent implements OnInit {
           this.spinner.hide(); 
         },
         error: (err) => {
-          this.toaster.error('An error occurred during withdrawal.', 'Error');
+          this.toaster.error('An Error Occurred During Withdrawal.', 'Error');
           this.spinner.hide(); 
         }
       });
       this.disableFormBnkFields();
     } else {
-      this.toaster.error("Insufficient balance in wallet.", 'Error');
+      this.toaster.error("Insufficient Balance in Your Wallet.", 'Error');
     }
   }
   
