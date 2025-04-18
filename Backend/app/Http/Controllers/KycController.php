@@ -20,18 +20,7 @@ class KycController extends Controller
                 'message' => 'User is not Authenticated.',
             ], 401);
         }
-        $userId = $user->id;
-        // Check if the record already exists
-        $existingPan = KycDetails::where('user_id', $userId)
-            ->where('account_no', $request->account_no)
-            ->first();
-            if ($existingPan) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'This Kyc Record Already Exists for this User.',
-                    'data' => $existingPan,
-                ], 200);
-            }
+
         $validator = Validator::make($request->all(), [
             'account_holder_name' => 'required|string|max:255',
             'ifsc_code' => 'required|string',
@@ -44,58 +33,27 @@ class KycController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
+        $userId = $user->id;
+        // Check if the record already exists
+        $existingPan = KycDetails::where('user_id', $userId)
+            ->where('account_no', $request->account_no)
+            ->first();
+        if ($existingPan) {
+            return response()->json([
+                'status' => true,
+                'message' => 'This Kyc Record Already Exists for this User.',
+                'data' => $existingPan,
+            ], 200);
+        }
         $input = $request->all();
         try {
-            $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
-            $response = Http::withHeaders([
-                'x-api-version' => '2.0',
-                'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
-                'x-api-key' => $settings['SANDBOX_API_KEY'],
-            ])
-                ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code']);
-            $data = $response->json();
-            if (!$response->successful()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Not Found',
-                    'data' => $data
-                ], 404);
-            }
-            $response = Http::withHeaders([
-                'accept' => 'application/json',
-                'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
-                'x-api-version' => '1.0',
-                'x-api-key' => $settings['SANDBOX_API_KEY'],
-            ])
-                ->get('https://api.sandbox.co.in/bank/' . $input['ifsc_code'] . '/accounts/' . $input['account_no'] . '/penniless-verify');
-            $data = $response->json();
-            if ($response->successful()) {
-                if ($data['code'] === 200) {
-                    if (isset($data['data']['name_at_bank']) && $input['account_holder_name'] != $data['data']['name_at_bank']) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'Account Holder Name Does not Match.'
-                        ], 201);
-                    }
-                } else {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Source Unavailable'
-                    ], 503);
-                }
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => $data['message']
-                ], 503);
-            }
             $kycDetails = KycDetails::create([
                 'user_id' => $userId,
-                'account_holder_name' => $request->account_holder_name,
-                'ifsc_code' => $request->ifsc_code,
-                'account_no' => $request->account_no,
-                'bank_name' => $request->bank_name,
-                'branch_name' => $request->branch_name,
+                'account_holder_name' => $input['account_holder_name'],
+                'ifsc_code' =>  $input['ifsc_code'],
+                'account_no' => $input['account_no'],
+                'bank_name' => $input['branch_name'],
+                'branch_name' => $input['bank_name']
             ]);
             User::where('id', $userId)->update(['kyc_status' => 'verified']);
             return response()->json([
@@ -149,23 +107,24 @@ class KycController extends Controller
             ], 404);
         }
     }
-    public function getKyc(){
+    public function getKyc()
+    {
         try {
-        $user = auth()->user();
-       $userWallet = $user->wallet_balance;
-        if (!$user) {
+            $user = auth()->user();
+            $userWallet = $user->wallet_balance;
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User is not Authenticated.',
+                ], 401);
+            }
+            $userId = $user->id;
+            $bankKyc = KycDetails::where('user_id', $userId)->first();
+            $PanKyc = PanDetails::where('user_id', $userId)->first();
             return response()->json([
-                'status' => false,
-                'message' => 'User is not Authenticated.',
-            ], 401);
-        }
-        $userId = $user->id;
-        $bankKyc = KycDetails::where('user_id', $userId)->first();
-        $PanKyc = PanDetails::where('user_id', $userId)->first();
-        return response()->json([
-            'status' => true,
-            'data' => ["bank" => $bankKyc, "pan" => $PanKyc,  'wallet_balance' => $userWallet],
-        ], 200);
+                'status' => true,
+                'data' => ["bank" => $bankKyc, "pan" => $PanKyc, 'wallet_balance' => $userWallet],
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
@@ -197,23 +156,23 @@ class KycController extends Controller
             $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
             $response = Http::withHeaders([
                 'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
-                'x-api-key' =>  $settings['SANDBOX_API_KEY'],
+                'x-api-key' => $settings['SANDBOX_API_KEY'],
                 'Content-Type' => 'application/json',
             ])->post('https://api.sandbox.co.in/kyc/pan/verify', [
-                '@entity' => 'in.co.sandbox.kyc.pan_verification.request',
-                'pan' => $input['id_number'],
-                'name_as_per_pan' => "KAPIL PATIDAR",
-                'date_of_birth' => "29/09/1998",
-                'consent' => 'Y',
-                'reason' => 'for verification',
-            ]);
+                        '@entity' => 'in.co.sandbox.kyc.pan_verification.request',
+                        'pan' => $input['id_number'],
+                        'name_as_per_pan' => "KAPIL PATIDAR",
+                        'date_of_birth' => "29/09/1998",
+                        'consent' => 'Y',
+                        'reason' => 'for verification',
+                    ]);
             $data = $response->json();
             if ($response->successful()) {
                 $panDetails = PanDetails::create([
                     'user_id' => $userId,
                     'tax_document' => $input['tax_document'],
                     'id_number' => $input['id_number'],
-                   
+
                 ]);
                 User::where('id', $userId)->update(['pan_verified' => 1]);
                 return response()->json([
@@ -252,6 +211,73 @@ class KycController extends Controller
         return response()->json([
             'status' => false,
             'message' => 'No existing Kyc Record Found for this User.',
+        ], 200);
+    }
+
+    public function validateIfscAndAccount(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User is not Authenticated.',
+            ], 401);
+        }
+        
+        $ifsc_code = $request->input('ifsc_code');
+        $account_number = $request->input('account_number');
+
+        if (!$ifsc_code || !$account_number) {
+            return response()->json([
+                'status' => false,
+                'message' => 'IFSC Code and Account Number are required'
+            ], 400);
+        }
+
+        $settings = Setting::whereIn('key', ['SANDBOX_API_KEY', 'SANDBOX_AUTH_TOKEN'])->get()->pluck('value', 'key');
+
+        // Validate IFSC
+        $ifscResponse = Http::withHeaders([
+            'x-api-version' => '2.0',
+            'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
+            'x-api-key' => $settings['SANDBOX_API_KEY'],
+        ])->get('https://api.sandbox.co.in/bank/' . $ifsc_code);
+
+        if (!$ifscResponse->successful()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid IFSC Code',
+                'data' => $ifscResponse->json()
+            ], 404);
+        }
+        $ifscResponse = $ifscResponse->json();
+        // Validate Account
+        $accountResponse = Http::withHeaders([
+            'accept' => 'application/json',
+            'Authorization' => $settings['SANDBOX_AUTH_TOKEN'],
+            'x-api-version' => '1.0',
+            'x-api-key' => $settings['SANDBOX_API_KEY'],
+        ])->get("https://api.sandbox.co.in/bank/{$ifsc_code}/accounts/{$account_number}/penniless-verify");
+
+        $accountData = $accountResponse->json();
+
+        if (!$accountResponse->successful() || $accountData['code'] !== 200 || !$accountData['data']['account_exists']) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Account Number',
+                'data' => $accountData
+            ], 503);
+        }
+        $response = [
+            "branch" => $ifscResponse['BRANCH'],
+            "bank" => $ifscResponse['BANK'],
+            "ifsc_code" => $ifscResponse['IFSC'],
+            "account_no" => $account_number,
+            "account_holder_name" => $accountData['data']['name_at_bank'],
+        ];
+        return response()->json([
+            'status' => true,
+            'data' => $response
         ], 200);
     }
 }

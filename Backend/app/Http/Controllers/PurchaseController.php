@@ -289,6 +289,9 @@ class PurchaseController extends Controller
                 $fileName = "invoice_{$data['order_id']}.pdf";
                 Storage::disk('public')->put('invoices/' . $fileName, $pdf->output());
                 $invoice->update(["file" => 'invoices/' . $fileName]);
+
+                Mail::to(env('MAIL_FROM_ADDRESS'))->send(new InvoiceMail($data['name'], $fileName));
+                
                 if($data['email']){
                 Mail::to($data['email'])->send(new InvoiceMail($data['name'], $fileName));
                 }

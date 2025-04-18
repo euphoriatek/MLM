@@ -178,6 +178,7 @@ ul.list-inline.indicate-color-cls li.grey-cls figure {
   position: fixed;
   top: 0;
   left: 0;
+  padding:15px;
 }
 ::ng-deep{
   /* Full Screen Mode */
@@ -194,7 +195,8 @@ ul.list-inline.indicate-color-cls li.grey-cls figure {
   #tree_div {
     width: 100%;
     height: auto;
-    display: flex;
+    // display: flex;
+    max-width: 150px;
     justify-content: center;
   }
 
@@ -211,6 +213,7 @@ ul.list-inline.indicate-color-cls li.grey-cls figure {
     a{
     color: #000 !important;
     font-weight: 600 !important;
+    white-space: nowrap;
     }
 
   }

@@ -31,33 +31,15 @@
                 <div class="bank-main">
                     <div class="row">
                         <div class="col-lg-7">
-                            <form method="post" (ngSubmit)="CreateKyc()" [formGroup]="KycForm">
+                            <form method="post" (ngSubmit)="VerifyKyc()" [formGroup]="KycForm">
                                 <div class="row">
-                                    <div class="col-lg-6 mb-4">
-                                        <div class="form-group">
-                                            <label class="form-label" for="account_holder_name">Account Holder Name
-                                                *</label>
-                                            <div class="form-input">
-                                                <input formControlName="account_holder_name" type="text"
-                                                    class="form-control" id="account_holder_name" placeholder="" />
-                                            </div>
-                                            <div
-                                                *ngIf="KycForm?.get('account_holder_name')?.hasError('required') && KycForm?.get('account_holder_name')?.touched">
-                                                <span class="error-message">Account Holder Name is Required</span>
-                                            </div>
-                                            <div
-                                                *ngIf="KycForm?.get('account_holder_name')?.hasError('pattern') && KycForm?.get('account_holder_name')?.touched">
-                                                <span class="error-message">Account Holder Name Should only Contain
-                                                    Letters and Spaces</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group">
                                             <label class="form-label" for="ifsc_code">IFSC Code *</label>
                                             <div class="form-input">
                                                 <input formControlName="ifsc_code" type="text" class="form-control"
-                                                    id="ifsc_code" placeholder="" (blur)="checkIfSc($event)" />
+                                                    id="ifsc_code" placeholder="" />
                                             </div>
                                             <div
                                                 *ngIf="KycForm?.get('ifsc_code')?.hasError('required') && KycForm?.get('ifsc_code')?.touched">
@@ -65,6 +47,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group">
                                             <label class="form-label" for="account_no">Account No. *</label>
@@ -78,37 +61,43 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 mb-4">
+
+                                    <div class="col-lg-6 mb-4" [hidden]="!isReadonly">
+                                        <div class="form-group">
+                                            <label class="form-label" for="account_holder_name">Account Holder Name
+                                                </label>
+                                            <div class="form-input">
+                                                <input formControlName="account_holder_name" type="text"
+                                                    class="form-control" id="account_holder_name" placeholder="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-6 mb-4" [hidden]="!isReadonly">
                                         <div class="form-group mb-3">
-                                            <label class="form-label" for="bank_name">Bank Name *</label>
+                                            <label class="form-label" for="bank_name">Bank Name</label>
                                             <div class="form-input">
                                                 <input formControlName="bank_name" type="text" class="form-control"
                                                     id="bank_name" placeholder="" />
                                             </div>
-                                            <div
-                                                *ngIf="KycForm?.get('bank_name')?.hasError('required') && KycForm?.get('bank_name')?.touched">
-                                                <span class="error-message">Bank Name is Required</span>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 mb-4">
+                                    <div class="col-lg-12 mb-4" [hidden]="!isReadonly">
                                         <div class="form-group mb-3">
-                                            <label class="form-label" for="branch_name">Branch Name *</label>
+                                            <label class="form-label" for="branch_name">Branch Name</label>
                                             <div class="form-input">
                                                 <input formControlName="branch_name" type="text" class="form-control"
                                                     id="branch_name" placeholder="" />
                                             </div>
-                                            <div
-                                                *ngIf="KycForm?.get('branch_name')?.hasError('required') && KycForm?.get('branch_name')?.touched">
-                                                <span class="error-message">Branch Name is Required</span>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-12" >
                                         <div class="form-group">
                                             <div class="d-flex gap-2 from-button">
                                                 <input *ngIf="!isReadonly" type="submit" class="btn orange-btn"
-                                                    value="Submit" />
+                                                    value="Verify" />
+                                                <input *ngIf="isReadonly && IsValidDetails" (click)="CreateKyc()" type="button" class="btn orange-btn"
+                                                value="Submit" />
                                             </div>
                                         </div>
                                     </div>

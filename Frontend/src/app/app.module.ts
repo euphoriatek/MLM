@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
     // NavGroupComponent,
     // NavItemComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule,NgxSpinnerModule,ToastrModule.forRoot({closeButton:true,preventDuplicates:true}),FormsModule, CommonModule],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule,NgxSpinnerModule,ToastrModule.forRoot({closeButton:true,preventDuplicates:true,maxOpened: 1,autoDismiss: true}),FormsModule, CommonModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -23,6 +23,9 @@ export class CreateKycComponent {
   is_active:boolean=false;
   activeIndex: number = 0;
   active: number = 0;
+  ReadOnly:boolean=true;
+  isKycSaved = false;
+  IsValidDetails:boolean=false;
   constructor(public cookiesService: UserCookiesService, public route: Router, public fb: FormBuilder, public spinner: NgxSpinnerService,
     public api: ApiService, public toaster: ToasterService,private router: Router,private service: DataShareService
   ) {
@@ -34,11 +37,11 @@ export class CreateKycComponent {
     this.is_pan_verify = this.user.pan_verified;
     this.is_active = this.user.is_active;
     this.KycForm = this.fb.group({
-      account_holder_name: ['', [Validators.required, Validators.pattern('^[A-Za-z ]*$')]],
+      account_holder_name: [''],
       ifsc_code: ['', [Validators.required]],
       account_no: ['', [Validators.required]],
-      bank_name: ['', Validators.required],
-      branch_name: ['', [Validators.required]]
+      bank_name: [''],
+      branch_name: ['']
     });
     this.getKycInfo();
     this.PanKycForm = this.fb.group({
@@ -48,43 +51,44 @@ export class CreateKycComponent {
     this.openDefault(); 
 
   }
-
-  checkIfSc(event){
-    if(event){
-      const IFSC_Code = event.target.value;
-      if(IFSC_Code.length < 1){
-        return;
-      }
-      this.api.ValidateIFSC(IFSC_Code).subscribe({
-        next: (response: any) => {
-          if (response.status) {
-            this.KycForm.get('bank_name').setValue(response.data.BANK);
-            this.KycForm.get('branch_name').setValue(response.data.BRANCH);
-          }else{
-            this.toaster.error("Invalid IFSC Code", 'KYC');
-            this.KycForm.get('ifsc_code').reset();
-            this.KycForm.get('bank_name').reset();
-            this.KycForm.get('branch_name').reset();
-          }
-        },
-        error: (err) => {
-          console.error(err);
-          this.toaster.error("Invalid IFSC Code", 'KYC');
-          this.KycForm.get('ifsc_code').reset();
-          this.KycForm.get('bank_name').reset();
-          this.KycForm.get('branch_name').reset();
-        }
-      });
-    }
-  }
-
-  CreateKyc(): void {
-    this.spinner.show();
+  VerifyKyc() {
     if (this.KycForm.invalid) {
       this.KycForm.markAllAsTouched();
-      this.spinner.hide();
       return;
     } else if (this.KycForm.valid) {
+    const data = {
+      ifsc_code: this.KycForm.value.ifsc_code,
+      account_number: this.KycForm.value.account_no
+    };
+    this.spinner.show();
+    this.api.validateIfscAndAccount(data).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        if (response.status) {
+          this.KycForm.get('bank_name').setValue(response.data.bank);
+          this.KycForm.get('branch_name').setValue(response.data.branch);
+          this.KycForm.get('account_holder_name').setValue(response.data.account_holder_name);
+          this.KycForm.get('ifsc_code').setValue(response.data.ifsc_code);
+          this.KycForm.get('account_no').setValue(response.data.account_no);
+          this.disableFormBnkFields();
+          this.isReadonly = true;
+          this.IsValidDetails = true;
+        } else {
+          this.toaster.error(response.message || 'KYC Verification Failed', 'KYC');
+        }
+      },
+      error: (err) => {
+        this.spinner.hide();
+        console.error(err);
+        const errorMsg = err?.error?.message || 'Something went wrong. Please try again.';
+        this.toaster.error(errorMsg, 'KYC');
+      }
+    });
+    }
+  }
+  
+  CreateKyc(): void {
+    this.spinner.show();
       this.api.CreateKyc(this.KycForm.value).subscribe({
         next: (response: any) => {
           this.spinner.hide();
@@ -94,6 +98,8 @@ export class CreateKycComponent {
             this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'verified');
             this.toaster.success('KYC Details Created Successfully!');
             this.getKycInfo();
+            this.isKycSaved = true;
+            this.IsValidDetails = false;
           }else{
             this.toaster.error(response.message);
             this.KycForm.get('account_no').reset();
@@ -106,8 +112,30 @@ export class CreateKycComponent {
           this.spinner.hide();
         }
       });
+  }
 
-    }
+  SaveDetails(){
+    this.api.CreateKyc(this.KycForm.value).subscribe({
+      next: (response: any) => {
+        this.spinner.hide();
+        if (response && response.status) {
+          this.activeIndex = 1;
+          this.is_bank_verif = "verified";
+          this.cookiesService.updateCookie('CurrentUser', 'kyc_status', 'verified');
+          this.toaster.success('KYC Details Created Successfully!');
+          this.getKycInfo();
+        }else{
+          this.toaster.error(response.message);
+          this.KycForm.get('account_no').reset();
+        }
+        this.spinner.hide();
+      },
+      error: (err) => {
+        console.log(err.error.message);
+        this.toaster.error(err.error.message);
+        this.spinner.hide();
+      }
+    });
   }
   
 CreatePanKyc(): void {

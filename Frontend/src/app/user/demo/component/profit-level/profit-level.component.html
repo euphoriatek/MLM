@@ -15,19 +15,19 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="id">S.No.</th>
+            <th pSortableColumn="id" style="width: 50px;">S.No.</th>
             <th style="min-width:150px;">Level</th>
             <th>People Creation</th>
             <th>Total Members</th>
             <th>Commision by level</th>
-            <th>TotalEarnings(2% TDS Deduction)</th>
+            <th style="width: 100px; text-align: right;">Total Earnings <span class="d-block">(2% TDS Deduction)</span></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data let-i="rowIndex">
         <tr class="p-selectable-row">
             <td>
                 <span class="p-column-title">S.No</span>
-                <span class="image-text">{{i}}</span>
+                <span class="image-text"> <div class="levelcount">{{i}}</div></span>
             </td>
             <td>
                 <span class="p-column-title">Level</span>
@@ -45,8 +45,8 @@
                 <span class="p-column-title">Commision by level</span>
                 <span class="image-text">{{data.commission_by_level}}</span>
             </td>
-            <td>
-                <span class="p-column-title">TotalEarnings(2% TDS Deduction)</span>
+            <td class="text-end">
+                <span class="p-column-title">Total Earnings <span class="d-block">(2% TDS Deduction)</span></span>
                 <span class="image-text">{{data.total_earnings}}</span>
             </td>
         </tr>

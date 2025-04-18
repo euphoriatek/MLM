@@ -90,6 +90,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // User API
     Route::get('/auth', [UserController::class, 'getAuthDetails'])->middleware('role:user');
     Route::post('/validate-Ifsc', [KycController::class, 'bankifscCodeValidate'])->middleware('role:user');
+    Route::post('/validate-ifsc-account', [KycController::class, 'validateIfscAndAccount'])->middleware('role:user');
 
 
     Route::post('/create-delievery-address', [PurchaseController::class, 'CreateDeliveryAddress'])->middleware('role:user');

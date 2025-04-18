@@ -54,6 +54,9 @@ export class ApiService {
     return this.http.post(this.BaseUrl + 'validate-Ifsc', { "ifsc": data });
   }
 
+  validateIfscAndAccount(data: any) {
+    return this.http.post(this.BaseUrl + 'validate-ifsc-account', data);
+  }
   CreatePanKyc(data: any) {
     return this.http.post(this.BaseUrl + 'create-kyc-pan', data);
   }
