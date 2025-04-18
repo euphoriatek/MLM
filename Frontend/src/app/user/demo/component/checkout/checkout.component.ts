@@ -123,10 +123,12 @@ ngOnInit(): void {
         user_email: formData.email,
         amount: this.product_data.price,
       };
+      this.spinner.show();
       this.api.createOrder(orderData).subscribe(
         (response: any) => {
           if(response.status){
             this.order = response.data;
+            this.spinner.hide();
             const options = {
               key: environment.RazorpayApiKey,
               amount: this.product_data.price * 100,

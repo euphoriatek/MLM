@@ -63,11 +63,11 @@
     
 </p-table>
 
-<p-dialog id="dialog" header="Edit Product" [(visible)]="visible" [style]="{ width: '32vw' }"
+<p-dialog class="edit-product-modal" id="dialog" header="Edit Product" [(visible)]="visible"
 [modal]="true">
 <form action="" [formGroup]="UserEditForm" (ngSubmit)="EditProduct()">
     <!-- Product Name -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="form-group">
             <label for="name">Product Name</label>
             <input type="text" id="name" formControlName="name" class="form-control" />
@@ -78,7 +78,7 @@
     </div>
   
     <!-- Price -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="form-group">
             <label for="price">Price</label>
             <input type="text" id="price" formControlName="price" class="form-control" />
@@ -88,7 +88,7 @@
         </div>
     </div>
     <!-- Product Description -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="form-group">
             <label for="description">Product Description</label>
             <textarea id="description" formControlName="description" class="form-control" rows="4"></textarea>

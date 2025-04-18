@@ -173,7 +173,8 @@ export class ProductListComponent {
       width: '400px',
       data: {
         title: 'Delete Confirmation',
-        message: 'Are you sure you want to Delete?'
+        message: 'Are you sure you want to Delete?',
+        btn: "Yes"
       },
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {

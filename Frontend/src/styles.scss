@@ -204,6 +204,7 @@ a{
   border-radius: 12px;
   background-color: #ffffff;
   box-shadow: 10px 10px 10px -4px rgba(16, 24, 40, 0.1), 4px 10px 40px 10px rgba(16, 24, 40, 0.1);
+  margin:10px;
 }
 .mat-mdc-dialog-actions .mat-mdc-button-ripple{
   background-color:#faad14;
@@ -684,3 +685,7 @@ border: solid 2px #e84b43;
           color: #969696;
       }
   }
+
+  footer.pc-footer {
+    display: none;
+}

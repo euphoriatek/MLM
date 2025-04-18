@@ -1,43 +1,25 @@
-  <p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible"
-  [style]="{ width: '500px', 'max-width': '100%' }" [modal]="true">
-  <div class="container">
-    <table class="table table-open-cls dataTable">
-      <tbody>
-        <tr>
-          <td>Name</td>
-          <td><span>{{ node_data?.full_name || 'No Name Available' }}</span></td>
-        </tr>
-        <!-- <tr>
-          <td>Email</td>
-          <td><span>{{ node_data?.email || 'No Email Available' }}</span></td>
-        </tr> -->
-        <tr>
-          <td>Username</td>
-          <td><span>{{ node_data?.sponsor_id || 'No sponsor_id Available' }}</span></td>
-        </tr>
-        <tr>
-          <td>Registration Date</td>
-          <td><span>{{ node_data?.created_at | date: 'dd-MM-yyyy' || 'No Registration Date Available' }}</span></td>
-        </tr>
-        <tr>
-          <td>Mobile No</td>
-          <td><span>{{ node_data?.mobile_no || 'No Mobile Available' }}</span></td>
-        </tr>
-        <tr>
-          <td>Address</td>
-          <td><span>{{ node_data?.address || 'No Address Available' }}</span></td>
-        </tr>
-        <tr>
-          <td>MembersCount</td>
-          <td><span>{{ node_data?.Downlinecount || '0' }}</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<p-dialog id="dialog" header="Details For {{ node_data?.full_name || 'No Name Available' }}" [(visible)]="visible"
+[style]="{ width: '500px', 'max-width': '100%' }" [modal]="true">
+          <div class="order-row">
+              <div class="order-column">
+                  <div class="order-inner"><strong>Name : </strong> <p>{{ node_data?.full_name || 'No Name Available' }}</p></div>
+                  <div class="order-inner"><strong>Username : </strong> <p>{{ node_data?.sponsor_id || 'No sponsor_id Available' }}</p> </div>
+                  <div class="order-inner"><strong>Registration Date : </strong>
+                    <p>{{ node_data?.created_at | date: 'dd-MM-yyyy' || 'No Registration Date Available' }}</p></div>
 
-  <p-footer>
-    <button type="button" pButton icon="pi pi-times" label="Close" (click)="visible = false"></button>
-  </p-footer>
+                  <div class="order-inner"><strong>Mobile No : </strong>
+                    <p>{{ node_data?.mobile_no || 'No Mobile Available' }}</p></div>
+
+                  <div class="order-inner"><strong>Address : </strong> 
+                    <p>{{ node_data?.address || 'No Address Available' }}</p></div>
+
+                  <div class="order-inner"><strong>Members Count : </strong> 
+                    <p>{{ node_data?.Downlinecount || '0' }}</p>
+                    </div>
+              </div>
+          </div>
+     
+
 </p-dialog>
 
 <div class="d-block d-sm-flex flex-column align-items-center mb-5 gap-3">

@@ -35,29 +35,26 @@
   }
   
   .celebration-text {
-    position: absolute;
+    position: relative;
     color: #fff;
     font-size: 2rem;
     font-weight: bold;
     display: flex;
-    gap: 10px;
-    left: 50%;
-    transform: translate(-50%, -50%);
     height: 100%;
-    top: 50%;
     width: 100%;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
+    margin-top: 5vw;
   }
   .celebration-text img{
-    width: 50%;
+    width: 40%;
   }
   .celebration-left{
-    width: 49%;
+    width: 50%;
   }
   .celebration-left h5{
-    font-size: 50px;  
+    font-size: 4vw;  
     color: #fc5d3d;
     animation: color 0.5s linear infinite;
  }
@@ -93,3 +90,53 @@
     letter-spacing: 1px;
     text-transform: capitalize; 
 }   
+
+::ng-deep{
+.congratulations .p-dialog{
+  height:650px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.congratulations .p-dialog-header{
+    display: none;
+}
+} 
+
+
+
+@media(max-width:1280px){
+  
+  .celebration-text{
+  flex-direction: column; 
+  }
+  .celebration-text img{
+    width: 100%;
+    max-width: 150px;
+    margin-bottom: 30px;
+  }
+  .celebration-left{
+    width: 100%;
+  }
+  ::ng-deep{
+  .congratulations .p-dialog{
+    height:550px;
+  }
+}
+}
+@media(max-width:576px){
+  ::ng-deep{
+  .congratulations .p-dialog{
+    height:500px;
+}
+.celebration-left p {
+  font-size: 12px !important;
+}
+.celebration-left h5{
+  font-size: 25px !important;
+}
+.keep-going{
+  font-size: 10px;
+  right: 20px;
+}
+}
+}

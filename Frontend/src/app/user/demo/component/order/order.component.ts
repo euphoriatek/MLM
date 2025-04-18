@@ -73,7 +73,7 @@ export class OrderComponent {
   }
 
   trackUrl(){
-    const url = "https://www.delhivery.com/track-v2/package/"+ this.order.invoice.waybill;
+    const url = "https://www.delhivery.com/track-v2/package/"+ this.order.invoice?.waybill;
     window.open(url, '_blank');
   }
 

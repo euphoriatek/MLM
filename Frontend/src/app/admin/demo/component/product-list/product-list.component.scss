@@ -7,3 +7,9 @@
 .category-options input[type="radio"] {
     margin-right: 8px; 
 }
+::ng-deep{
+.edit-product-modal .p-element{
+    max-width: 560px;
+    width: 100%;
+}
+}

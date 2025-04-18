@@ -91,7 +91,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 d-none d-md-block">
                 <div class="card">
                     <div class="card-body">
                         <div class="col-lg-12">
@@ -117,8 +117,8 @@
         </div>
     </div>
 </div>
-<p-dialog id="dialog" class="no-header-dialog" [(visible)]="Activation_success"
-    [style]="{ width: '70vw', height: '650px' }" [modal]="true" [closable]="false" [draggable]="false">
+<p-dialog id="dialog" class="no-header-dialog congratulations" [(visible)]="Activation_success"
+    [style]="{ width: '70vw'}" [modal]="true" [closable]="false" [draggable]="false">
 
     <div class="fireworks-container" *ngIf="enabled">
         <ng-fireworks #fireworks="ngFireworks" [options]="options" class="fireworks"></ng-fireworks>
