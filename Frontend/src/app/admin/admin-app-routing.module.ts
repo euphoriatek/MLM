@@ -16,6 +16,7 @@ import { MembersListComponent } from './demo/component/members-list/members-list
 import { OrdersComponent } from './demo/component/orders/orders.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
+import { AddCityComponent } from './demo/component/add-city/add-city.component';
 const routes: Routes = [
   {
     path: '',
@@ -84,6 +85,11 @@ const routes: Routes = [
       {
         path: 'wallet-statement',
         component: WalletStatementComponent,
+        canActivate:[authGuard]
+      },
+      {
+        path: 'add-city',
+        component: AddCityComponent,
         canActivate:[authGuard]
       }
       

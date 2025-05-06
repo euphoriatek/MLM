@@ -131,6 +131,7 @@ class KycController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+      
     }
     public function createPanKyc(Request $request)
     {

@@ -184,4 +184,12 @@ export class ApiService {
   searchTreeUser(data:any){
     return this.http.post(this.AdminBaseUrl + 'search-tree-usr', {data: data});
   }
+
+  // add city
+  addCity(data) {
+    return this.http.post(this.AdminBaseUrl + 'add-city',data);
+  }
+  getStates() {
+    return this.http.get(this.BaseUrl + 'get-state');
+  }
 }

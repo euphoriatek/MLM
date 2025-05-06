@@ -165,8 +165,8 @@ export class BankWithdrawalComponent implements OnInit {
     const amount = parseFloat(event.target.value); // Ensure it's a number
     if (this.walletBalance >= amount) {
       // Calculate the TDS to deduct (TDS_Percentage % of the amount)
-      this.tdsAmount = Math.round((amount * this.TDS_Percentage) / 100); // Round off the TDS amount
-      this.net_payable_amount = Math.round(amount - this.tdsAmount); // Round off the payable amount
+      this.tdsAmount = Math.round((amount * this.TDS_Percentage) / 100); 
+      this.net_payable_amount = Math.round(amount - this.tdsAmount);
     }
   }
 }

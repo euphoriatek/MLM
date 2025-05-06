@@ -36,6 +36,8 @@ export class RegisterComponent implements OnInit {
   passwordType: string = 'password';
   cities: any;
   otpTimeDisplay: any;
+  showMobileInput: boolean = true;
+
   @ViewChild('otpInput') otpInputRef: ElementRef | undefined;
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private api: ApiService, private toaster: ToasterService, public spinner: NgxSpinnerService, public currentRoute: ActivatedRoute) { }
 
@@ -47,12 +49,7 @@ export class RegisterComponent implements OnInit {
         state_id: ['', Validators.required],
         city_id: ['', Validators.required],
         email: ['', Validators.email],
-        password: [
-          '',
-          [
-            Validators.required
-          ]
-        ],
+        password: ['', [ Validators.required]],
         mobile_no: ['', [Validators.maxLength(10), Validators.required, Validators.pattern(/^\d{10}$/)]],
         otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
         confirm_password: ['', Validators.required],
@@ -103,41 +100,48 @@ export class RegisterComponent implements OnInit {
       });
     }
   }
-
   checkMobile(event: any) {
     if (event) {
       const mobile_number = event.target.value;
-      if (mobile_number.length < 10) {
-        return;
-      }
-      this.api.checkMobile(mobile_number).subscribe({
-        next: (response: any) => {
-          if (response.status) {
-            this.NumberIsValid = false;
-            this.toaster.error("Mobile number already exists!", 'Signup');
-            this.signupForm.get('mobile_no').setValue('');
-          } else {
-            this.NumberIsValid = true;
+      if (mobile_number.length === 10) {
+        this.spinner.show();
+        this.api.checkMobile(mobile_number).subscribe({
+          next: (response: any) => {
+            if (response.status) {
+               this.spinner.hide();
+              this.NumberIsValid = false;
+              this.toaster.error("Mobile number already exists!", 'Signup');
+              this.signupForm.get('mobile_no').setValue('');
+            } else {
+              this.NumberIsValid = true;
+              this.showMobileInput = false;
+              this.sendOtp();
+            }
+          },
+          error: (err) => {
+            this.spinner.hide();
+            console.error(err);
+            this.toaster.error("Something went wrong. Please try again!", 'Signup');
           }
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+        });
+      }
     }
   }
+  
   sendOtp() {
     this.is_send = true;
     const data = { "mobile_number": this.signupForm.value.mobile_no };
-
+  
     this.api.GenerateOTP(data).subscribe({
       next: (response: any) => {
         this.is_send = false;
         if (response.status) {
+          // OTP successfully sent
           this.otpSent = true;
-          this.otpTimer = 300; // 5 minutes = 300 seconds
+          this.otpTimer = 300;
           this.signupForm.controls['mobile_no'].disable();
-
+  
+          // Timer for OTP expiration
           this.timerInterval = setInterval(() => {
             if (this.otpTimer > 0) {
               this.otpTimer--;
@@ -146,25 +150,28 @@ export class RegisterComponent implements OnInit {
               clearInterval(this.timerInterval);
             }
             // Format remaining time as mm:ss
-            const minutes = Math.floor(this.otpTimer / 60); // Get minutes
-            const seconds = this.otpTimer % 60; // Get seconds
+            const minutes = Math.floor(this.otpTimer / 60);
+            const seconds = this.otpTimer % 60;
             this.otpTimeDisplay = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-          }, 1000); // 1 second interval
-
+          }, 1000); // 1-second interval
+  
           setTimeout(() => {
             this.otpInputRef?.nativeElement.focus();
           }, 100);
+          this.spinner.hide();
         } else {
+          this.spinner.hide();
           this.toaster.error("Try again!", 'Signup');
         }
       },
       error: (err) => {
+        this.spinner.hide();
         console.error(err);
         this.toaster.error("Try again!", 'Signup');
       }
     });
   }
-
+  
   verifyOtp() {
     const enteredOtp = this.signupForm.get('otp')?.value;
     if (enteredOtp.length < 6) {
@@ -173,9 +180,10 @@ export class RegisterComponent implements OnInit {
     this.api.verifyOTP(enteredOtp).subscribe({
       next: (response: any) => {
         if (response.status) {
+          // OTP verified successfully
           this.signupForm.controls['mobile_no'].disable();
           this.signupForm.controls['otp'].disable();
-          this.toaster.success('Mobile No. OTP Verified Successfully Done');
+          this.toaster.success('Mobile No. OTP Verified Successfully');
           this.is_optVerify = true;
         } else {
           this.toaster.error(response.message);
@@ -202,11 +210,9 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
+  
   addUser(): void {
-    // if (!this.is_optVerify) {
-    //   this.toaster.error("Please verify OTP");
-    //   return; 
-    // }
+  
     const mobileNoControl = this.signupForm.get('mobile_no');
     if (mobileNoControl?.value && !this.otpSent &&!this.is_optVerify) {
       this.toaster.error("Please verify OTP");
@@ -289,6 +295,9 @@ export class RegisterComponent implements OnInit {
         console.error(err);
       }
     });
+  }
+  onFocus() {
+    this.signupForm.get('full_name')?.markAsTouched();
   }
 }
 // Password match validator

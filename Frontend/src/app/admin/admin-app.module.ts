@@ -53,6 +53,7 @@ import { TreeViewComponent } from './demo/component/tree-view/tree-view.componen
 import { MembersListComponent } from './demo/component/members-list/members-list.component';
 import { LevelIncomeComponent } from './demo/component/level-income/level-income.component';
 import { WalletStatementComponent } from './demo/component/wallet-statement/wallet-statement.component';
+import { AddCityComponent } from './demo/component/add-city/add-city.component';
 @NgModule({
   declarations: [
     AdminAppComponent,
@@ -77,7 +78,8 @@ import { WalletStatementComponent } from './demo/component/wallet-statement/wall
     TreeViewComponent,
     MembersListComponent,
     LevelIncomeComponent,
-    WalletStatementComponent
+    WalletStatementComponent,
+    AddCityComponent
   ],
   imports: [AdminAppRoutingModule, SharedModule,MatDatepickerModule,MatInputModule,MatFormFieldModule,MatNativeDateModule,MatSlideToggleModule,MatSelectModule,DialogModule,ButtonModule,InputTextModule,MatDialogModule,MatButtonModule,
     TableModule,CalendarModule,SliderModule,MultiSelectModule,ContextMenuModule,ToastModule,ProgressBarModule,DropdownModule

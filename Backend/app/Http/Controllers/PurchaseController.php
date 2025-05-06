@@ -521,7 +521,8 @@ class PurchaseController extends Controller
             'Content-Type' => 'application/json',
         ])
         ->post('https://api.razorpay.com/v1/orders', [
-            'amount' => $data['price'] * 100,
+            // 'amount' => $data['price'] * 100,
+            'amount' =>1 * 100,
             'currency' => 'INR',
             'receipt' => uniqid('receipt_'),
             'payment_capture' => 1,
@@ -573,59 +574,7 @@ class PurchaseController extends Controller
         $payload = $request->all();
         $signature = $request->header('X-Razorpay-Signature');
         try {
-            // $payload = [
-            //     "entity" => "event",
-            //     "account_id" => "acc_Pr99wmW11bFkWQ",
-            //     "event" => "payment.captured",
-            //     "contains" => ["payment"],
-            //     "payload" => [
-            //         "payment" => [
-            //             "entity" => [
-            //                 "id" => "pay_QJDD55FieTQVDO",
-            //                 "entity" => "payment",
-            //                 "amount" => 100,
-            //                 "currency" => "INR",
-            //                 "status" => "captured",
-            //                 "order_id" => "order_QJFaRMCAQaMyhK",
-            //                 "invoice_id" => null,
-            //                 "international" => false,
-            //                 "method" => "upi",
-            //                 "amount_refunded" => 0,
-            //                 "refund_status" => null,
-            //                 "captured" => true,
-            //                 "description" => "Checkout for T-Shirt",
-            //                 "card_id" => null,
-            //                 "bank" => null,
-            //                 "wallet" => null,
-            //                 "vpa" => "success@razorpay",
-            //                 "email" => "divyadangi7607@gmail.com",
-            //                 "contact" => "+917770990975",
-            //                 "notes" => [
-            //                     "key1" => "Activation Package T-Shirt Size :Extra Large (XL)",
-            //                     "key2" => "T-Shirt"
-            //                 ],
-            //                 "fee" => 2,
-            //                 "tax" => 0,
-            //                 "error_code" => null,
-            //                 "error_description" => null,
-            //                 "error_source" => null,
-            //                 "error_step" => null,
-            //                 "error_reason" => null,
-            //                 "acquirer_data" => [
-            //                     "rrn" => "640626603132",
-            //                     "upi_transaction_id" => "A3BB330DAB437197AB42D77A81725BFD"
-            //                 ],
-            //                 "created_at" => 1744693636,
-            //                 "reward" => null,
-            //                 "upi" => [
-            //                     "vpa" => "success@razorpay"
-            //                 ],
-            //                 "base_amount" => 100
-            //             ]
-            //         ]
-            //     ],
-            //     "created_at" => 1744693637
-            // ];
+         
             $event = $payload['event'];
             if ($event === 'payment.captured') {
                 $payment = $payload['payload']['payment']['entity'];
@@ -704,4 +653,126 @@ class PurchaseController extends Controller
             ], $response->status());
         }
     }
+
+    public function refundOrder($purchaseId) {
+        try {
+            $purchase = Purchase::findOrFail($purchaseId);
+            
+            if ($purchase->status == 'refunded') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Order already refunded.',
+                ], 200);
+            }
+    
+            // Call Razorpay to process the refund
+            $refundResponse = Http::withBasicAuth(env('RAZORPAY_KEY_ID'), env('RAZORPAY_KEY_SECRET'))
+                ->post("https://api.razorpay.com/v1/payments/{$purchase->razor_order_id}/refund");
+    
+            $refundResponseData = $refundResponse->json();
+    
+            if (isset($refundResponseData['id'])) {
+                // Update the purchase status to refunded
+                $purchase->update([
+                    'status' => 'refunded',
+                    'refund_id' => $refundResponseData['id'] // Store refund ID
+                ]);
+    
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Refund processed successfully.',
+                    'data' => $refundResponseData
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Refund failed. Please try again.',
+                ], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'An error occurred during the refund process.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // public function handleWebhook(Request $request)
+    // {
+    //     $webhookSecret = env('RAZORPAY_WEBHOOK_SECRET');
+    //     $payload = $request->all();
+    //     $signature = $request->header('X-Razorpay-Signature');
+
+    //     try {
+    //         $event = $payload['event'];
+
+    //         // Handle captured payment
+    //         if ($event === 'payment.captured') {
+    //             $payment = $payload['payload']['payment']['entity'];
+    //             $purchase = Purchase::where('razor_order_id', $payment['order_id'])->first();
+
+    //             if ($purchase) {
+    //                 Payments::create([
+    //                     'purchase_id' => $purchase->id,
+    //                     'user_id' => $purchase->user_id,
+    //                     'r_payment_id' => $payment['id'],
+    //                     'method' => $payment['method'],
+    //                     'currency' => $payment['currency'],
+    //                     'user_email' => $purchase->email,
+    //                     'amount' => $payment['amount'] / 100,
+    //                     'status' => $payment['status'],
+    //                     'json_response' => json_encode($payment),
+    //                 ]);
+
+    //                 $purchase->update(['status' => 'captured']);
+
+    //                 $createDelhivery = $this->createDelhivery($purchase);
+    //                 if (!$createDelhivery) {
+    //                     Log::channel('razorpay_webhook')->error('The Order could not be Created. Please Try Again. Delhivery');
+    //                     return response()->json([
+    //                         'status' => false,
+    //                         'message' => 'The Order could not be created. Please Try Again.',
+    //                     ], 200);
+    //                 }
+
+    //                 $this->execution(userId: $purchase['user_id'], productId: $purchase['product_id']);
+    //                 $user = User::find($purchase['user_id']);
+    //                 $user->update(['is_active' => true]);
+
+    //                 Log::channel('razorpay_webhook')->info("Payment captured: " . $payment['id']);
+    //             }
+
+    //             return response()->json(['message' => 'Webhook handled'], 200);
+    //         }
+
+    //         // Handle refunded payment
+    //         if ($event === 'payment.refunded') {
+    //             $payment = $payload['payload']['payment']['entity'];
+    //             $refund = $payload['payload']['refund']['entity'];
+
+    //             $purchase = Purchase::where('razor_order_id', $payment['order_id'])->first();
+
+    //             if ($purchase) {
+    //                 $purchase->update([
+    //                     'status' => 'refunded',
+    //                     'refund_id' => $refund['id'],
+    //                     'json_response' => json_encode($payment),
+    //                 ]);
+
+    //                 Log::channel('razorpay_webhook')->info("Payment refunded: " . $refund['id']);
+    //             }
+
+    //             return response()->json(['message' => 'Refund webhook handled'], 200);
+    //         }
+
+    //         return response()->json(['message' => 'Event ignored'], 200);
+
+    //     } catch (\Exception $e) {
+    //         Log::channel('razorpay_webhook')->error('Razorpay Webhook Error: ' . $e->getMessage());
+    //         return response()->json([
+    //             'message' => 'Webhook Handling Failed'
+    //         ], 500);
+    //     }
+    // }
 }

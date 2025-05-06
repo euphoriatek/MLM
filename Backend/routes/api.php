@@ -55,7 +55,7 @@ Route::post('/update-password', [UserController::class, 'updatePassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Admin API
-
+   
     // Dashboard  Data
 
     // Product
@@ -87,6 +87,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Level Income
     Route::get('/admin/level-income', [CommissionController::class, 'getLevelIncomeAdmin'])->middleware('role:admin');
     Route::get('/admin/wallet-statement', [CommissionController::class, 'walletStatementAdmin'])->middleware('role:admin');
+// add city
+    Route::post('/admin/add-city', [UserController::class, 'addCity'])->middleware('role:admin');
     // User API
     Route::get('/auth', [UserController::class, 'getAuthDetails'])->middleware('role:user');
     Route::post('/validate-Ifsc', [KycController::class, 'bankifscCodeValidate'])->middleware('role:user');
@@ -137,3 +139,4 @@ Route::post('/transfer-to-bulkpe', [BankWithdrawalController::class, 'transferTo
 //Mlm Profit Level
 Route::get('/mlm-levels', [UserController::class, 'getMlmLevel']);
 Route::post('/razorpay/webhook', [PurchaseController::class, 'handleWebhook']);
+Route::get('/razorpayx/payout/{orderId}', [PurchaseController::class, 'fullPayoutFlow']);

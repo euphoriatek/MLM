@@ -255,6 +255,22 @@ const NavigationItems = [
       },
     ],
   },
+  {
+    id: 'add-city',
+    title: 'Add City',
+    type: 'collapse',
+    icon: 'fa-solid fa-city',
+    children: [
+      {
+        id: 'add-city',
+        title: 'add-city',
+        type: 'item',
+        url: '/admin/add-city',
+        target: false,
+        breadcrumbs: true,
+      },
+    ],
+  },
 ];
 
 @Injectable()

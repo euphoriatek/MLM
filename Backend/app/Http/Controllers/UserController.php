@@ -848,5 +848,27 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function addCity(Request $request)
+    {
+        // echo "<pre>";
+        // print_r($request->all());
+        // exit;
+        // Validate incoming data
+        $validated = $request->validate([
+            'city_id' => 'required|string|max:255',
+            'state_id' => 'required|integer|exists:states,id',
+        ]);
 
+        // Create a new city record
+        $city = City::create([
+            'city' => $validated['city_id'],
+            'state_id' => $validated['state_id'],
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'City added successfully.',
+            'data' => $city
+        ]);
+    }
 }

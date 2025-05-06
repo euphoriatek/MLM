@@ -52,47 +52,16 @@
               </div>
             </div>
 
-            <!-- Mobile Number Field -->
-            <div class="col-md-12">
+            <div class="col-md-12" *ngIf="showMobileInput">
               <div class="form-group mb-3">
                 <label for="mobile_no" class="form-label">Mobile No *</label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/phone.png" alt="mobile_no" />
                   <input (keyup)="checkMobile($event)" formControlName="mobile_no" id="mobile_no" class="form-control"
                     placeholder="" maxlength="10" />
-                  <button class="sendotpBtn" *ngIf="
-                    signupForm.get('mobile_no')?.valid &&
-                    !signupForm.get('mobile_no')?.pristine &&
-                    otpTimer === 0 &&
-                    !firstSend &&
-                    !is_optVerify &&
-                    NumberIsValid
-                  " type="button" (click)="sendOtp()" [disabled]="is_send">
-                    Send OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
-                  </button>
-                  <button class="sendotpBtn" *ngIf="
-                    signupForm.get('mobile_no')?.valid &&
-                    !signupForm.get('mobile_no')?.pristine &&
-                    otpTimer === 0 &&
-                    firstSend &&
-                    !is_optVerify &&
-                    NumberIsValid
-                  " type="button" (click)="sendOtp()" [disabled]="is_send">
-                    Resend OTP <img *ngIf="is_send" src="https://media.tenor.com/tga0EoNOH-8AAAAM/loading-load.gif">
-                  </button>
                 </div>
-                <div id="RegsistOtp" *ngIf="otpSent && !is_optVerify">
-                  <div id="div_timer" class="timer-otp" *ngIf="otpTimer > 0">
-                    <span id="otp-count">{{ otpTimeDisplay }}</span>
-                    Seconds Remaining
-                  </div>
-                  <label id="lblotpMsg" class="text-left" style="color: green">OTP Successfully Sent on This Mobile
-                    No.<span class="mendatory"></span></label>
-                </div>
-                <div *ngIf="
-                    signupForm.get('mobile_no')?.touched &&
-                    signupForm.get('mobile_no')?.invalid
-                  ">
+
+                <div *ngIf="signupForm.get('mobile_no')?.touched && signupForm.get('mobile_no')?.invalid">
                   <small class="text-danger" *ngIf="signupForm.get('mobile_no')?.hasError('required')">Mobile Number is
                     Required.</small>
                   <small class="text-danger" *ngIf="signupForm.get('mobile_no')?.hasError('pattern')">Please enter a
@@ -100,18 +69,18 @@
                 </div>
               </div>
             </div>
-
             <!-- Mobile Number Field -->
             <div class="col-md-12" *ngIf="otpSent">
               <div class="form-group mb-3">
-                <label for="mobile_no" class="form-label">Mobile OTP *</label>
+                <label for="otp" class="form-label">Mobile OTP *</label>
                 <div class="form-input">
-                  <img src="assets/images/admin_images/icons/phone.png" alt="email" />
+                  <img src="assets/images/admin_images/icons/phone.png" alt="otp" />
                   <input #otpInput type="text" (keyup)="verifyOtp()" formControlName="otp" id="otp" class="form-control"
                     placeholder="Enter OTP" maxlength="6" />
                 </div>
               </div>
             </div>
+
             <!-- State Field -->
             <div class="col-md-12">
               <div class="form-group mb-3">
@@ -164,15 +133,7 @@
                   <img src="assets/images/admin_images/mail.svg" alt="email" />
                   <input formControlName="email" id="email" class="form-control" placeholder="" />
                 </div>
-                <!-- <div *ngIf="
-                    signupForm.get('email')?.touched &&
-                    signupForm.get('email')?.invalid
-                  ">
-                  <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('required')">Email is
-                    required.</small>
-                  <small class="text-danger" *ngIf="signupForm.get('email')?.hasError('email')">Please enter a valid
-                    email address.</small>
-                </div> -->
+
               </div>
             </div>
             <!-- paasword field -->
@@ -182,7 +143,7 @@
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
                 <input formControlName="password" [type]="passwordFieldType" class="form-control" id="password"
                   placeholder="" />
-                <!-- <i class="fa-solid fa-eye toggle-password" (click)="togglePasswordVisibility()"></i> -->
+
                 <!-- Eye Slash Icon (When password is hidden) -->
                 <i *ngIf="passwordFieldType === 'password'" class="fa fa-eye-slash toggle-password"
                   (click)="togglePasswordVisibility()" aria-hidden="true"></i>
@@ -207,7 +168,7 @@
                 <img src="assets/images/admin_images/lock.svg" alt="lock" />
                 <input id="confirm_password" formControlName="confirm_password" [type]="passwordType"
                   class="form-control" />
-                <!-- <i class="fa-solid fa-eye toggle-password" (click)="passwordVisibility()"></i> -->
+
                 <!-- Eye Slash Icon (When password is hidden) -->
                 <i *ngIf="passwordType === 'password'" class="fa fa-eye-slash toggle-password"
                   (click)="passwordVisibility()" aria-hidden="true"></i>
@@ -256,7 +217,7 @@
             <!-- Address Field -->
             <div class="col-md-12">
               <div class="form-group mb-3">
-                <label for="address" class="form-label">Address <span>*</span></label>
+                <label for="address" class="form-label">Full Delivery Address <span>*</span></label>
                 <div class="form-input">
                   <img src="assets/images/admin_images/icons/add-icon.svg" alt="email" />
                   <input formControlName="address" id="address" class="form-control" placeholder="" />
