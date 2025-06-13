@@ -79,7 +79,6 @@ class BankWithdrawalController extends Controller
     {
         try {
             $withdrawals = Withdrawal::get();
-
             $withdrawals->map(callback: function ($withdrawals) {
                 $withdrawals->user_full_name = $withdrawals->user->full_name;
                 return $withdrawals;
@@ -128,7 +127,7 @@ class BankWithdrawalController extends Controller
             $user = $withdrawal->user; 
         
             $user->wallet_balance += $withdrawal->price;
-            $withdrawal->update(['status' => 'rejected','price'=>'0.00']);
+            $withdrawal->update(['status' => 'rejected']);
             $user->save(); 
     
             return response()->json([

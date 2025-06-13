@@ -51,7 +51,7 @@ export class BankWithdrawalHistoryComponent {
   }
 
   getStatusText(type: string): string {
-    console.log(type);
+    
     switch(type) {
         case 'pending':
             return 'Pending';

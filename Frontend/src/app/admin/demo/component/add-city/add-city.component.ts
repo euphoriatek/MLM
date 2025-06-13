@@ -50,13 +50,16 @@ export class AddCityComponent {
   }
 
   fetchStates(): void {
+    this.spinner.show();
     this.api.getStates().subscribe({
       next: (response: any) => {
         if (response?.status) {
           this.spinner.hide();
           this.states = response.data;
         }
+        this.spinner.hide();
       },
+      
       error: (err) => {
         console.error(err);
       }
@@ -68,7 +71,6 @@ export class AddCityComponent {
       return;
     } else if (this.signupForm.valid) {
       this.spinner.show();
-      
       // Prepare city data correctly
       const cityData = {
         city_id: this.signupForm.value.city_id,
@@ -79,20 +81,25 @@ export class AddCityComponent {
         next: (response: any) => {
           if (response.status) {
             this.toaster.success('City added successfully.');
+            this.signupForm.reset({
+              city_id: '',
+              state_id: ''
+            });
+            // Optional: clear validation styles
+            this.signupForm.markAsPristine();
+            this.signupForm.markAsUntouched();
           } else {
             this.toaster.error(response.message);
+            this.spinner.hide();
           }
-          this.spinner.hide();
         },
         error: (err) => {
-          console.error('Error:', err);
+          const errorMessage = err?.error?.message || 'An error occurred while adding the city.';
+          this.toaster.error(errorMessage);
           this.spinner.hide();
-          this.toaster.error('An error occurred while adding the city.');
         }
       });
     }
   }
-  
-  
 
 }

@@ -128,7 +128,7 @@ class UserController extends Controller
         try {
             $state_id = $id;
             if ($state_id) {
-                $cities = City::where('state_id', $state_id)->get();
+                $cities = City::where('state_id', $state_id)->orderBy('city', 'asc') ->distinct('name')->get();
             } else {
                 $cities = City::all();
             }
@@ -821,7 +821,7 @@ class UserController extends Controller
     public function getCurrentLevel(Request $request)
     {
         $user = auth()->user();
-     
+
         if (!$user) {
             return response()->json([
                 'status' => false,
@@ -848,16 +848,44 @@ class UserController extends Controller
         ], 200);
     }
 
+    // public function addCity(Request $request)
+    // {
+
+    //     $validated = $request->validate([
+    //         'city_id' => 'required|string|max:255',
+    //         'state_id' => 'required|integer|exists:states,id',
+    //     ]);
+
+    //     // Create a new city record
+    //     $city = City::create([
+    //         'city' => $validated['city_id'],
+    //         'state_id' => $validated['state_id'],
+    //     ]);
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'City added successfully.',
+    //         'data' => $city
+    //     ]);
+    // }
     public function addCity(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->all());
-        // exit;
-        // Validate incoming data
         $validated = $request->validate([
             'city_id' => 'required|string|max:255',
             'state_id' => 'required|integer|exists:states,id',
         ]);
+
+        // Check for duplicate
+        $existingCity = City::where('city', $validated['city_id'])
+            ->where('state_id', $validated['state_id'])
+            ->first();
+
+        if ($existingCity) {
+            return response()->json([
+                'status' => false,
+                'message' => 'City already exists in this state.',
+            ], 409); // 409 Conflict
+        }
 
         // Create a new city record
         $city = City::create([
@@ -871,4 +899,5 @@ class UserController extends Controller
             'data' => $city
         ]);
     }
+
 }
